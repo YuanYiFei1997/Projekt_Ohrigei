@@ -9,4 +9,8 @@ public class AdminLoginController {
     public String adminIndex(){
         return "admin/adminIndex";
     }
+    @RequestMapping("admin/dashboard")
+    public String dashboard(){
+        return "admin/dashboard";
+    }
 }
