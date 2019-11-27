@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>
+    <link href="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/css/bootstrap.css" rel="stylesheet">
+    <title>主页</title>
+</head>
+<script>
+   function login() {
+       var params={};
+       params.email=$('#inputEmail').values();
+       params.password=$('#inputPassword').values();
+       $.ajax({
+           type:"GET",
+           url:"/Login",
+           data:params,
+           dataType:"json",
+           success:function (data) {
+               alert(data);
+           },
+           error:function (data) {
+               alert(data)
+           }
+       })
+   }
+</script>
+<body>
+<form>
+    <label>
+        <input id="inputEmail" type="text" placeholder="请输入电子邮箱"><br>
+        <input id="inputPassword" type="password" placeholder="请输入密码"><br>
+    </label>
+    <button type="submit" onclick="login()">登录</button><br>
+</form>
+</body>
+</html>
