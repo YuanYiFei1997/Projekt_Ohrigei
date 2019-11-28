@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>
@@ -7,6 +7,43 @@
     <title>iPlacard</title>
 </head>
 <body>
-
+<nav class="navbar navbar-expand-md navbar-dark bg-dark navbar-offcanvas" th:fragment="myHeader">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">iPlacard</a>
+        <ul class="navbar-nav navbar-top">
+            <li class="nav-item active">
+                <a class="nav-link" href="/index">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/allXpaths">结果页面</a>
+            </li>
+        </ul>
+        <button class="navbar-toggler navbar-toggler-right navbar-icon" type="button" data-toggle="collapse"
+                data-target="#navbar-mobile" aria-controls="navbar-mobile" aria-expanded="false"
+                aria-label="Toggle navigation">
+            <span class="icon-bar bar1"></span>
+            <span class="icon-bar bar2"></span>
+            <span class="icon-bar bar3"></span>
+        </button>
+        <div class="navbar-collapse collapse ml-auto " id="navbar-mobile" style="overflow: auto;">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-image">
+                    <img src="/static/img/logo.png" alt="">
+                </li>
+                <!--循环100次-->
+                <li th:each="i:${#numbers.sequence(1,100)}" class="nav-item">
+                    <a href="#!" class="nav-link">Link 1</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#!" class="nav-link">Link 2</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#!" class="nav-link">Link 3</a>
+                </li>
+            </ul>
+            <!--			</div>-->
+        </div>
+    </div>
+</nav>
 </body>
 </html>

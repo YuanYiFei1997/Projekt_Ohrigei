@@ -5,11 +5,13 @@ import com.alibaba.fastjson.JSONObject;
 public class User {
     private short id;
     private String name;
+    private String last_name;
+    private String first_name;
     private String email;
     private String password;
     private String phone;
-    private byte type;
-    private byte enable_Login;
+    private int type;
+    private int enable_Login;
 
     public short getId() {
         return id;
@@ -51,7 +53,7 @@ public class User {
         this.phone = phone;
     }
 
-    public byte getType() {
+    public int getType() {
         return type;
     }
 
@@ -59,24 +61,38 @@ public class User {
         this.type = type;
     }
 
-    public byte getEnable_Login() {
-        return enable_Login;
+    public String getLast_name() {
+        return last_name;
     }
 
-    public void setEnableToLogin(byte enable_Login) {
+    public void setLast_name(String last_name) {
+        this.last_name = last_name;
+    }
+
+    public String getFirst_name() {
+        return first_name;
+    }
+
+    public void setFirst_name(String first_name) {
+        this.first_name = first_name;
+    }
+
+    public void setEnable_Login(byte enable_Login) {
         this.enable_Login = enable_Login;
     }
 
     @Override
     public String toString() {
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("id",id);
-        jsonObject.put("name",name);
-        jsonObject.put("email",email);
-        jsonObject.put("password",password);
-        jsonObject.put("phone",phone);
-        jsonObject.put("type",type);
-        jsonObject.put("enableToLogin",enable_Login);
+        jsonObject.put("id", id);
+        jsonObject.put("name", name);
+        jsonObject.put("email", email);
+        jsonObject.put("password", password);
+        jsonObject.put("phone", phone);
+        jsonObject.put("type", type);
+        jsonObject.put("last_name", last_name);
+        jsonObject.put("first_name", first_name);
+        jsonObject.put("enable_Login", enable_Login);
         return jsonObject.toJSONString();
     }
 }
