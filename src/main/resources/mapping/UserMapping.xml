@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="edu.dlufl.ohrigei.dao.UserDao">
+    <resultMap id="resultMap" type="edu.dlufl.ohrigei.model.User">
+        <result column="id" jdbcType="SMALLINT" property="id"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="email" jdbcType="VARCHAR" property="email"/>
+        <result column="password" jdbcType="CHAR" property="password"/>
+        <result column="type" jdbcType="TINYINT" property="type"/>
+        <result column="enable_login" jdbcType="TINYINT" property="enable_Login"/>
+    </resultMap>
+    <select id="findById" resultType="edu.dlufl.ohrigei.model.User">
+        select * from user where id = #{id}
+    </select>
+    <select id="loginCheck" resultType="String">
+        select password from ohrigei.user where email=#{email}
+    </select>
+    <select id="authorityControl" resultType="int">
+        select type from ohrigei.user where email=#{email}
+    </select>
+</mapper>

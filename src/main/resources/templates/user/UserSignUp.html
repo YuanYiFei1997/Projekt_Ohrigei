@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>
+    <link href="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/css/bootstrap.css" rel="stylesheet">
+    <title>报名参会</title>
+</head>
+<body>
+<p>请填写下列全部信息在线报名，报名后一封包含登录信息的邮件将会发送到登记的邮箱中。</p>
+<div>
+    <div class="col-lg-9">
+        <form method="post" >
+            <table class="table table-striped">
+                <thead><h2>在线报名</h2></thead>
+                <tr>
+                    <td>姓名</td>
+                    <td><label>
+                        <input name="userName" type="text" placeholder="请输入姓名">
+                    </label></td>
+                </tr>
+                <tr>
+                    <td>姓氏拼音</td>
+                    <td>
+                        <label>
+                            <input name="userLastName" type="text" placeholder="请输入姓氏拼音，如无姓氏请略过">
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>姓名拼音</td>
+                    <td>
+                        <label>
+                            <input name="userFirstName" type="text" placeholder="请输入名字拼音">
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>电子邮箱</td>
+                    <td>
+                        <label>
+                            <input name="email" type="text" placeholder="电子邮箱">
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>手机号码</td>
+                    <td>
+                        <label>
+                            <input name="phone" type="text" placeholder="请输入手机号码">
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>密码</td>
+                    <td>
+                        <label>
+                            <input name="password" type="password" placeholder="请输入密码">
+                            <input name="rePassword" type="password" placeholder="请确认密码">
+                        </label>
+                    </td>
+                </tr>
+            </table>
+            <button type="submit" class="btn btn-primary">注册</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>
