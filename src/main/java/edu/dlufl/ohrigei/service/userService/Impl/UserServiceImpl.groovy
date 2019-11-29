@@ -5,6 +5,9 @@ import edu.dlufl.ohrigei.model.User
 import edu.dlufl.ohrigei.service.userService.service.UserService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import org.springframework.ui.Model
+
+import javax.servlet.http.HttpSession
 
 @Service("UserLoginService")
 class UserServiceImpl implements UserService {
@@ -16,9 +19,19 @@ class UserServiceImpl implements UserService {
     }
 
     @Override
-    boolean loginCheck(String email, String inputPassword) {
-        String password = userDao.loginCheck(email)
-        return password == inputPassword
+    String loginCheck(User user, HttpSession session, Model model) {
+        User user1 = userDao.loginCheck(user)
+        if (user1 != null) {
+            user.setEmail(user1.getEmail())
+            user.setName(user1.getName())
+            user.setId(user1.getId())
+            session.setAttribute("user", user)
+            if (user1.getType() == 0)
+                return "redirect:/admin/dashBoard"
+            else return "/user/UserIndex"
+        }
+        model.addAttribute("errorMessage","用户名或密码错误")
+        return "forward:/"
     }
 
     @Override

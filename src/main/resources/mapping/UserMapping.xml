@@ -12,8 +12,8 @@
     <select id="findById" resultType="edu.dlufl.ohrigei.model.User">
         select * from user where id = #{id}
     </select>
-    <select id="loginCheck" resultType="String">
-        select password from ohrigei.user where email=#{email}
+    <select id="loginCheck" resultType="User" parameterType="User">
+        select * from ohrigei.user where email=#{email} and password=#{password}
     </select>
     <select id="authorityControl" resultType="int">
         select type from ohrigei.user where email=#{email}

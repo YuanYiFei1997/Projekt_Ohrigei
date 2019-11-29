@@ -1,11 +1,19 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>
+    <script src="https://cdn.bootcss.com/popper.js/1.15.0/esm/popper.min.js"></script>
+    <script src="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/js/bootstrap.js"></script>
     <link href="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/css/bootstrap.css" rel="stylesheet">
     <title>主页</title>
 </head>
+<script th:inline="javascript">
+    var message=[[${errorMessage}]];
+    if (message!=null){
+        alert(message)
+    }
+</script>
 <style>
     html,
     body {
@@ -83,16 +91,16 @@
     }
 </style>
 <body class="text-center">
-<form action="/user/Login" method="post" class="form-signin">
-    <img class="mb-4" src="img/logo/logo无底色无TM.png" alt="" width="188" height="90">
+<form th:action="@{/user/Login}"  method="post" class="form-signin" th:object="${userInfo}">
+    <a th:href="@{/}"><img class="mb-4" src="../img/logo/logoNoTM.png" alt="精罗激怒" width="188" height="90"></a>
     <h1 class="h3 mb-3 font-weight-normal">请先登录</h1>
-    <label for="inputEmail" class="sr-only"></label>
-    <input class="form-control" id="inputEmail" name="inputEmail" type="text" placeholder="请输入电子邮箱" required
+    <label for="email" class="sr-only"></label>
+    <input class="form-control" name="email" id="email" value="" th:field="${userInfo.email}" type="text" placeholder="请输入电子邮箱" required
            autofocus><br>
-    <label for="inputPassword" class="sr-only"></label>
-    <input class="form-control" id="inputPassword" name="inputPassword" type="password" placeholder="请输入密码"
+    <label for="password" class="sr-only"></label>
+    <input class="form-control" name="password" id="password" value="" th:field="${userInfo.password}" type="password" placeholder="请输入密码"
            required><br>
-    <button type="submit" class="submit-button btn btn-primary btn-block ">登录</button>
+    <button type="submit" class="submit-button btn btn-primary btn-block " >登录</button>
     <br>
     <p>忘记密码？<a href="#">找回密码</a></p>
     <a href="/user/signUp" class="btn btn-primary btn-block submit-button">报名参会</a>

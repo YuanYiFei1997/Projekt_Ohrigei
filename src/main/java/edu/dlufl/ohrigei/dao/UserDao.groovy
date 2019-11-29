@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository
 interface UserDao {
     User findById(@Param("id") short id)
     //密码校验
-    String loginCheck(String email)
+    User loginCheck(User user)
     //区分用户类型
     int authorityControl(String email)
 }

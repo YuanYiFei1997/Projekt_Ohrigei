@@ -1,49 +1,55 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>
+    <script src="https://cdn.bootcss.com/popper.js/1.15.0/esm/popper.min.js"></script>
+    <script src="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/js/bootstrap.js"></script>
     <link href="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/css/bootstrap.css" rel="stylesheet">
     <title>iPlacard</title>
 </head>
 <body>
-<nav class="navbar navbar-expand-md navbar-dark bg-dark navbar-offcanvas" th:fragment="myHeader">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="#">iPlacard</a>
-        <ul class="navbar-nav navbar-top">
-            <li class="nav-item active">
-                <a class="nav-link" href="/index">Home <span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/allXpaths">结果页面</a>
-            </li>
-        </ul>
-        <button class="navbar-toggler navbar-toggler-right navbar-icon" type="button" data-toggle="collapse"
-                data-target="#navbar-mobile" aria-controls="navbar-mobile" aria-expanded="false"
-                aria-label="Toggle navigation">
-            <span class="icon-bar bar1"></span>
-            <span class="icon-bar bar2"></span>
-            <span class="icon-bar bar3"></span>
+<div th:fragment="header">
+    <nav class="navbar navbar-expand navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">Гулаш&nbsp;система</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample02"
+                aria-controls="navbarsExample02" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="navbar-collapse collapse ml-auto " id="navbar-mobile" style="overflow: auto;">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-image">
-                    <img src="/static/img/logo.png" alt="">
-                </li>
-                <!--循环100次-->
-                <li th:each="i:${#numbers.sequence(1,100)}" class="nav-item">
-                    <a href="#!" class="nav-link">Link 1</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#!" class="nav-link">Link 2</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#!" class="nav-link">Link 3</a>
+
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
                 </li>
             </ul>
-            <!--			</div>-->
+            <ul class="navbar-right navbar-nav">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbardrop1" href="#" aria-haspopup="true"
+                       aria-expanded="false" data-toggle="dropdown">中文（简体）</a>
+                    <div class="dropdown-menu" aria-labelledby="dropdown">
+                        <a class="dropdown-item" href="#">English</a>
+                        <a class="dropdown-item" href="#">Русский</a>
+                        <a class="dropdown-item" href="#">日本語</a>
+                        <a class="dropdown-item" href="#">Deutsch</a>
+                        <a class="dropdown-item" href="#">Lingua Latina</a>
+                        <a class="dropdown-item" href="#">Esperanto</a>
+                    </div>
+                </li>
+            </ul>
+            <img src="../img/head/test.png" width="60" height="60" alt="这里是头像">
+            <ul class="navbar-right navbar-nav">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbardrop" href="#" aria-haspopup="true"
+                       aria-expanded="false" data-toggle="dropdown">冬马和纱</a>
+                    <div class="dropdown-menu" aria-labelledby="dropdown">
+                        <a class="dropdown-item" href="#">个人中心</a>
+                        <a class="dropdown-item" href="#">登出</a>
+                    </div>
+                </li>
+            </ul>
         </div>
-    </div>
-</nav>
+    </nav>
+</div>
 </body>
 </html>

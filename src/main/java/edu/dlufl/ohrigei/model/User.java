@@ -2,22 +2,29 @@ package edu.dlufl.ohrigei.model;
 
 import com.alibaba.fastjson.JSONObject;
 
+import javax.validation.constraints.NotBlank;
+
 public class User {
-    private short id;
+    private int id;
+    @NotBlank(message = "姓名不能为空")
     private String name;
     private String last_name;
+    @NotBlank(message = "姓名拼音不能为空")
     private String first_name;
+    @NotBlank(message = "电子邮箱不能为空")
     private String email;
+    @NotBlank(message = "密码不能为空")
     private String password;
+    @NotBlank(message = "手机号码不能为空")
     private String phone;
     private int type;
     private int enable_Login;
 
-    public short getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(short id) {
+    public void setId(int id) {
         this.id = id;
     }
 
