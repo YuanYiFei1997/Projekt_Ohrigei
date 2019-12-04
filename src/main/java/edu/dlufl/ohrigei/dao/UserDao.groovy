@@ -11,4 +11,6 @@ interface UserDao {
     User loginCheck(User user)
     //区分用户类型
     int authorityControl(String email)
+    String userEmailCheck(String email)
+    int userSignUp(User user)
 }

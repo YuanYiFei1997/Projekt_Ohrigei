@@ -15,16 +15,22 @@ import javax.servlet.http.HttpSession;
 public class UserController {
     @Autowired
     UserService userService;
-
+    int cont = 0;
     @RequestMapping(value = "/Login")
     public String Login(@ModelAttribute(value = "userInfo") User user, HttpSession session, Model model) {
         return userService.loginCheck(user, session, model);
     }
 
     @RequestMapping("/signUp")
-    public String signUp(Model model,HttpSession httpSession) {
-        model.addAttribute("User",new User());
-        return "user/UserSignUp";
+    public String SignUp(@ModelAttribute(value = "User") User user,Model model,HttpSession httpSession) {
+
+        if (cont==0){
+            model.addAttribute("User",new User());
+            cont=cont+1;
+            return "user/UserSignUp";
+        }else {
+            return userService.userSignUp(user,model);
+        }
     }
 
     @RequestMapping("/index")

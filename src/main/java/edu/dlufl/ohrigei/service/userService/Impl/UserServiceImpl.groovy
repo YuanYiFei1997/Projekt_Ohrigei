@@ -35,6 +35,18 @@ class UserServiceImpl implements UserService {
     }
 
     @Override
+    String userSignUp(User user, Model model) {
+        String emailCheck=userDao.userEmailCheck(user.getEmail())
+        if (emailCheck!=null){
+            model.addAttribute("errormessage","电子邮箱重复")
+            return "forward:/SignUp"
+        }else {
+            userDao.userSignUp(user)
+            return "forward:/"
+        }
+    }
+
+    @Override
     boolean authorityCheck(String email) {
         int userType
         userType = userDao.authorityControl(email)

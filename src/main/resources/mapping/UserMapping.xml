@@ -18,4 +18,10 @@
     <select id="authorityControl" resultType="int">
         select type from ohrigei.user where email=#{email}
     </select>
+    <insert id="userSignUp" parameterType="User">
+        insert into ohrigei.user(name,last_name,first_name,email,password,phone) values(#{name},#{last_name},#{first_name},#{email},#{password},#{phone})
+    </insert>
+    <select id="userEmailCheck" resultType="String">
+        select email from ohrigei.user where email=#{email}
+    </select>
 </mapper>

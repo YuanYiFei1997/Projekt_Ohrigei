@@ -8,6 +8,12 @@
     <link href="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/css/bootstrap.css" rel="stylesheet">
     <title>报名参会</title>
 </head>
+<script>
+    var message=[[${errorMessage}]];
+    if (message!=null){
+        alert(message)
+    }
+</script>
 <style>
     html,
     body {
@@ -90,7 +96,7 @@
     <h1 class="h3 mb-3 font-weight-normal">注册</h1>
     <label for="username" class="sr-only"></label>
     <input class="form-control" name="username" id="username" th:field="${User.name}" required="required" placeholder="请输入姓名"
-           autofocus pattern="[u4e00-u9fa5]">
+           autofocus>
     <label for="lastName" class="sr-only"></label>
     <input class="form-control lastName" name="lastName" id="lastName" th:field="${User.last_name}" placeholder="请输入姓氏拼音">
     <label for="firstName" class="sr-only"></label>

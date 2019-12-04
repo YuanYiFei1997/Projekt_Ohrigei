@@ -9,6 +9,6 @@ import javax.servlet.http.HttpSession;
 @Service
 public interface UserService {
     String loginCheck(User user, HttpSession session, Model model);
-
+    String userSignUp(User user,Model model);
     boolean authorityCheck(String email);
 }
