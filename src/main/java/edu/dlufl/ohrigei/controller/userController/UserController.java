@@ -22,7 +22,8 @@ public class UserController {
     }
 
     @RequestMapping("/signUp")
-    public String signUp() {
+    public String signUp(Model model,HttpSession httpSession) {
+        model.addAttribute("User",new User());
         return "user/UserSignUp";
     }
 
