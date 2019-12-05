@@ -11,11 +11,30 @@
  Target Server Version : 50727
  File Encoding         : 65001
 
- Date: 03/12/2019 11:33:29
+ Date: 05/12/2019 17:50:45
 */
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+-- Table structure for academic_test_status
+-- ----------------------------
+DROP TABLE IF EXISTS `academic_test_status`;
+CREATE TABLE `academic_test_status`  (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `academic_test_status_text` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '学测状态的文本信息',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of academic_test_status
+-- ----------------------------
+INSERT INTO `academic_test_status` VALUES (1, '待填写');
+INSERT INTO `academic_test_status` VALUES (2, '已过期');
+INSERT INTO `academic_test_status` VALUES (3, '待批改');
+INSERT INTO `academic_test_status` VALUES (4, '已通过');
+INSERT INTO `academic_test_status` VALUES (5, '未通过');
 
 -- ----------------------------
 -- Table structure for admin
@@ -37,6 +56,35 @@ CREATE TABLE `admin`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
+-- Table structure for application_status
+-- ----------------------------
+DROP TABLE IF EXISTS `application_status`;
+CREATE TABLE `application_status`  (
+  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '申请状态的ID',
+  `application_status_text` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '申请状态对应文字信息',
+  `application_status_text_en` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '申请状态对应的英文文字信息',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 15 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of application_status
+-- ----------------------------
+INSERT INTO `application_status` VALUES (1, '报名待确认', 'Application Submitted');
+INSERT INTO `application_status` VALUES (2, '报名确认未通过', 'Application Failed');
+INSERT INTO `application_status` VALUES (3, '学测待完成', 'Academic Test to Be Done');
+INSERT INTO `application_status` VALUES (4, '学测未完成', 'Academic Test Uncomplished');
+INSERT INTO `application_status` VALUES (5, '学测待评估', 'Academic Test to Be Estimated');
+INSERT INTO `application_status` VALUES (6, '学测未通过', 'Academic Test Failed');
+INSERT INTO `application_status` VALUES (7, '等待面试', 'To Be Interiewed');
+INSERT INTO `application_status` VALUES (8, '面试未通过', 'Interiew Failed');
+INSERT INTO `application_status` VALUES (9, '等待缴费', 'Fee to Be Paid');
+INSERT INTO `application_status` VALUES (10, '缴费失败', 'Failed to Pay Fee');
+INSERT INTO `application_status` VALUES (11, '席位待分配', 'Committee and Seat to Be Assigned');
+INSERT INTO `application_status` VALUES (12, '席位分配待确认', 'Committee and Seat to Be Confirmed');
+INSERT INTO `application_status` VALUES (13, '席位未能分配', 'Committee and Seat Failed');
+INSERT INTO `application_status` VALUES (14, '报名成功', 'Application Succeeded');
+
+-- ----------------------------
 -- Table structure for committee
 -- ----------------------------
 DROP TABLE IF EXISTS `committee`;
@@ -54,9 +102,13 @@ CREATE TABLE `committee`  (
 DROP TABLE IF EXISTS `delegate`;
 CREATE TABLE `delegate`  (
   `id` smallint(5) NOT NULL COMMENT '用户ID',
-  `application_type` enum('delegate','obsever','teacher') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '申请类型',
-  `application_status` enum('application_imported','review_passed','review_refused','interview_assigned','interview_arranged','interview_completed','waitlist_entered','seat_assigned','seat_selected','invoice_issued','payment_received','locked','quitted','deleted') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '申请状态',
+  `application_type` smallint(6) NULL DEFAULT NULL COMMENT '申请类型1:普通代表，2:观察员，3:指导教师',
+  `application_status` smallint(6) NULL DEFAULT NULL COMMENT '申请状态',
   `group_id` smallint(5) NULL DEFAULT NULL COMMENT '所在代表团',
+  `role_delegate` smallint(1) NULL DEFAULT 1 COMMENT '普通代表角色，默认为1，代表true，0代表false',
+  `role_observer` smallint(1) NULL DEFAULT 0 COMMENT '观察员角色，默认为0',
+  `role_leader` smallint(1) NULL DEFAULT 0 COMMENT '领队角色，默认为0',
+  `role_teacher` smallint(1) NULL DEFAULT 0 COMMENT '指导教师角色，默认为0',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
 
@@ -103,12 +155,15 @@ CREATE TABLE `user`  (
   INDEX `user_phone`(`phone`) USING BTREE,
   INDEX `user_email`(`email`) USING BTREE,
   INDEX `user_type`(`type`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of user
 -- ----------------------------
 INSERT INTO `user` VALUES (1, '孙征', '', '', '1020154356@qq.com', 'zz1020154356', '17615107203', 1, 1);
 INSERT INTO `user` VALUES (2, '管理员', NULL, '', '123@qq.com', '123', '1234567890', 0, 1);
+INSERT INTO `user` VALUES (3, '原', '逸非', '逸非原', '12345@qq.com', '123456', '17615107203', 1, 1);
+INSERT INTO `user` VALUES (4, '原', '逸非', '逸非原', '6@qq.com', '123456', '17615107203', 1, 1);
+INSERT INTO `user` VALUES (5, '原', '逸非', '逸非原', '1234@qq.com', '123456', '17615107203', 1, 1);
 
 SET FOREIGN_KEY_CHECKS = 1;

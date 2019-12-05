@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<div th:replace="header::header"></div>
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.bootcss.com/popper.js/1.15.0/esm/popper.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>
+    <link href="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/css/bootstrap.css" rel="stylesheet">
+    <script src="https://cdn.tiny.cloud/1/2mrzqo5ye2po4in1atwy0jj7r0t88ikcezpv5irt69eiczcb/tinymce/5/tinymce.min.js"></script>
+    <title>学术测试</title>
+    <script>tinymce.init({
+        selector: '#SubjectiveQuestions',
+        plugins: 'print preview searchreplace autolink directionality visualblocks visualchars fullscreen image link media template code codesample table charmap hr pagebreak nonbreaking anchor insertdatetime advlist lists wordcount imagetools textpattern help emoticons autosave bdmap indent2em autoresize lineheight formatpainter axupimgs save',
+        toolbar: 'code undo redo restoredraft | cut copy paste pastetext | forecolor backcolor bold italic underline strikethrough link anchor | alignleft aligncenter alignright alignjustify outdent indent | \
+                     styleselect formatselect fontselect fontsizeselect | bullist numlist | blockquote subscript superscript removeformat | \
+                     table image media charmap emoticons hr pagebreak insertdatetime print preview | fullscreen | bdmap indent2em lineheight formatpainter axupimgs save',
+        height: 650, //编辑器高度
+        min_height: 400,
+        language: 'zh_CN',
+        save_onsavecallback: function () {
+            tipJS('已保存');
+        }
+    });</script>
+</head>
+<body>
+<h3>主观题部分</h3>
+<label for="SubjectiveQuestions"></label>
+<textarea id="SubjectiveQuestions">主观题部分</textarea>
+</body>
+</html>

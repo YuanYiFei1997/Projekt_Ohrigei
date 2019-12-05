@@ -22,5 +22,9 @@ public class IndexController {
     public String header(){
         return "header";
     }
+    @RequestMapping("/question")
+    public String question(){
+        return "user/UserAcademicTest";
+    }
 
 }

@@ -9,7 +9,7 @@ import org.springframework.ui.Model
 
 import javax.servlet.http.HttpSession
 
-@Service("UserLoginService")
+@Service("UserService")
 class UserServiceImpl implements UserService {
     @Autowired
     UserDao userDao;
@@ -38,8 +38,8 @@ class UserServiceImpl implements UserService {
     String userSignUp(User user, Model model) {
         String emailCheck=userDao.userEmailCheck(user.getEmail())
         if (emailCheck!=null){
-            model.addAttribute("errormessage","电子邮箱重复")
-            return "forward:/SignUp"
+            model.addAttribute("errorMessage","电子邮箱重复")
+            return "/user/UserSignUp"
         }else {
             userDao.userSignUp(user)
             return "forward:/"

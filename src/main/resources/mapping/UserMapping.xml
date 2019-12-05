@@ -19,7 +19,8 @@
         select type from ohrigei.user where email=#{email}
     </select>
     <insert id="userSignUp" parameterType="User">
-        insert into ohrigei.user(name,last_name,first_name,email,password,phone) values(#{name},#{last_name},#{first_name},#{email},#{password},#{phone})
+        insert into ohrigei.user(name,last_name,first_name,email,password,phone) values(#{name},#{last_name},#{first_name},#{email},#{password},#{phone});
+        insert into ohrigei.delegate(id) select id from ohrigei.user where email=#{email}
     </insert>
     <select id="userEmailCheck" resultType="String">
         select email from ohrigei.user where email=#{email}
