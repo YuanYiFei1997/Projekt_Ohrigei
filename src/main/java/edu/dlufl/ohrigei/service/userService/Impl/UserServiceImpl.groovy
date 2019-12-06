@@ -41,6 +41,10 @@ class UserServiceImpl implements UserService {
             model.addAttribute("errorMessage","电子邮箱重复")
             return "/user/UserSignUp"
         }else {
+            String upCaseFirstName = user.getFirst_name().toUpperCase()
+            String upCaseLastName =user.getLast_name().toUpperCase()
+            user.setFirst_name(upCaseFirstName)
+            user.setLast_name(upCaseLastName)
             userDao.userSignUp(user)
             return "forward:/"
         }
