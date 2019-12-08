@@ -7,6 +7,6 @@ import org.springframework.ui.Model
 import javax.servlet.http.HttpSession
 
 @Service
-interface AdminQueryMembersService {
+interface AdminQueryService {
     List<User> queryMembers(HttpSession session, Model model, String act)
 }

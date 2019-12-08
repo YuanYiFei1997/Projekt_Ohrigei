@@ -2,7 +2,7 @@ package edu.dlufl.ohrigei.service.adminService.impl
 
 import edu.dlufl.ohrigei.dao.AdminDao
 import edu.dlufl.ohrigei.model.User
-import edu.dlufl.ohrigei.service.adminService.service.AdminQueryMembersService
+import edu.dlufl.ohrigei.service.adminService.service.AdminQueryService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.ui.Model
@@ -10,7 +10,7 @@ import org.springframework.ui.Model
 import javax.servlet.http.HttpSession
 
 @Service("AdminQueryMembersService")
-class AdminQueryMembersServiceImpl implements AdminQueryMembersService{
+class AdminQueryServiceImpl implements AdminQueryService{
     @Autowired
     AdminDao adminDao
     @Override

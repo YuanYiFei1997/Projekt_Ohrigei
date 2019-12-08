@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <script src="https://cdn.bootcss.com/popper.js/1.15.0/esm/popper.min.js"></script>
     <script src="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/js/bootstrap.js"></script>
@@ -9,38 +9,45 @@
     <title>会议后台管理系统</title>
 </head>
 <body>
-    <div class="row">
-        <div class="col-md-6">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h3 class="panel-title">控制板</h3>
-                </div>
-                <div class="panel-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <p>参会代表</p>
-                            <p>观察员</p>
-                        </div>
-                        <div class="col-md-6">
-                            <p>代表团</p>
-                            <p>委员会</p>
-                            <p>席位</p>
-                            <p>管理员</p>
-                        </div>
-                        <ul>
-                            <li><a href="admin/dashBoard?act=allUser">参会代表</a></li>
-                            <li><a href="admin/dashBoard?act=allWatcher">观察员</a></li>
-                        </ul>
+<div class="row">
+    <div class="col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">控制板</h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p>参会代表</p>
+                        <p>观察员</p>
                     </div>
+                    <div class="col-md-6">
+                        <p>代表团</p>
+                        <p>委员会</p>
+                        <p>席位</p>
+                        <p>管理员</p>
+                    </div>
+                    <ul>
+                        <li><a href="/admin/manage?type=delegate">参会代表</a></li>
+                        <li><a href="/admin/manage?type=Observer">观察员</a></li>
+                        <li><a href="/admin/manage?type=Teacher">委员会</a></li>
+                    </ul>
+                    <ul>
+                        <li><a href="/admin/manage?type=Admin">管理员</a></li>
+                        <li><a href="/admin/manage?type=Committee">委员会</a></li>
+                        <li><a href="/admin/manage?type=Group">代表团</a></li>
+                        <li><a href="/admin/manage?type=Seat">席位</a></li>
+                    </ul>
                 </div>
             </div>
-            <ul class="nav nav-pills nav-stacked">
-                <li role="presentation" id="bar1">bar1</li>
-                <li role="presentation" id="bar2">bar2</li>
-                <li role="presentation" id="bar3">bar3</li>
-                <li role="presentation" id="bar4">bar4</li>
-            </ul>
         </div>
+        <ul class="nav nav-pills nav-stacked">
+            <li role="presentation" id="bar1">bar1</li>
+            <li role="presentation" id="bar2">bar2</li>
+            <li role="presentation" id="bar3">bar3</li>
+            <li role="presentation" id="bar4">bar4</li>
+        </ul>
     </div>
+</div>
 </body>
 </html>

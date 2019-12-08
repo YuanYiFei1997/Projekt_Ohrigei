@@ -1,17 +1,17 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : local
+ Source Server         : localhost
  Source Server Type    : MySQL
- Source Server Version : 50727
+ Source Server Version : 50728
  Source Host           : localhost:3306
  Source Schema         : ohrigei
 
  Target Server Type    : MySQL
- Target Server Version : 50727
+ Target Server Version : 50728
  File Encoding         : 65001
 
- Date: 05/12/2019 17:50:45
+ Date: 08/12/2019 23:48:32
 */
 
 SET NAMES utf8mb4;
@@ -85,16 +85,47 @@ INSERT INTO `application_status` VALUES (13, '席位未能分配', 'Committee an
 INSERT INTO `application_status` VALUES (14, '报名成功', 'Application Succeeded');
 
 -- ----------------------------
+-- Table structure for club_info
+-- ----------------------------
+DROP TABLE IF EXISTS `club_info`;
+CREATE TABLE `club_info`  (
+  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '社团id',
+  `school_ID` int(10) NOT NULL COMMENT '学校id',
+  `club_set_up_date` date NULL DEFAULT NULL COMMENT '社团建立时间',
+  `club_size` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '社团规模',
+  `club_meeting` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL COMMENT '社团参加过的会议',
+  `club_daily` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL COMMENT '社团日常活动',
+  `club_influence` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL COMMENT '社团影响力',
+  PRIMARY KEY (`id`, `school_ID`) USING BTREE,
+  INDEX `schoolID`(`school_ID`) USING BTREE,
+  INDEX `id`(`id`) USING BTREE,
+  CONSTRAINT `schoolID` FOREIGN KEY (`school_ID`) REFERENCES `school_info` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of club_info
+-- ----------------------------
+INSERT INTO `club_info` VALUES (1, 1, '2008-02-14', '50+', 'test texttest texttest texttest texttest texttest texttest texttest texttest texttest texttest texttest texttest texttest texttest texttest texttest texttest texttest texttest texttest texttest texttest texttest texttest texttest texttest texttest texttest texttest text', 'test texttest texttest texttest texttest texttest texttest texttest texttest texttest texttest texttest texttest texttest texttest texttest texttest texttest texttest texttest texttest texttest texttest texttest texttest texttest texttest texttest texttest text', 'test texttest texttest texttest texttest texttest texttest texttest texttest texttest texttest texttest texttest texttest texttest texttest texttest texttest texttest texttest texttest texttest texttest texttest texttest texttest texttest text');
+INSERT INTO `club_info` VALUES (2, 2, '2019-11-06', '20~30', 'fddddsfcAefhdjasfiaiweruiaodnajghijhwefiojuasoithioaj', '142r3trgfbvwteyhhtjmbvaqsfgthn', 'fgbhgbhngTEDTGVC AWSTRFAH');
+INSERT INTO `club_info` VALUES (3, 3, '2008-07-08', '15~25', 'dabhfgsdfsdgdsgdtjsfhsdjdfg', 'ghsdfghsertgrert', 'argadfgefdaeasfa3w');
+INSERT INTO `club_info` VALUES (4, 4, '2015-07-17', '30~40', 'ghghhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh', 'hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhgfhdfghd', 'gdhfddhhhhhhhhhhhhhhhhhhhhh');
+
+-- ----------------------------
 -- Table structure for committee
 -- ----------------------------
 DROP TABLE IF EXISTS `committee`;
 CREATE TABLE `committee`  (
   `id` smallint(5) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '委员会ID',
   `name` tinytext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '委员会名称',
-  `abbr` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '委员会缩写',
   `seat_width` int(128) UNSIGNED NULL DEFAULT NULL COMMENT '一般席位容量',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of committee
+-- ----------------------------
+INSERT INTO `committee` VALUES (1, '联合国安理会', 10);
+INSERT INTO `committee` VALUES (2, '联合国粮农组织', 10);
 
 -- ----------------------------
 -- Table structure for delegate
@@ -104,12 +135,11 @@ CREATE TABLE `delegate`  (
   `id` smallint(5) NOT NULL COMMENT '用户ID',
   `application_type` smallint(6) NULL DEFAULT NULL COMMENT '申请类型1:普通代表，2:观察员，3:指导教师',
   `application_status` smallint(6) NULL DEFAULT NULL COMMENT '申请状态',
-  `group_id` smallint(5) NULL DEFAULT NULL COMMENT '所在代表团',
-  `role_delegate` smallint(1) NULL DEFAULT 1 COMMENT '普通代表角色，默认为1，代表true，0代表false',
-  `role_observer` smallint(1) NULL DEFAULT 0 COMMENT '观察员角色，默认为0',
-  `role_leader` smallint(1) NULL DEFAULT 0 COMMENT '领队角色，默认为0',
-  `role_teacher` smallint(1) NULL DEFAULT 0 COMMENT '指导教师角色，默认为0',
-  PRIMARY KEY (`id`) USING BTREE
+  `group_ID` smallint(5) NULL DEFAULT NULL COMMENT '所在代表团',
+  `role_ID` int(10) UNSIGNED NULL DEFAULT 1 COMMENT '参见delegate_role_type表',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `role_ID`(`role_ID`) USING BTREE,
+  CONSTRAINT `delegate_ibfk_1` FOREIGN KEY (`role_ID`) REFERENCES `delegate_role_type` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -126,15 +156,82 @@ CREATE TABLE `delegate_profile`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
+-- Table structure for delegate_role_type
+-- ----------------------------
+DROP TABLE IF EXISTS `delegate_role_type`;
+CREATE TABLE `delegate_role_type`  (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '代表角色ID',
+  `role_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '角色名称',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of delegate_role_type
+-- ----------------------------
+INSERT INTO `delegate_role_type` VALUES (1, '代表');
+INSERT INTO `delegate_role_type` VALUES (2, '观察员');
+INSERT INTO `delegate_role_type` VALUES (3, '指导教师');
+INSERT INTO `delegate_role_type` VALUES (4, '领队');
+
+-- ----------------------------
 -- Table structure for group
 -- ----------------------------
 DROP TABLE IF EXISTS `group`;
 CREATE TABLE `group`  (
   `id` smallint(5) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '代表团ID',
-  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '代表团名称',
-  `head_delegate` smallint(5) UNSIGNED NULL DEFAULT NULL COMMENT '负责代表ID',
+  `school_ID` int(10) NOT NULL COMMENT '学校ID',
+  `head_delegate_ID` smallint(5) UNSIGNED NULL DEFAULT NULL COMMENT '负责代表ID',
+  `group_size` int(10) UNSIGNED NOT NULL COMMENT '代表团规模',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for school_info
+-- ----------------------------
+DROP TABLE IF EXISTS `school_info`;
+CREATE TABLE `school_info`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '学校信息ID',
+  `school_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '学校名称',
+  `school_name_EN` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '学校名称（英文）',
+  `school_type_ID` int(255) NOT NULL COMMENT '学校类型ID',
+  `school_address` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '学校地址',
+  `size` int(10) UNSIGNED NULL DEFAULT NULL COMMENT '预计参会人数',
+  `club_ID` int(10) NULL DEFAULT NULL COMMENT '社团id',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `school_type_ID`(`school_type_ID`) USING BTREE,
+  INDEX `club_ID`(`club_ID`) USING BTREE,
+  CONSTRAINT `school_info_ibfk_1` FOREIGN KEY (`school_type_ID`) REFERENCES `school_type` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `school_info_ibfk_2` FOREIGN KEY (`club_ID`) REFERENCES `club_info` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of school_info
+-- ----------------------------
+INSERT INTO `school_info` VALUES (1, '瑞典皇家文法学校', NULL, 1, '瑞典斯德哥尔摩市', 24, 1);
+INSERT INTO `school_info` VALUES (2, '瑞典皇家文法学校北校区', NULL, 1, '瑞典斯德哥尔摩市北大营', 20, 2);
+INSERT INTO `school_info` VALUES (3, '瑞典国立大学附属中学', NULL, 2, '瑞典斯德哥尔摩市国立大学', 30, NULL);
+INSERT INTO `school_info` VALUES (4, '市立斯德哥尔摩市陶然亭中学', NULL, 2, '斯德哥尔摩市', 15, NULL);
+INSERT INTO `school_info` VALUES (5, '峰城大附属', NULL, 2, '东京市', 3, NULL);
+INSERT INTO `school_info` VALUES (6, '北大青鸟职业技术学院', NULL, 3, '北京市北大青鸟培训基地', 40, NULL);
+INSERT INTO `school_info` VALUES (7, '第三新东京市第二中学', NULL, 4, '日本第三新东京市', 5, NULL);
+
+-- ----------------------------
+-- Table structure for school_type
+-- ----------------------------
+DROP TABLE IF EXISTS `school_type`;
+CREATE TABLE `school_type`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '学校类型ID',
+  `school_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '学校类型',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of school_type
+-- ----------------------------
+INSERT INTO `school_type` VALUES (1, '文法学校');
+INSERT INTO `school_type` VALUES (2, '综合中学');
+INSERT INTO `school_type` VALUES (3, '职业学校');
+INSERT INTO `school_type` VALUES (4, '博洛尼亚协定框架外的其他类型');
 
 -- ----------------------------
 -- Table structure for user
