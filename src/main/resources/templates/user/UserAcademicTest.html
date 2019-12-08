@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>
+    <script src="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/js/bootstrap.js"></script>
+    <link href="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/css/bootstrap.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/popper.js/1.15.0/esm/popper.min.js"></script>
+    <script src="../js/tinymce/tinymce.min.js"></script>
+<!--    <script src="https://cdn.tiny.cloud/1/2mrzqo5ye2po4in1atwy0jj7r0t88ikcezpv5irt69eiczcb/tinymce/5/tinymce.min.js"></script>-->
+    <title>学术测试</title>
+    <script>tinymce.init({
+        selector: '#SubjectiveQuestions',
+        plugins: 'print preview searchreplace autolink directionality visualblocks visualchars fullscreen image link media template code codesample table charmap hr pagebreak nonbreaking anchor insertdatetime advlist lists wordcount imagetools textpattern help  autosave bdmap indent2em autoresize lineheight formatpainter axupimgs save',
+        toolbar1: 'code undo redo restoredraft | cut copy paste pastetext | forecolor backcolor bold italic underline strikethrough link anchor | alignleft aligncenter alignright alignjustify outdent indent | \
+                     styleselect formatselect fontselect fontsizeselect | bullist numlist | blockquote subscript superscript removeformat | ',
+        toolbar2:'table image media charmap hr pagebreak insertdatetime print preview | fullscreen | bdmap indent2em lineheight formatpainter axupimgs save',
+        height: 650, //编辑器高度
+        min_height: 400,
+        language: 'zh_CN',
+        // paste_enable_default_filters:false,
+        save_onsavecallback: function () {
+            tipJS('已保存');
+        }
+    });</script>
+</head>
+<div th:replace="header::header"></div>
+<body>
+<h3>主观题部分</h3>
+<form>
+    <label for="SubjectiveQuestions"></label>
+    <textarea id="SubjectiveQuestions">
+    </textarea>
+</form>
+</body>
+</html>

@@ -12,10 +12,17 @@
     <select id="findById" resultType="edu.dlufl.ohrigei.model.User">
         select * from user where id = #{id}
     </select>
-    <select id="loginCheck" resultType="String">
-        select password from ohrigei.user where email=#{email}
+    <select id="loginCheck" resultType="User" parameterType="User">
+        select * from ohrigei.user where email=#{email} and password=#{password}
     </select>
     <select id="authorityControl" resultType="int">
         select type from ohrigei.user where email=#{email}
+    </select>
+    <insert id="userSignUp" parameterType="User">
+        insert into ohrigei.user(name,last_name,first_name,email,password,phone) values(#{name},#{last_name},#{first_name},#{email},#{password},#{phone});
+        insert into ohrigei.delegate(id) select id from ohrigei.user where email=#{email}
+    </insert>
+    <select id="userEmailCheck" resultType="String">
+        select email from ohrigei.user where email=#{email}
     </select>
 </mapper>

@@ -1,12 +1,36 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>
+    <script src="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/js/bootstrap.js"></script>
     <link href="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/css/bootstrap.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/popper.js/1.15.0/esm/popper.min.js"></script>
     <title>用户界面</title>
 </head>
+<div th:replace="header::header"></div>
 <body>
-这里是用户index
+<ul>
+    <li>首页</li>
+    <li>个人信息</li>
+    <li>学术测试</li>
+    <li>文件</li>
+    <li>代表团</li>
+    <li>后勤管理</li>
+    <li>活动</li>
+    <li>账单</li>
+</ul>
+<form>
+    <table>
+        <thead><h2>待办事项</h2></thead>
+        <tbody>
+        <tr>
+            <td>xx项文件待查看</td>
+            <td>x项文件收取待提交</td>
+            <td>x份账单待支付</td>
+        </tr>
+        </tbody>
+    </table>
+</form>
 </body>
 </html>
