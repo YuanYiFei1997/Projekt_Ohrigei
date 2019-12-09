@@ -1,5 +1,8 @@
 package edu.dlufl.ohrigei.service.adminService.service
 
+import edu.dlufl.ohrigei.model.Admin
+import edu.dlufl.ohrigei.model.Committee
+import edu.dlufl.ohrigei.model.Group
 import edu.dlufl.ohrigei.model.User
 import org.springframework.stereotype.Service
 import org.springframework.ui.Model
@@ -9,4 +12,7 @@ import javax.servlet.http.HttpSession
 @Service
 interface AdminQueryService {
     List<User> queryMembers(HttpSession session, Model model, String act)
+    List<Admin> queryAdmin(HttpSession session ,Model model)
+    List<Group> queryGroup(HttpSession session ,Model model)
+    List<Committee> queryCommittee(HttpSession session,Model model)
 }

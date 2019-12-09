@@ -5,8 +5,19 @@
         select ohrigei.user.name, ohrigei.user.email
         from ohrigei.user,
              ohrigei.delegate
-        where delegate.role_delegate = 1
+        where delegate.role_ID = 1
           and delegate.id = user.id
     </select>
-
+    <select id="queryAllObserver" resultMap="Delegate">
+    </select>
+    <select id="queryAllLeader" resultMap="Delegate">
+    </select>
+    <select id="queryAllTeacher" resultMap="Delegate">
+    </select>
+    <select id="queryAllGroup" resultMap="Group">
+    </select>
+    <select id="queryAllAdmin" resultMap="Admin">
+    </select>
+    <select id="queryAllCommittee" resultMap="Committee">
+    </select>
 </mapper>

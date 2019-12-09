@@ -27,7 +27,7 @@ class UserServiceImpl implements UserService {
             user.setId(user1.getId())
             session.setAttribute("user", user)
             if (user1.getType() == 0)
-                return "redirect:/admin/dashBoard"
+                return "redirect:/admin/DashBoard"
             else return "/user/UserIndex"
         }
         model.addAttribute("errorMessage","用户名或密码错误")
