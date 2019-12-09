@@ -21,19 +21,19 @@ class AdminQueryServiceImpl implements AdminQueryService {
     List<Delegate> queryMembers(HttpSession session, Model model, String type) {
         switch (type) {
             case "allDelegate":
-                List<Delegate> delegateList = adminDao.queryAllDelegate()
+                List<Delegate> delegateList = adminDao.queryAllMember(1)
                 model.addAttribute("delegateList",delegateList)
                 return adminDao.queryAllDelegate()
             case "allObserver":
-                List<Delegate> observerList =adminDao.queryAllObserver()
+                List<Delegate> observerList =adminDao.queryAllMember(2)
                 model.addAttribute("observerList",observerList)
                 return adminDao.queryAllObserver()
             case "allLeader":
-                List<Delegate> leaderList =adminDao.queryAllLeader()
+                List<Delegate> leaderList =adminDao.queryAllMember(4)
                 model.addAttribute("leaderList",leaderList)
                 return adminDao.queryAllLeader()
             case "allTeacher":
-                List<Delegate> teacherList=adminDao.queryAllTeacher()
+                List<Delegate> teacherList=adminDao.queryAllMember(3)
                 model.addAttribute("teacherList",teacherList)
                 return adminDao.queryAllTeacher()
             default: return null

@@ -13,7 +13,7 @@ import javax.servlet.http.HttpSession
 @RequestMapping("/admin")
 class AdminController {
     @Autowired
-    AdminQueryService adminQueryService;
+    AdminQueryService adminQueryService
 
     @RequestMapping("/DashBoard")
     String dashboard() {
@@ -34,7 +34,9 @@ class AdminController {
                 try {
                     return adminQueryService.queryMembers(session, model, type)
                 }
-                catch (Exception e)
+                catch (Exception e){
+                    System.out.println("An error occur"+e)
+                }
         }
         return adminQueryService.queryMembers(session, model, type)
     }

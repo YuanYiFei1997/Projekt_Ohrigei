@@ -3,9 +3,27 @@ package edu.dlufl.ohrigei.model
 class Delegate {
     private int ID
     private String name
-    private String group
+    private String schoolName
     private String applicationType
     private String applicationStatus
+    private String phone
+    private String email
+
+    String getPhone() {
+        return phone
+    }
+
+    void setPhone(String phone) {
+        this.phone = phone
+    }
+
+    String getEmail() {
+        return email
+    }
+
+    void setEmail(String email) {
+        this.email = email
+    }
 
     int getID() {
         return ID
@@ -23,12 +41,12 @@ class Delegate {
         this.name = name
     }
 
-    String getGroup() {
-        return group
+    String getSchoolName() {
+        return schoolName
     }
 
-    void setGroup(String group) {
-        this.group = group
+    void setSchoolName(String schoolName) {
+        this.schoolName = schoolName
     }
 
     String getApplicationType() {
@@ -52,9 +70,11 @@ class Delegate {
         return "Delegate{" +
                 "ID=" + ID +
                 ", name='" + name + '\'' +
-                ", group='" + group + '\'' +
+                ", schoolName='" + schoolName + '\'' +
                 ", applicationType='" + applicationType + '\'' +
                 ", applicationStatus='" + applicationStatus + '\'' +
+                ", phone='" + phone + '\'' +
+                ", email='" + email + '\'' +
                 '}';
     }
 }

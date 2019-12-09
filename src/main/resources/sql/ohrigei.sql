@@ -1,17 +1,17 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : local
+ Source Server         : localhost
  Source Server Type    : MySQL
- Source Server Version : 50727
+ Source Server Version : 50728
  Source Host           : localhost:3306
  Source Schema         : ohrigei
 
  Target Server Type    : MySQL
- Target Server Version : 50727
+ Target Server Version : 50728
  File Encoding         : 65001
 
- Date: 09/12/2019 17:56:27
+ Date: 10/12/2019 00:12:42
 */
 
 SET NAMES utf8mb4;
@@ -59,7 +59,7 @@ CREATE TABLE `admin`  (
 -- ----------------------------
 -- Records of admin
 -- ----------------------------
-INSERT INTO `admin` VALUES (2, NULL, 1, 1, 1, 0, 0, 0, 0);
+INSERT INTO `admin` VALUES (2, '社联主席', 1, 1, 1, 0, 0, 0, 0);
 
 -- ----------------------------
 -- Table structure for application_status
@@ -103,9 +103,9 @@ CREATE TABLE `application_type`  (
 -- ----------------------------
 -- Records of application_type
 -- ----------------------------
-INSERT INTO `application_type` VALUES (1, 'delegate');
-INSERT INTO `application_type` VALUES (2, 'teacher');
-INSERT INTO `application_type` VALUES (3, 'obsever');
+INSERT INTO `application_type` VALUES (1, '参会代表');
+INSERT INTO `application_type` VALUES (2, '指导教师');
+INSERT INTO `application_type` VALUES (3, '观察员');
 
 -- ----------------------------
 -- Table structure for bill_status
@@ -173,7 +173,7 @@ INSERT INTO `club_info` VALUES (4, 4, '2015-07-17', '30~40', 'ghghhhhhhhhhhhhhhh
 DROP TABLE IF EXISTS `committee`;
 CREATE TABLE `committee`  (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '委员会ID',
-  `name` tinytext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '委员会名称',
+  `committee_name` tinytext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '委员会名称',
   `seat_width` int(128) UNSIGNED NULL DEFAULT NULL COMMENT '一般席位容量',
   `chairman_ID` int(10) UNSIGNED NULL DEFAULT NULL COMMENT '主席团ID',
   PRIMARY KEY (`id`) USING BTREE,
@@ -184,7 +184,7 @@ CREATE TABLE `committee`  (
 -- ----------------------------
 -- Records of committee
 -- ----------------------------
-INSERT INTO `committee` VALUES (1, '联合国安理会', 10, NULL);
+INSERT INTO `committee` VALUES (1, '联合国安理会', 10, 2);
 INSERT INTO `committee` VALUES (2, '联合国粮农组织', 10, NULL);
 
 -- ----------------------------
@@ -210,7 +210,7 @@ CREATE TABLE `delegate`  (
 -- ----------------------------
 -- Records of delegate
 -- ----------------------------
-INSERT INTO `delegate` VALUES (1, 1, 1, NULL, 1);
+INSERT INTO `delegate` VALUES (1, 1, 1, 1, 1);
 
 -- ----------------------------
 -- Table structure for delegate_profile
@@ -264,7 +264,7 @@ CREATE TABLE `group`  (
 -- ----------------------------
 -- Records of group
 -- ----------------------------
-INSERT INTO `group` VALUES (1, 5, NULL, 10);
+INSERT INTO `group` VALUES (1, 5, 1, 10);
 
 -- ----------------------------
 -- Table structure for school_info

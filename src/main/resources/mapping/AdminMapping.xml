@@ -1,23 +1,21 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="edu.dlufl.ohrigei.dao.AdminDao">
-    <select id="queryAllDelegate" resultMap="User">
-        select ohrigei.user.name, ohrigei.user.email
-        from ohrigei.user,
-             ohrigei.delegate
-        where delegate.role_ID = 1
-          and delegate.id = user.id
-    </select>
-    <select id="queryAllObserver" resultMap="Delegate">
-    </select>
-    <select id="queryAllLeader" resultMap="Delegate">
-    </select>
-    <select id="queryAllTeacher" resultMap="Delegate">
+    <select id="queryAllMember" resultMap="Delegate">
+        SELECT `user`.`name`,school_name,application_type.application_type,application_status.application_status_text ,
+            `user`.email,`user`.phone
+        FROM `user`,delegate,`group`,school_info,application_type,application_status
+        WHERE `user`.type =1 AND delegate.id = `user`.id AND delegate.role_ID=#{type} AND delegate.group_ID = `group`.id
+            AND `group`.school_ID = school_info.id AND delegate.application_type_ID = application_type.id
+            AND delegate.application_status_ID=application_status.id
     </select>
     <select id="queryAllGroup" resultMap="Group">
+        SELECT school_name,ohrigei.user.name,group_size from "group",school_info,user where school_info.id=school_ID and ohrigei.user.id=head_delegate_ID
     </select>
     <select id="queryAllAdmin" resultMap="Admin">
+        SELECT ohrigei.user.name,admin.title,committee_ID,role_AG,role_AD,role_D,role_F,role_L,role_SG from user,admin where type=0 and "user".id="admin".id
     </select>
     <select id="queryAllCommittee" resultMap="Committee">
+        SELECT committee.name,seat_width,ohrigei.user.name from committee,user where chairman_ID=ohrigei.user.id
     </select>
 </mapper>

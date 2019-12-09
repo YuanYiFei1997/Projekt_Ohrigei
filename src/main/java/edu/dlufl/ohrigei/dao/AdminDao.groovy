@@ -6,13 +6,7 @@ import edu.dlufl.ohrigei.model.Delegate
 import edu.dlufl.ohrigei.model.Group
 
 interface AdminDao {
-    List<Delegate> queryAllDelegate()
-
-    List<Delegate> queryAllObserver()
-
-    List<Delegate> queryAllLeader()
-
-    List<Delegate> queryAllTeacher()
+    List<Delegate> queryAllMember(int type)
 
     List<Group> queryAllGroup()
 
