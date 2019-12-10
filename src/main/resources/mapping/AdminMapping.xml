@@ -4,7 +4,8 @@
     <resultMap id="Delegate" type="edu.dlufl.ohrigei.model.Delegate">
         <result column="name" property="name"/>
         <result column="school_name" property="schoolName"/>
-        <result column="application_type_text" property="applicationType"/>
+        <result column="application_type" property="applicationType"/>
+        <result column="application_status_text" property="applicationStatus"/>
         <result column="email" property="email"/>
         <result column="phone" property="phone"/>
     </resultMap>
@@ -36,11 +37,11 @@
                ohrigei.application_type.application_type,
                ohrigei.application_status.application_status_text
         FROM ohrigei.delegate
-                 left join user  on delegate.id = user.id
+                 left join user  on delegate.id = ohrigei.user.id
                  left join `group`  on delegate.group_ID = `group`.id
                  left join school_info on ohrigei.group.school_ID = school_info.id
-                 left join application_type  on delegate.application_type_ID = application_type.id
-                 left join application_status  on delegate.application_status_ID = application_status.id
+                 left join application_type  on application_type.id=delegate.application_type_ID
+                 left join application_status  on application_status.id=delegate.application_status_ID
         WHERE ohrigei.delegate.role_ID =#{type}
     </select>
     <select id="queryAllGroup" resultMap="Group">
