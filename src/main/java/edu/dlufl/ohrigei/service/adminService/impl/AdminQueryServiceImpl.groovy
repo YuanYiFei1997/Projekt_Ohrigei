@@ -16,25 +16,29 @@ import javax.servlet.http.HttpSession
 class AdminQueryServiceImpl implements AdminQueryService {
     @Autowired
     AdminDao adminDao
-
+    List<Delegate> memberList = new LinkedList<>()
     @Override
-    List<Delegate> queryMembers(HttpSession session, Model model, String type) {
+    String  queryMembers(HttpSession session, Model model, String type) {
         switch (type) {
-            case "allDelegate":
-                List<Delegate> delegateList = adminDao.queryAllMember(1)
-                model.addAttribute("delegateList",delegateList)
-                return adminDao.queryAllDelegate()
-            case "allObserver":
-                List<Delegate> observerList =adminDao.queryAllMember(2)
-                model.addAttribute("observerList",observerList)
+            case "delegate":
+                memberList = adminDao.queryAllMember(1)
+                model.addAttribute("memberList",memberList)
+                model.addAttribute("代表列表",queryType)
+                return "/admin/AllMemberList"
+            case "observer":
+                memberList =adminDao.queryAllMember(2)
+                model.addAttribute("memberList",memberList)
+                model.addAttribute("观察员列表",queryType)
                 return adminDao.queryAllObserver()
-            case "allLeader":
-                List<Delegate> leaderList =adminDao.queryAllMember(4)
-                model.addAttribute("leaderList",leaderList)
+            case "leader":
+                memberList =adminDao.queryAllMember(4)
+                model.addAttribute("memberList",memberList)
+                model.addAttribute("领队",queryType)
                 return adminDao.queryAllLeader()
-            case "allTeacher":
-                List<Delegate> teacherList=adminDao.queryAllMember(3)
-                model.addAttribute("teacherList",teacherList)
+            case "teacher":
+                memberList=adminDao.queryAllMember(3)
+                model.addAttribute("memberList",memberList)
+                model.addAttribute("指导教师列表")
                 return adminDao.queryAllTeacher()
             default: return null
         }

@@ -1,17 +1,17 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : localhost
+ Source Server         : local
  Source Server Type    : MySQL
- Source Server Version : 50728
+ Source Server Version : 50727
  Source Host           : localhost:3306
  Source Schema         : ohrigei
 
  Target Server Type    : MySQL
- Target Server Version : 50728
+ Target Server Version : 50727
  File Encoding         : 65001
 
- Date: 10/12/2019 00:12:42
+ Date: 10/12/2019 17:57:50
 */
 
 SET NAMES utf8mb4;
@@ -173,7 +173,7 @@ INSERT INTO `club_info` VALUES (4, 4, '2015-07-17', '30~40', 'ghghhhhhhhhhhhhhhh
 DROP TABLE IF EXISTS `committee`;
 CREATE TABLE `committee`  (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '委员会ID',
-  `committee_name` tinytext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '委员会名称',
+  `committee_name` varchar(0) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '委员会名称',
   `seat_width` int(128) UNSIGNED NULL DEFAULT NULL COMMENT '一般席位容量',
   `chairman_ID` int(10) UNSIGNED NULL DEFAULT NULL COMMENT '主席团ID',
   PRIMARY KEY (`id`) USING BTREE,
@@ -184,8 +184,8 @@ CREATE TABLE `committee`  (
 -- ----------------------------
 -- Records of committee
 -- ----------------------------
-INSERT INTO `committee` VALUES (1, '联合国安理会', 10, 2);
-INSERT INTO `committee` VALUES (2, '联合国粮农组织', 10, NULL);
+INSERT INTO `committee` VALUES (1, '', 10, 2);
+INSERT INTO `committee` VALUES (2, '', 10, NULL);
 
 -- ----------------------------
 -- Table structure for delegate
@@ -193,24 +193,27 @@ INSERT INTO `committee` VALUES (2, '联合国粮农组织', 10, NULL);
 DROP TABLE IF EXISTS `delegate`;
 CREATE TABLE `delegate`  (
   `id` int(10) UNSIGNED NOT NULL COMMENT '用户ID',
-  `application_type_ID` int(10) UNSIGNED NULL DEFAULT NULL COMMENT '申请类型1:普通代表，2:指导教师，3:观察员',
-  `application_status_ID` int(10) UNSIGNED NULL DEFAULT NULL COMMENT '申请状态',
-  `group_ID` int(10) NULL DEFAULT NULL COMMENT '所在代表团',
+  `application_type_ID` int(10) UNSIGNED NULL DEFAULT 1 COMMENT '申请类型1:普通代表，2:指导教师，3:观察员',
+  `application_status_ID` int(10) UNSIGNED NULL DEFAULT 1 COMMENT '申请状态',
+  `group_ID` int(10) UNSIGNED NULL DEFAULT NULL COMMENT '所在代表团',
   `role_ID` int(10) UNSIGNED NULL DEFAULT 1 COMMENT '参见delegate_role_type表',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `role_ID`(`role_ID`) USING BTREE,
   INDEX `application_status_ID`(`application_status_ID`) USING BTREE,
   INDEX `application_type_ID`(`application_type_ID`) USING BTREE,
+  INDEX `group_ID`(`group_ID`) USING BTREE,
   CONSTRAINT `delegate_ibfk_1` FOREIGN KEY (`role_ID`) REFERENCES `delegate_role_type` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `delegate_ibfk_2` FOREIGN KEY (`application_status_ID`) REFERENCES `application_status` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `delegate_ibfk_3` FOREIGN KEY (`application_type_ID`) REFERENCES `application_type` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  CONSTRAINT `delegate_ibfk_4` FOREIGN KEY (`id`) REFERENCES `user` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+  CONSTRAINT `delegate_ibfk_4` FOREIGN KEY (`id`) REFERENCES `user` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `delegate_ibfk_5` FOREIGN KEY (`group_ID`) REFERENCES `group` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of delegate
 -- ----------------------------
-INSERT INTO `delegate` VALUES (1, 1, 1, 1, 1);
+INSERT INTO `delegate` VALUES (1, 1, 2, 1, 1);
+INSERT INTO `delegate` VALUES (6, 2, 1, NULL, 2);
 
 -- ----------------------------
 -- Table structure for delegate_profile
@@ -333,15 +336,14 @@ CREATE TABLE `user`  (
   INDEX `user_phone`(`phone`) USING BTREE,
   INDEX `user_email`(`email`) USING BTREE,
   INDEX `user_type`(`type`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of user
 -- ----------------------------
 INSERT INTO `user` VALUES (1, '孙征', '', '', '1020154356@qq.com', 'zz1020154356', '17615107203', 1, 1);
 INSERT INTO `user` VALUES (2, '管理员', NULL, '', '123@qq.com', '123', '1234567890', 0, 1);
-INSERT INTO `user` VALUES (3, '原', '逸非', '逸非原', '12345@qq.com', '123456', '17615107203', 1, 1);
-INSERT INTO `user` VALUES (4, '原', '逸非', '逸非原', '6@qq.com', '123456', '17615107203', 1, 1);
 INSERT INTO `user` VALUES (5, '原', '逸非', '逸非原', '1234@qq.com', '123456', '17615107203', 1, 1);
+INSERT INTO `user` VALUES (6, '冬马和纱', 'TOMA', 'KAZUSA', '123456@dlufl.edu.com', '123456', '13111111111111', 1, 1);
 
 SET FOREIGN_KEY_CHECKS = 1;

@@ -34,10 +34,10 @@ class AdminController {
                 try {
                     return adminQueryService.queryMembers(session, model, type)
                 }
-                catch (Exception e){
-                    System.out.println("An error occur"+e)
+                catch (Exception e) {
+                    System.out.println("An error occur" + e)
                 }
         }
-        return adminQueryService.queryMembers(session, model, type)
+        return "admin/DashBoard"
     }
 }

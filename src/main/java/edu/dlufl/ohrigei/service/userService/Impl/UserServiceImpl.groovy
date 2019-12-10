@@ -46,7 +46,8 @@ class UserServiceImpl implements UserService {
             user.setFirst_name(upCaseFirstName)
             user.setLast_name(upCaseLastName)
             userDao.userSignUp(user)
-            return "forward:/"
+            userDao.insertDelegate(user)
+            return "Login"
         }
     }
 
