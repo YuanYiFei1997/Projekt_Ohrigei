@@ -1,12 +1,78 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="edu.dlufl.ohrigei.dao.AdminDao">
-    <select id="queryAllDelegate" resultMap="User">
-        select ohrigei.user.name, ohrigei.user.email
-        from ohrigei.user,
-             ohrigei.delegate
-        where delegate.role_delegate = 1
-          and delegate.id = user.id
+    <resultMap id="Delegate" type="edu.dlufl.ohrigei.model.Delegate">
+        <result column="name" property="name"/>
+        <result column="school_name" property="schoolName"/>
+        <result column="application_type" property="applicationType"/>
+        <result column="application_status_text" property="applicationStatus"/>
+        <result column="email" property="email"/>
+        <result column="phone" property="phone"/>
+    </resultMap>
+    <resultMap id="Group" type="edu.dlufl.ohrigei.model.Group">
+        <result column="school_name" property="schoolName"/>
+        <result column="name" property="headDelegateName"/>
+        <result column="group_size" property="groupSize"/>
+    </resultMap>
+    <resultMap id="Admin" type="edu.dlufl.ohrigei.model.Admin">
+        <result column="name" property="name"/>
+        <result column="title" property="title"/>
+        <result column="role_AG" property="role_AG"/>
+        <result column="role_AD" property="role_AD"/>
+        <result column="role_D" property="role_D"/>
+        <result column="role_F" property="role_F"/>
+        <result column="role_L" property="role_L"/>
+        <result column="role_SG" property="role_SG"/>
+    </resultMap>
+    <resultMap id="Committee" type="edu.dlufl.ohrigei.model.Committee">
+        <result column="name" property="name"/>
+        <result column="seat_width" property="seatWidth"/>
+        <result column="uname" property="chairManName"/>
+    </resultMap>
+    <select id="queryAllMember" resultMap="Delegate">
+        SELECT ohrigei.user.name,
+               ohrigei.user.email,
+               ohrigei.user.phone,
+               ohrigei.school_info.school_name,
+               ohrigei.application_type.application_type,
+               ohrigei.application_status.application_status_text
+        FROM ohrigei.delegate
+                 left join user  on delegate.id = ohrigei.user.id
+                 left join `group`  on delegate.group_ID = `group`.id
+                 left join school_info on ohrigei.group.school_ID = school_info.id
+                 left join application_type  on application_type.id=delegate.application_type_ID
+                 left join application_status  on application_status.id=delegate.application_status_ID
+        WHERE ohrigei.delegate.role_ID =#{type}
     </select>
-
+    <select id="queryAllGroup" resultMap="Group">
+        SELECT school_name, ohrigei.user.name, ohrigei.`group`.group_size
+        from ohrigei.`group`,
+             school_info,
+             ohrigei.user
+        where school_info.id = school_ID
+          and ohrigei.user.id = head_delegate_ID
+    </select>
+    <select id="queryAllAdmin" resultMap="Admin">
+        SELECT ohrigei.user.name,
+               admin.title,
+               ohrigei.committee.committee_name,
+               ohrigei.admin.role_AG,
+               ohrigei.admin.role_AD,
+               ohrigei.admin.role_D,
+               ohrigei.admin.role_F,
+               ohrigei.admin.role_L,
+               ohrigei.admin.role_SG
+        from ohrigei.user,
+             ohrigei.admin,
+             ohrigei.committee
+        where type = 0
+          and ohrigei.user.id = ohrigei.admin.id
+          and admin.committee_ID = committee.committee_name
+    </select>
+    <select id="queryAllCommittee" resultMap="Committee">
+        SELECT committee.name, seat_width, ohrigei.user.name uname
+        from committee,
+             user
+        where ohrigei.committee.chairman_ID
+    </select>
 </mapper>
