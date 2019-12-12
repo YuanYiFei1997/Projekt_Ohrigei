@@ -11,7 +11,7 @@
  Target Server Version : 50727
  File Encoding         : 65001
 
- Date: 10/12/2019 17:57:50
+ Date: 12/12/2019 17:57:03
 */
 
 SET NAMES utf8mb4;
@@ -329,21 +329,38 @@ CREATE TABLE `user`  (
   `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '电子邮箱',
   `password` char(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '密码',
   `phone` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '电话号',
-  `type` tinyint(1) UNSIGNED NOT NULL DEFAULT 1 COMMENT '用户类型：用户(1)或者管理员(0)',
   `enable_login` tinyint(1) UNSIGNED NOT NULL DEFAULT 1 COMMENT '是否启用登录，1为启用，0为关闭',
+  `role_ID` int(10) UNSIGNED NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `user_name`(`name`) USING BTREE,
   INDEX `user_phone`(`phone`) USING BTREE,
   INDEX `user_email`(`email`) USING BTREE,
-  INDEX `user_type`(`type`) USING BTREE
+  INDEX `role_ID`(`role_ID`) USING BTREE,
+  CONSTRAINT `user_ibfk_1` FOREIGN KEY (`role_ID`) REFERENCES `user_role` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES (1, '孙征', '', '', '1020154356@qq.com', 'zz1020154356', '17615107203', 1, 1);
-INSERT INTO `user` VALUES (2, '管理员', NULL, '', '123@qq.com', '123', '1234567890', 0, 1);
-INSERT INTO `user` VALUES (5, '原', '逸非', '逸非原', '1234@qq.com', '123456', '17615107203', 1, 1);
-INSERT INTO `user` VALUES (6, '冬马和纱', 'TOMA', 'KAZUSA', '123456@dlufl.edu.com', '123456', '13111111111111', 1, 1);
+INSERT INTO `user` VALUES (1, '孙征', '', '', '1020154356@qq.com', 'zz1020154356', '17615107203', 1, 2);
+INSERT INTO `user` VALUES (2, '管理员', NULL, '', '123@qq.com', '123', '1234567890', 1, 1);
+INSERT INTO `user` VALUES (5, '原', '逸非', '逸非原', '1234@qq.com', '123456', '17615107203', 1, 2);
+INSERT INTO `user` VALUES (6, '冬马和纱', 'TOMA', 'KAZUSA', '123456@dlufl.edu.com', '123456', '13111111111111', 1, 2);
+
+-- ----------------------------
+-- Table structure for user_role
+-- ----------------------------
+DROP TABLE IF EXISTS `user_role`;
+CREATE TABLE `user_role`  (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `role` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'ADMIN/USER',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of user_role
+-- ----------------------------
+INSERT INTO `user_role` VALUES (1, 'ROLE_ADMIN');
+INSERT INTO `user_role` VALUES (2, 'ROLE_USER');
 
 SET FOREIGN_KEY_CHECKS = 1;
