@@ -65,7 +65,7 @@
         from ohrigei.user,
              ohrigei.admin,
              ohrigei.committee
-        where type = 0
+        where role_ID = 1
           and ohrigei.user.id = ohrigei.admin.id
           and admin.committee_ID = committee.committee_name
     </select>
