@@ -2,6 +2,7 @@ package edu.dlufl.ohrigei.service.userService.Impl
 
 import edu.dlufl.ohrigei.dao.UserDao
 import edu.dlufl.ohrigei.model.User
+import edu.dlufl.ohrigei.service.userService.service.UserService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.AuthorityUtils
@@ -13,6 +14,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException
 class MyUserDetailsServiceImpl implements UserDetailsService{
     @Autowired
     private UserDao userDao
+    UserService userService
     @Override
     UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = userDao.login(email)

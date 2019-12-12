@@ -13,7 +13,22 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>ohrigei</name>
     <description>Demo project for Spring Boot</description>
-
+    <repositories>
+        <repository>
+            <id>central</id>
+            <name>aliyun maven</name>
+            <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+            <layout>default</layout>
+            <!-- 是否开启发布版构件下载 -->
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <!-- 是否开启快照版构件下载 -->
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
     <properties>
         <java.version>1.8</java.version>
     </properties>

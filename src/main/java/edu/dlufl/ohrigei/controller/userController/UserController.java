@@ -17,7 +17,7 @@ public class UserController {
     UserService userService;
     int cont = 0;
     @RequestMapping(value = "/Login")
-    public String Login(@ModelAttribute(value = "userInfo") User user, HttpSession session, Model model) {
+    public User Login(@ModelAttribute(value = "userInfo") User user, HttpSession session, Model model) {
         return userService.loginCheck(user, session, model);
     }
 

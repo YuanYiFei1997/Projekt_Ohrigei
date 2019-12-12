@@ -14,19 +14,24 @@ class UserServiceImpl implements UserService {
     @Autowired
     UserDao userDao
     @Override
-    String loginCheck(User user, HttpSession session, Model model) {
-        User user1 = userDao.loginCheck(user)
-        if (user1 != null) {
-            user.setEmail(user1.getEmail())
-            user.setName(user1.getName())
-            user.setId(user1.getId())
-            session.setAttribute("user", user)
-            if (user1.getType() == 0)
-                return "redirect:/admin/DashBoard"
-            else return "/user/UserIndex"
+    User loginCheck(User user, HttpSession session, Model model) {
+        User user1 = userDao.login(user.getEmail())
+        if (user1==null){
+            return null
         }
-        model.addAttribute("errorMessage", "用户名或密码错误")
-        return "forward:/"
+        return user1
+//        User user1 = userDao.loginCheck(user)
+//        if (user1 != null) {
+//            user.setEmail(user1.getEmail())
+//            user.setName(user1.getName())
+//            user.setId(user1.getId())
+//            session.setAttribute("user", user)
+//            if (user1.getType() == 0)
+//                return "redirect:/admin/DashBoard"
+//            else return "/user/UserIndex"
+//        }
+//        model.addAttribute("errorMessage", "用户名或密码错误")
+//        return "forward:/"
     }
 
     @Override

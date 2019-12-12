@@ -17,5 +17,6 @@ interface UserDao {
     int userSignUp(User user)
 
     int insertDelegate(User user)
+
     User login(String email)
 }
