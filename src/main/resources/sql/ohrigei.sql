@@ -11,7 +11,7 @@
  Target Server Version : 50727
  File Encoding         : 65001
 
- Date: 12/12/2019 17:57:03
+ Date: 13/12/2019 17:49:22
 */
 
 SET NAMES utf8mb4;
@@ -55,11 +55,6 @@ CREATE TABLE `admin`  (
   CONSTRAINT `admin_ibfk_1` FOREIGN KEY (`id`) REFERENCES `user` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `admin_ibfk_2` FOREIGN KEY (`committee_ID`) REFERENCES `committee` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Records of admin
--- ----------------------------
-INSERT INTO `admin` VALUES (2, '社联主席', 1, 1, 1, 0, 0, 0, 0);
 
 -- ----------------------------
 -- Table structure for application_status
@@ -184,7 +179,7 @@ CREATE TABLE `committee`  (
 -- ----------------------------
 -- Records of committee
 -- ----------------------------
-INSERT INTO `committee` VALUES (1, '', 10, 2);
+INSERT INTO `committee` VALUES (1, '', 10, NULL);
 INSERT INTO `committee` VALUES (2, '', 10, NULL);
 
 -- ----------------------------
@@ -212,8 +207,9 @@ CREATE TABLE `delegate`  (
 -- ----------------------------
 -- Records of delegate
 -- ----------------------------
-INSERT INTO `delegate` VALUES (1, 1, 2, 1, 1);
-INSERT INTO `delegate` VALUES (6, 2, 1, NULL, 2);
+INSERT INTO `delegate` VALUES (8, 1, 1, NULL, 1);
+INSERT INTO `delegate` VALUES (9, 1, 1, NULL, 1);
+INSERT INTO `delegate` VALUES (10, 1, 1, NULL, 1);
 
 -- ----------------------------
 -- Table structure for delegate_profile
@@ -267,7 +263,7 @@ CREATE TABLE `group`  (
 -- ----------------------------
 -- Records of group
 -- ----------------------------
-INSERT INTO `group` VALUES (1, 5, 1, 10);
+INSERT INTO `group` VALUES (1, 5, NULL, 10);
 
 -- ----------------------------
 -- Table structure for school_info
@@ -327,7 +323,7 @@ CREATE TABLE `user`  (
   `last_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '姓氏拼音',
   `first_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '姓名拼音',
   `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '电子邮箱',
-  `password` char(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '密码',
+  `password` char(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '密码',
   `phone` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '电话号',
   `enable_login` tinyint(1) UNSIGNED NOT NULL DEFAULT 1 COMMENT '是否启用登录，1为启用，0为关闭',
   `role_ID` int(10) UNSIGNED NULL DEFAULT NULL,
@@ -337,15 +333,14 @@ CREATE TABLE `user`  (
   INDEX `user_email`(`email`) USING BTREE,
   INDEX `role_ID`(`role_ID`) USING BTREE,
   CONSTRAINT `user_ibfk_1` FOREIGN KEY (`role_ID`) REFERENCES `user_role` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES (1, '孙征', '', '', '1020154356@qq.com', 'zz1020154356', '17615107203', 1, 2);
-INSERT INTO `user` VALUES (2, '管理员', NULL, '', '123@qq.com', '123', '1234567890', 1, 1);
-INSERT INTO `user` VALUES (5, '原', '逸非', '逸非原', '1234@qq.com', '123456', '17615107203', 1, 2);
-INSERT INTO `user` VALUES (6, '冬马和纱', 'TOMA', 'KAZUSA', '123456@dlufl.edu.com', '123456', '13111111111111', 1, 2);
+INSERT INTO `user` VALUES (8, '冬马和纱', 'TOMA', 'KAZUSA', '123@qq.com', '$2a$10$lJWw3hxO2uy6X5CUDaMlNOeiUsQaGvEBdHeanYjrIVthjqXCSLoTC', '13112345678', 1, 1);
+INSERT INTO `user` VALUES (9, '小木曾雪菜', 'OGISO', 'SETSUNA', '321@qq.com', '$2a$10$RxKxtC430Yv1EQ7IAKNpVOt4WcflsJjMEP148dMBHGIq8xlyKY3Xe', '13212345678', 1, 2);
+INSERT INTO `user` VALUES (10, '被封锁', 'BEI', 'FENGSUO', '111@qq.com', '$2a$10$R949ZxJt/PaChm8s0hdl..P0U.6dmqYbMLhpxVYpeF7MVDPLvKBxi', '11111111111', 0, 2);
 
 -- ----------------------------
 -- Table structure for user_role
