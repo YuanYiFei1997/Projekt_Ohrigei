@@ -2,6 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="edu.dlufl.ohrigei.dao.UserDao">
     <resultMap id="UserType" type="edu.dlufl.ohrigei.model.User">
+        <result column="id" property="id"/>
         <result column="name" property="name"/>
         <result column="phone" property="phone"/>
         <result column="email" property="email"/>
@@ -16,7 +17,7 @@
         select * from ohrigei.user where email=#{email} and password=#{password}
     </select>
     <select id="login" resultMap="UserType">
-        select name,phone,password,email,enable_login,user_role.role from ohrigei.user LEFT JOIN ohrigei.user_role ON ohrigei.user.role_ID=user_role.id where email=#{email}
+        select ohrigei.user.id,name,phone,password,email,enable_login,user_role.role from ohrigei.user LEFT JOIN ohrigei.user_role ON ohrigei.user.role_ID=user_role.id where email=#{email}
     </select>
     <select id="authorityControl" resultType="int">
         select type from ohrigei.user where email=#{email}
