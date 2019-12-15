@@ -1,17 +1,17 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : local
+ Source Server         : localhost
  Source Server Type    : MySQL
- Source Server Version : 50727
+ Source Server Version : 50724
  Source Host           : localhost:3306
  Source Schema         : ohrigei
 
  Target Server Type    : MySQL
- Target Server Version : 50727
+ Target Server Version : 50724
  File Encoding         : 65001
 
- Date: 13/12/2019 17:49:22
+ Date: 15/12/2019 17:58:28
 */
 
 SET NAMES utf8mb4;
@@ -44,17 +44,22 @@ CREATE TABLE `admin`  (
   `id` int(10) UNSIGNED NOT NULL COMMENT '管理员用户ID',
   `title` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL COMMENT '职位',
   `committee_ID` int(10) UNSIGNED NULL DEFAULT NULL COMMENT '委员会ID',
-  `role_AG` smallint(1) NOT NULL DEFAULT 0 COMMENT '全局学术管理员',
-  `role_AD` smallint(1) NOT NULL DEFAULT 0 COMMENT '单一会场学术管理员',
-  `role_D` smallint(1) NOT NULL DEFAULT 0 COMMENT '管制行政管理员',
-  `role_L` smallint(1) NOT NULL DEFAULT 0 COMMENT '总务行政管理员',
-  `role_F` smallint(1) NOT NULL DEFAULT 0 COMMENT '财务行政管理员',
-  `role_SG` smallint(1) NOT NULL DEFAULT 0 COMMENT '秘书长级管理员',
+  `role_AG` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '全局学术管理员',
+  `role_AD` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '单一会场学术管理员',
+  `role_D` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '管制行政管理员',
+  `role_L` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '总务行政管理员',
+  `role_F` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '财务行政管理员',
+  `role_SG` tinyint(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '秘书长级管理员',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `委员会ID`(`committee_ID`) USING BTREE,
   CONSTRAINT `admin_ibfk_1` FOREIGN KEY (`id`) REFERENCES `user` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `admin_ibfk_2` FOREIGN KEY (`committee_ID`) REFERENCES `committee` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of admin
+-- ----------------------------
+INSERT INTO `admin` VALUES (8, NULL, NULL, 1, 1, 1, 1, 1, 1);
 
 -- ----------------------------
 -- Table structure for application_status
