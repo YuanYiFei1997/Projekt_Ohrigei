@@ -20,34 +20,41 @@ import org.springframework.security.crypto.password.PasswordEncoder
 class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private PasswordEncoder passwordEncoder
+    private final String KEY="ohrigei"
     @Bean
     UserDetailsService customUserService() {
         return new UserServiceImpl()
     }
+
     @Bean
     PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();   // 使用 BCrypt 加密
     }
+
     @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
         authenticationProvider.setUserDetailsService(customUserService());
         authenticationProvider.setPasswordEncoder(passwordEncoder); // 设置密码加密方式
-        authenticationProvider.hideUserNotFoundExceptions=false
+        authenticationProvider.hideUserNotFoundExceptions = false
         return authenticationProvider;
     }
+
     void configure(WebSecurity webSecurity) throws Exception {
-        webSecurity.ignoring().antMatchers("/js/**", "/fonts/**", "/img/**", "/css/**","/allUser/**")
+        webSecurity.ignoring().antMatchers("/js/**", "/fonts/**", "/img/**", "/css/**", "/allUser/**","/error/**")
     }
 
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.authorizeRequests().antMatchers("/user/**").hasRole("USER")
                 .antMatchers("/admin/**").hasRole("ADMIN")
-        httpSecurity.formLogin().loginPage("/login").usernameParameter("email").failureUrl("/login?error=true")
+        httpSecurity.formLogin().loginPage("/login").usernameParameter("email")
+                .successForwardUrl("/index").failureUrl("/login?error=true")
                 .and().exceptionHandling().accessDeniedPage("/error/403")
         httpSecurity.logout().logoutUrl("/logout").logoutSuccessUrl("/login")
+        httpSecurity.rememberMe().key(KEY).tokenValiditySeconds(3600)
     }
-    void configureGlobal(AuthenticationManagerBuilder auth)throws Exception{
+
+    void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(customUserService())
         auth.authenticationProvider()
     }

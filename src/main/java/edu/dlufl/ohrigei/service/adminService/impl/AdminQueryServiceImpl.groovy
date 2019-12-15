@@ -49,12 +49,12 @@ class AdminQueryServiceImpl implements AdminQueryService {
             default: return null
         }
     }
-
+    List<Admin> adminList = new LinkedList<>()
     @Override
-    List<Admin> queryAdmin(HttpSession session, Model model) {
-        List<Admin> adminList = adminQueryService.queryAdmin(session, model)
+    String  queryAdmin(HttpSession session, Model model) {
+        adminList=adminDao.queryAllAdmin()
         model.addAttribute("adminList", adminList)
-        return adminDao.queryAllAdmin()
+        return "admin/AllAdminList"
     }
 
     @Override

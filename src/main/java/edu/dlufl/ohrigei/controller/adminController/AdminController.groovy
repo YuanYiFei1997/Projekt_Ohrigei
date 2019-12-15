@@ -23,13 +23,13 @@ class AdminController {
     @RequestMapping("/manage")
     String queryMembers(HttpSession session, Model model, String type) {
         switch (type) {
-            case "Admin":
+            case "admin":
                 return adminQueryService.queryAdmin(session, model)
-            case "Committee":
+            case "committee":
                 return adminQueryService.queryCommittee(session, model)
-            case "Group":
+            case "group":
                 return adminQueryService.queryGroup(session, model)
-            case "Seat": break
+            case "seat": break
             default:
                 try {
                     return adminQueryService.queryMembers(session, model, type)

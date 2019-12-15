@@ -99,6 +99,8 @@
     <span th:if="${param.error}" th:text="${session.SPRING_SECURITY_LAST_EXCEPTION.message}" style="color: red"></span>
     <br>
     <button type="submit" class="submit-button btn btn-primary btn-block ">登录</button>
+    <label for="remember-me"></label>
+    <input type="checkbox" class="" name="remember-me" value="" id="remember-me">记住我
     <br>
     <p>忘记密码？<a href="#">找回密码</a></p>
     <a href="signUp" class="btn btn-primary btn-block submit-button">报名参会</a>

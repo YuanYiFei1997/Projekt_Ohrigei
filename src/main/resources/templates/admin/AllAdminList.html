@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>管理员列表</title>
+</head>
+<body>
+<table>
+    <thead>
+    <tr>
+        <td>姓名</td>
+        <td>职称</td>
+        <td>所属委员会</td>
+        <td>全局学术管理员</td>
+        <td>单一会场学术管理员</td>
+        <td>管制行政管理员</td>
+        <td>总务行政管理员</td>
+        <td>财务行政管理员</td>
+        <td>秘书长</td>
+    </tr>
+    </thead>
+    <tr th:each="admin:${adminList}">
+        <td th:text="${admin.name}"></td>
+        <td th:text="${admin.title}"></td>
+        <td th:text="${admin.committeeName}"></td>
+        <td th:text="${admin.role_AG}"></td>
+        <td th:text="${admin.role_AD}"></td>
+        <td th:text="${admin.role_D}"></td>
+        <td th:text="${admin.role_L}"></td>
+        <td th:text="${admin.role_F}"></td>
+        <td th:text="${admin.role_SG}"></td>
+    </tr>
+</table>
+</body>
+</html>

@@ -62,12 +62,10 @@
                ohrigei.admin.role_F,
                ohrigei.admin.role_L,
                ohrigei.admin.role_SG
-        from ohrigei.user,
-             ohrigei.admin,
-             ohrigei.committee
+        from ohrigei.user
+        LEFT JOIN ohrigei.admin ON ohrigei.user.id = admin.id
+		LEFT JOIN ohrigei.committee ON ohrigei.admin.committee_ID=ohrigei.committee.id
         where role_ID = 1
-          and ohrigei.user.id = ohrigei.admin.id
-          and admin.committee_ID = committee.committee_name
     </select>
     <select id="queryAllCommittee" resultMap="Committee">
         SELECT committee.name, seat_width, ohrigei.user.name uname
