@@ -8,6 +8,7 @@ class Delegate {
     private String applicationStatus
     private String phone
     private String email
+    private boolean enable_Login
 
     String getPhone() {
         return phone
@@ -65,8 +66,16 @@ class Delegate {
         this.applicationStatus = applicationStatus
     }
 
+    boolean getEnable_Login() {
+        return enable_Login
+    }
+
+    void setEnable_Login(boolean enable_Login) {
+        this.enable_Login = enable_Login
+    }
+
     @Override
-    String toString() {
+    public String toString() {
         return "Delegate{" +
                 "ID=" + ID +
                 ", name='" + name + '\'' +
@@ -75,6 +84,7 @@ class Delegate {
                 ", applicationStatus='" + applicationStatus + '\'' +
                 ", phone='" + phone + '\'' +
                 ", email='" + email + '\'' +
+                ", enable_Login=" + enable_Login +
                 '}';
     }
 }

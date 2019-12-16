@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>
     <script src="https://cdn.bootcss.com/popper.js/1.15.0/esm/popper.min.js"></script>
-    <script src="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/js/bootstrap.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>
     <link href="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/css/bootstrap.css" rel="stylesheet">
-    <title>报名参会</title>
+    <title>添加管理员</title>
 </head>
 <style>
     html,
@@ -85,27 +85,38 @@
     }
 </style>
 <body class="text-center">
-<form th:action="@{/signUp}" method="post" class="form-signUp" th:object="${User}">
+<form th:action="@{addAdmin}" method="post" class="form-signUp" th:object="${Admin}">
     <a th:href="@{/}"><img class="mb-4" src="../img/logo/logoNoTM.png" alt="精罗激怒" width="188" height="90"></a>
-    <h1 class="h3 mb-3 font-weight-normal">注册</h1>
+    <h1 class="h3 mb-3 font-weight-normal">添加管理员</h1>
     <label for="username" class="sr-only"></label>
-    <input class="form-control" name="username" id="username" th:field="${User.name}" required="required" placeholder="请输入姓名"
+    <input class="form-control" name="username" id="username" th:field="${Admin.name}" required="required"
+           placeholder="请输入姓名"
            autofocus>
-    <label for="lastName" class="sr-only"></label>
-    <input class="form-control lastName" name="lastName" id="lastName" th:field="${User.last_name}" placeholder="请输入姓氏拼音">
-    <label for="firstName" class="sr-only"></label>
-    <input class="form-control" name="firstName" id="firstName" th:field="${User.first_name}" placeholder="请输入姓名拼音"
-           required>
     <label for="phone" class="sr-only"></label>
-    <input class="form-control" name="phone" id="phone" th:field="${User.phone}" placeholder="请输入手机号" required>
+    <input class="form-control" name="phone" id="phone" th:field="${Admin.phone}" placeholder="请输入手机号" required>
     <label for="email" class="sr-only"></label>
-    <input class="form-control" name="email" id="email" value="" th:field="${User.email}" type="text"
-           placeholder="请输入电子邮箱" required pattern="^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$" >
+    <input class="form-control" name="email" id="email" value="" th:field="${Admin.email}" type="text"
+           placeholder="请输入电子邮箱" required pattern="^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$">
     <label for="password" class="sr-only"></label>
-    <input class="form-control" name="password" id="password" value="" th:field="${User.password}" type="password"
+    <input class="form-control" name="password" id="password" value="" th:field="${Admin.password}" type="password"
            placeholder="请输入密码" pattern="[a-zA-Z0-9]{6,16}"
-           required><br>
-    <button type="submit" class="submit-button btn btn-primary btn-block ">注册</button>
+           required>
+    <label for="title" class="sr-only"></label>
+    <input class="form-control" name="title" id="title" th:field="${Admin.title}" placeholder="请输入称谓">
+    <label for="role_AG"></label>
+    <input name="role_AG" id="role_AG" type="checkbox" th:field="${Admin.role_AG}">全局学术管理员
+    <label for="role_AD"></label>
+    <input name="role_AD" id="role_AD" type="checkbox" th:field="${Admin.role_AD}">单一会场学术管理员
+    <label for="role_D"></label>
+    <input name="role_D" id="role_D" type="checkbox" th:field="${Admin.role_D}">管制行政管理员
+    <label for="role_L"></label>
+    <input name="role_L" id="role_L" type="checkbox" th:field="${Admin.role_L}">总务行政管理员
+    <label for="role_F"></label>
+    <input name="role_F" id="role_F" type="checkbox" th:field="${Admin.role_F}">财务行政管理员
+    <label for="role_SG"></label>
+    <input name="role_SG" id="role_SG" type="checkbox" th:field="${Admin.role_SG}">总务行政管理员
+    <button type="submit" class="submit-button btn btn-primary btn-block ">添加</button><br>
+    <button type="reset" class="submit-button btn btn-primary btn-block">重置</button>
     <span th:if="${param.error}" th:text="${session.SPRING_SECURITY_LAST_EXCEPTION.message}" style="color: red"></span>
 </form>
 </body>

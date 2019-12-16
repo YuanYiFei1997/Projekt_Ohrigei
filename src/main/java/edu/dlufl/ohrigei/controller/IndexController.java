@@ -38,7 +38,6 @@ public class IndexController {
     }
     @RequestMapping("/signUp")
     public String SignUp(@ModelAttribute(value = "User") User user, Model model, HttpSession httpSession) {
-
         if (cont==0){
             model.addAttribute("User",new User());
             cont=cont+1;

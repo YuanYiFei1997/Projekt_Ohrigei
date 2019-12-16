@@ -17,11 +17,10 @@ class UserServiceImpl implements UserService, UserDetailsService {
     @Autowired
     UserDao userDao
     @Override
-    String userSignUp(User user, Model model) {
+    String userSignUp(User user, Model model) throws UsernameNotFoundException{
         String emailCheck = userDao.userEmailCheck(user.getEmail())
         if (emailCheck != null) {
-            model.addAttribute("errorMessage", "电子邮箱重复")
-            return "/user/UserSignUp"
+            throw new UsernameNotFoundException("电子邮箱重复")
         } else {
             String password=new BCryptPasswordEncoder().encode(user.getPassword())
             String upCaseFirstName = user.getFirst_name().toUpperCase()

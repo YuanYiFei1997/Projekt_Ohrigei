@@ -1,17 +1,17 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : localhost
+ Source Server         : local
  Source Server Type    : MySQL
- Source Server Version : 50724
+ Source Server Version : 50727
  Source Host           : localhost:3306
  Source Schema         : ohrigei
 
  Target Server Type    : MySQL
- Target Server Version : 50724
+ Target Server Version : 50727
  File Encoding         : 65001
 
- Date: 15/12/2019 17:58:28
+ Date: 16/12/2019 17:55:38
 */
 
 SET NAMES utf8mb4;
@@ -60,6 +60,8 @@ CREATE TABLE `admin`  (
 -- Records of admin
 -- ----------------------------
 INSERT INTO `admin` VALUES (8, NULL, NULL, 1, 1, 1, 1, 1, 1);
+INSERT INTO `admin` VALUES (11, '社联主席，亘古一人忠义无双', NULL, 1, 0, 0, 0, 0, 0);
+INSERT INTO `admin` VALUES (12, '伟大的社联部长', NULL, 0, 0, 0, 1, 0, 1);
 
 -- ----------------------------
 -- Table structure for application_status
@@ -326,7 +328,7 @@ CREATE TABLE `user`  (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '用户ID',
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '姓名',
   `last_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '姓氏拼音',
-  `first_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '姓名拼音',
+  `first_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '姓名拼音',
   `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '电子邮箱',
   `password` char(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '密码',
   `phone` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '电话号',
@@ -338,7 +340,7 @@ CREATE TABLE `user`  (
   INDEX `user_email`(`email`) USING BTREE,
   INDEX `role_ID`(`role_ID`) USING BTREE,
   CONSTRAINT `user_ibfk_1` FOREIGN KEY (`role_ID`) REFERENCES `user_role` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 13 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of user
@@ -346,6 +348,8 @@ CREATE TABLE `user`  (
 INSERT INTO `user` VALUES (8, '冬马和纱', 'TOMA', 'KAZUSA', '123@qq.com', '$2a$10$lJWw3hxO2uy6X5CUDaMlNOeiUsQaGvEBdHeanYjrIVthjqXCSLoTC', '13112345678', 1, 1);
 INSERT INTO `user` VALUES (9, '小木曾雪菜', 'OGISO', 'SETSUNA', '321@qq.com', '$2a$10$RxKxtC430Yv1EQ7IAKNpVOt4WcflsJjMEP148dMBHGIq8xlyKY3Xe', '13212345678', 1, 2);
 INSERT INTO `user` VALUES (10, '被封锁', 'BEI', 'FENGSUO', '111@qq.com', '$2a$10$R949ZxJt/PaChm8s0hdl..P0U.6dmqYbMLhpxVYpeF7MVDPLvKBxi', '11111111111', 0, 2);
+INSERT INTO `user` VALUES (11, '孙征', NULL, NULL, '123456@qq.com', '$2a$10$8H31vOXwWS5k.9W8Zmgbte1K67ITeMZcWgWpDctxhGr3NJHkuOj/S', '12312312312', 1, 1);
+INSERT INTO `user` VALUES (12, '郑羡之', NULL, NULL, '112@qq.com', '$2a$10$ZDK.eW2StJ.VPEorRFqdUeKrJyGAn84ya0CCki.M.bdc/tV1.w77a', '12312312321', 1, 1);
 
 -- ----------------------------
 -- Table structure for user_role

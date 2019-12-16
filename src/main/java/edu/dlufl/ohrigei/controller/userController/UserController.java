@@ -10,4 +10,8 @@ public class UserController {
     public String toIndex() {
         return "/user/UserIndex";
     }
+    @RequestMapping("/test")
+    public String toTest(){
+        return "user/UserAcademicTest";
+    }
 }

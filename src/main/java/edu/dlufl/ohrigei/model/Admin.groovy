@@ -4,6 +4,9 @@ class Admin {
     private String title
     private String name
     private String committeeName
+    private String password
+    private String email
+    private String phone
     private boolean role_AG
     private boolean role_AD
     private boolean role_D
@@ -41,6 +44,30 @@ class Admin {
 
     void setCommitteeName(String committeeName) {
         this.committeeName = committeeName
+    }
+
+    String getPassword() {
+        return password
+    }
+
+    void setPassword(String password) {
+        this.password = password
+    }
+
+    String getEmail() {
+        return email
+    }
+
+    void setEmail(String email) {
+        this.email = email
+    }
+
+    String getPhone() {
+        return phone
+    }
+
+    void setPhone(String phone) {
+        this.phone = phone
     }
 
     boolean getRole_AG() {
@@ -98,6 +125,9 @@ class Admin {
                 ", title='" + title + '\'' +
                 ", name='" + name + '\'' +
                 ", committeeName='" + committeeName + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", phone='" + phone + '\'' +
                 ", role_AG=" + role_AG +
                 ", role_AD=" + role_AD +
                 ", role_D=" + role_D +

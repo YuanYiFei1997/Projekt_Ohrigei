@@ -2,7 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="edu.dlufl.ohrigei.dao.AdminDao">
     <resultMap id="Delegate" type="edu.dlufl.ohrigei.model.Delegate">
+        <result column="id" property="ID"/>
         <result column="name" property="name"/>
+        <result column="enable_login" property="enable_Login"/>
         <result column="school_name" property="schoolName"/>
         <result column="application_type" property="applicationType"/>
         <result column="application_status_text" property="applicationStatus"/>
@@ -23,6 +25,10 @@
         <result column="role_F" property="role_F"/>
         <result column="role_L" property="role_L"/>
         <result column="role_SG" property="role_SG"/>
+        <result column="password" property="password"/>
+        <result column="email" property="email"/>
+        <result column="phone" property="phone"/>
+        <result column="committee_name" property="committeeName"/>
     </resultMap>
     <resultMap id="Committee" type="edu.dlufl.ohrigei.model.Committee">
         <result column="name" property="name"/>
@@ -30,19 +36,21 @@
         <result column="uname" property="chairManName"/>
     </resultMap>
     <select id="queryAllMember" resultMap="Delegate">
-        SELECT ohrigei.user.name,
+        SELECT ohrigei.user.id,
+               ohrigei.user.name,
+               ohrigei.user.enable_login,
                ohrigei.user.email,
                ohrigei.user.phone,
                ohrigei.school_info.school_name,
                ohrigei.application_type.application_type,
                ohrigei.application_status.application_status_text
         FROM ohrigei.delegate
-                 left join user  on delegate.id = ohrigei.user.id
-                 left join `group`  on delegate.group_ID = `group`.id
+                 left join user on delegate.id = ohrigei.user.id
+                 left join `group` on delegate.group_ID = `group`.id
                  left join school_info on ohrigei.group.school_ID = school_info.id
-                 left join application_type  on application_type.id=delegate.application_type_ID
-                 left join application_status  on application_status.id=delegate.application_status_ID
-        WHERE ohrigei.delegate.role_ID =#{type}
+                 left join application_type on application_type.id = delegate.application_type_ID
+                 left join application_status on application_status.id = delegate.application_status_ID
+        WHERE ohrigei.delegate.role_ID = #{type}
     </select>
     <select id="queryAllGroup" resultMap="Group">
         SELECT school_name, ohrigei.user.name, ohrigei.`group`.group_size
@@ -53,7 +61,8 @@
           and ohrigei.user.id = head_delegate_ID
     </select>
     <select id="queryAllAdmin" resultMap="Admin">
-        SELECT ohrigei.user.name,
+        SELECT ohrigei.user.id,
+               ohrigei.user.name,
                admin.title,
                ohrigei.committee.committee_name,
                ohrigei.admin.role_AG,
@@ -63,8 +72,8 @@
                ohrigei.admin.role_L,
                ohrigei.admin.role_SG
         from ohrigei.user
-        LEFT JOIN ohrigei.admin ON ohrigei.user.id = admin.id
-		LEFT JOIN ohrigei.committee ON ohrigei.admin.committee_ID=ohrigei.committee.id
+                 LEFT JOIN ohrigei.admin ON ohrigei.user.id = admin.id
+                 LEFT JOIN ohrigei.committee ON ohrigei.admin.committee_ID = ohrigei.committee.id
         where role_ID = 1
     </select>
     <select id="queryAllCommittee" resultMap="Committee">
@@ -73,4 +82,22 @@
              user
         where ohrigei.committee.chairman_ID
     </select>
+    <select id="emailCheck" resultType="string">
+        SELECT ohrigei.user.email
+        from ohrigei.user
+        where email = #{email}
+    </select>
+    <insert id="addAdminStep1" parameterType="edu.dlufl.ohrigei.model.Admin">
+        insert into ohrigei.user(name, email, password, phone, role_ID)
+        values (#{name}, #{email}, #{password}, #{phone}, 1)
+    </insert>
+    <select id="getInsertID" resultType="int">
+        select ohrigei.user.id
+        from ohrigei.user
+        where email = #{email}
+    </select>
+    <insert id="addAdminStep2" parameterType="edu.dlufl.ohrigei.model.Admin">
+        insert into ohrigei.admin(id, title, role_AG, role_AD, role_D, role_L, role_F, role_SG)
+        VALUES (#{id}, #{title}, #{role_AG}, #{role_AD},#{role_D},#{role_L},#{role_F},#{role_SG})
+    </insert>
 </mapper>
