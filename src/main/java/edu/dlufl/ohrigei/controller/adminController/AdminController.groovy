@@ -2,6 +2,7 @@ package edu.dlufl.ohrigei.controller.adminController
 
 import edu.dlufl.ohrigei.model.Admin
 import edu.dlufl.ohrigei.service.adminService.service.AdminAddService
+import edu.dlufl.ohrigei.service.adminService.service.AdminDetailService
 import edu.dlufl.ohrigei.service.adminService.service.AdminQueryService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
@@ -18,6 +19,8 @@ class AdminController {
     AdminQueryService adminQueryService
     @Autowired
     AdminAddService adminAddService
+    @Autowired
+    AdminDetailService adminDetailService
 
     @RequestMapping("/DashBoard")
     String dashboard() {
@@ -58,7 +61,7 @@ class AdminController {
     }
 
     @RequestMapping("/adminDetail")
-    String adminDetail() {
-        return null
+    String adminDetail(Model model,HttpSession httpSession,String id) {
+        return adminDetailService.adminDetail(httpSession,model,id)
     }
 }

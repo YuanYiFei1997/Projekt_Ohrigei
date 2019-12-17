@@ -15,7 +15,12 @@ interface AdminDao {
     List<Committee> queryAllCommittee()
 
     int addAdminStep1(Admin admin)
+
     int addAdminStep2(Admin admin)
+
     int getInsertID(String email)
+
     String emailCheck(String email)
+
+    Admin adminDetail(int id)
 }

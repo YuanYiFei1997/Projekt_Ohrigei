@@ -100,4 +100,19 @@
         insert into ohrigei.admin(id, title, role_AG, role_AD, role_D, role_L, role_F, role_SG)
         VALUES (#{id}, #{title}, #{role_AG}, #{role_AD},#{role_D},#{role_L},#{role_F},#{role_SG})
     </insert>
+    <select id="adminDetail" resultMap="Admin">
+        SELECT ohrigei.user.name,
+               admin.title,
+               ohrigei.committee.committee_name,
+               ohrigei.admin.role_AG,
+               ohrigei.admin.role_AD,
+               ohrigei.admin.role_D,
+               ohrigei.admin.role_F,
+               ohrigei.admin.role_L,
+               ohrigei.admin.role_SG
+        from ohrigei.user
+                 LEFT JOIN ohrigei.admin ON ohrigei.user.id = admin.id
+                 LEFT JOIN ohrigei.committee ON ohrigei.admin.committee_ID = ohrigei.committee.id
+        where user.id=#{id}
+    </select>
 </mapper>
