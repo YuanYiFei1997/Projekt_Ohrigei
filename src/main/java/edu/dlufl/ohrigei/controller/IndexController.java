@@ -24,6 +24,10 @@ public class IndexController {
         }
         return "allUser/index";
     }
+    @RequestMapping("/testIndex")
+    public String testIndex(){
+        return "allUser/testIndex";
+    }
     @RequestMapping("/header")
     public String header(){
         return "allUser/header";

@@ -2,23 +2,36 @@
 <html lang="zh" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <script src="https://cdn.bootcss.com/popper.js/1.15.0/esm/popper.min.js"></script>
-    <script src="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/js/bootstrap.js"></script>
-    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>
-    <link href="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/css/bootstrap.css" rel="stylesheet">
+    <script src="../js/jquery-3.4.1.min.js"></script>
+    <script src="../js/popper.min.js"></script>
+    <script src="../js/bootstrap.js"></script>
+    <link href="../css/bootstrap.css" rel="stylesheet">
     <link rel="stylesheet" href="../css/font-awesome.css">
     <title>Title</title>
 </head>
 <body>
-<table th:object="${admin}">
-    <tr>
-        <td>姓名</td>
-        <td th:text="${admin.name}"></td>
-    </tr>
-    <tr>
-        <td>Title</td>
-        <td th:text="${admin.title}"></td>
-    </tr>
-</table>
+<form th:object="${admin}">
+    <label for="name"></label>
+    <label for="phone"></label>
+    <label for="email"></label>
+    <table>
+        <thead>个人信息</thead>
+        <tr>
+            <td>姓名</td>
+            <td><input type="text" id="name" th:text="${admin.name}"></td>
+        </tr>
+        <tr>
+            <td>电子邮箱</td>
+            <td><input type="text" id="email" th:text="${admin.email}"></td>
+        </tr>
+        <tr>
+            <td>手机号码</td>
+            <td><input type="text" id="phone" th:text="${admin.email}"></td>
+        </tr>
+    </table>
+    <ul><li class="divider"></li></ul>
+    <table></table>
+
+</form>
 </body>
 </html>
