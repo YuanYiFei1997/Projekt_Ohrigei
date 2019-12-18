@@ -4,12 +4,15 @@ class Admin {
     private String title
     private String name
     private String committeeName
-    private int role_AG
-    private int role_AD
-    private int role_D
-    private int role_L
-    private int role_F
-    private int role_SG
+    private String password
+    private String email
+    private String phone
+    private boolean role_AG
+    private boolean role_AD
+    private boolean role_D
+    private boolean role_L
+    private boolean role_F
+    private boolean role_SG
 
     int getId() {
         return id
@@ -43,61 +46,88 @@ class Admin {
         this.committeeName = committeeName
     }
 
-    int getRole_AG() {
+    String getPassword() {
+        return password
+    }
+
+    void setPassword(String password) {
+        this.password = password
+    }
+
+    String getEmail() {
+        return email
+    }
+
+    void setEmail(String email) {
+        this.email = email
+    }
+
+    String getPhone() {
+        return phone
+    }
+
+    void setPhone(String phone) {
+        this.phone = phone
+    }
+
+    boolean getRole_AG() {
         return role_AG
     }
 
-    void setRole_AG(int role_AG) {
+    void setRole_AG(boolean role_AG) {
         this.role_AG = role_AG
     }
 
-    int getRole_AD() {
+    boolean getRole_AD() {
         return role_AD
     }
 
-    void setRole_AD(int role_AD) {
+    void setRole_AD(boolean role_AD) {
         this.role_AD = role_AD
     }
 
-    int getRole_D() {
+    boolean getRole_D() {
         return role_D
     }
 
-    void setRole_D(int role_D) {
+    void setRole_D(boolean role_D) {
         this.role_D = role_D
     }
 
-    int getRole_L() {
+    boolean getRole_L() {
         return role_L
     }
 
-    void setRole_L(int role_L) {
+    void setRole_L(boolean role_L) {
         this.role_L = role_L
     }
 
-    int getRole_F() {
+    boolean getRole_F() {
         return role_F
     }
 
-    void setRole_F(int role_F) {
+    void setRole_F(boolean role_F) {
         this.role_F = role_F
     }
 
-    int getRole_SG() {
+    boolean getRole_SG() {
         return role_SG
     }
 
-    void setRole_SG(int role_SG) {
+    void setRole_SG(boolean role_SG) {
         this.role_SG = role_SG
     }
 
     @Override
-    String toString() {
+    public String toString() {
         return "Admin{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", name='" + name + '\'' +
                 ", committeeName='" + committeeName + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", phone='" + phone + '\'' +
                 ", role_AG=" + role_AG +
                 ", role_AD=" + role_AD +
                 ", role_D=" + role_D +

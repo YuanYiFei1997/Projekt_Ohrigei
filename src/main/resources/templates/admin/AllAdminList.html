@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <script src="../js/jquery-3.4.1.min.js"></script>
+    <script src="../js/popper.min.js"></script>
+    <script src="../js/bootstrap.js"></script>
+    <link href="../css/bootstrap.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/font-awesome.css">
+    <meta charset="UTF-8">
+    <title>管理员列表</title>
+</head>
+<body>
+<table>
+    <thead>
+    <tr>
+        <td>姓名</td>
+        <td>职称</td>
+        <td>所属委员会</td>
+        <td>全局学术管理员</td>
+        <td>单一会场学术管理员</td>
+        <td>管制行政管理员</td>
+        <td>总务行政管理员</td>
+        <td>财务行政管理员</td>
+        <td>秘书长</td>
+    </tr>
+    </thead>
+    <tr th:each="admin:${adminList}">
+        <td>
+            <i th:text="${admin.name}"></i>
+            <a th:href="@{/admin/adminDetail(id=${admin.id})}">
+                <span class="fa fa-info-circle"
+                      aria-hidden="true"></span>
+            </a>
+        </td>
+        <td th:text="${admin.title}"></td>
+        <td th:text="${admin.committeeName}"></td>
+        <td>
+            <span th:if="${admin.role_AG}" class="fa fa-check"></span>
+            <span th:unless="${admin.role_AG}" class="fa fa-times" aria-hidden="true"></span>
+        </td>
+        <td>
+            <span th:if="${admin.role_AD}" class="fa fa-check"></span>
+            <span th:unless="${admin.role_AD}" class="fa fa-times" aria-hidden="true"></span>
+        </td>
+        <td>
+            <span th:if="${admin.role_D}" class="fa fa-check"></span>
+            <span th:unless="${admin.role_D}" class="fa fa-times" aria-hidden="true"></span>
+        </td>
+        <td>
+            <span th:if="${admin.role_L}" class="fa fa-check"></span>
+            <span th:unless="${admin.role_L}" class="fa fa-times" aria-hidden="true"></span>
+        </td>
+        <td>
+            <span th:if="${admin.role_F}" class="fa fa-check"></span>
+            <span th:unless="${admin.role_F}" class="fa fa-times" aria-hidden="true"></span>
+        </td>
+        <td>
+            <span th:if="${admin.role_SG}" class="fa fa-check"></span>
+            <span th:unless="${admin.role_SG}" class="fa fa-times" aria-hidden="true"></span>
+        </td>
+    </tr>
+</table>
+<a class="button btn btn-primary" href="/admin/addAdmin">添加管理员</a>
+</body>
+</html>

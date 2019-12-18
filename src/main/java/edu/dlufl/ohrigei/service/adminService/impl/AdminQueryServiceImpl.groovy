@@ -33,7 +33,7 @@ class AdminQueryServiceImpl implements AdminQueryService {
                 model.addAttribute("memberList", memberList)
                 queryType = "观察员列表"
                 model.addAttribute("queryType", queryType)
-                return adminDao.queryAllObserver()
+                return "/admin/AllMemberList"
             case "teacher":
                 memberList = adminDao.queryAllMember(3)
                 model.addAttribute("memberList", memberList)
@@ -45,21 +45,22 @@ class AdminQueryServiceImpl implements AdminQueryService {
                 model.addAttribute("memberList", memberList)
                 queryType = "领队列表"
                 model.addAttribute("queryType", queryType)
-                return adminDao.queryAllLeader()
+                return "/admin/AllMemberList"
             default: return null
         }
     }
+    List<Admin> adminList = new LinkedList<>()
 
     @Override
-    List<Admin> queryAdmin(HttpSession session, Model model) {
-        List<Admin> adminList = adminQueryService.queryAdmin(session, model)
+    String queryAdmin(HttpSession session, Model model) {
+        adminList = adminDao.queryAllAdmin()
         model.addAttribute("adminList", adminList)
-        return adminDao.queryAllAdmin()
+        return "admin/AllAdminList"
     }
 
     @Override
     List<Group> queryGroup(HttpSession session, Model model) {
-        List<Group> groupList = adminQueryService.queryGroup(session, model)
+        List<Group> groupList = adminDao.queryAllGroup()
         model.addAttribute("groupList", groupList)
         return adminDao.queryAllGroup()
     }

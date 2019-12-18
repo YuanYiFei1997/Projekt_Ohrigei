@@ -2,14 +2,15 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>
-    <script src="https://cdn.bootcss.com/popper.js/1.15.0/esm/popper.min.js"></script>
-    <script src="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/js/bootstrap.js"></script>
-    <link href="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/css/bootstrap.css" rel="stylesheet">
+    <script src="../js/jquery-3.4.1.min.js"></script>
+    <script src="../js/popper.min.js"></script>
+    <script src="../js/bootstrap.js"></script>
+    <link href="../css/bootstrap.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/font-awesome.css">
     <title th:text="${queryType}"></title>
 </head>
 <body>
-<div>
+<div class="container">
     <h2 th:text="${queryType}">
     </h2>
     <ul class="nav nav-list">
@@ -17,24 +18,33 @@
     </ul>
     <table>
         <thead>
-            <tr>
-                <th>姓名</th>
-                <th>申请类型</th>
-                <th>申请状态</th>
-                <th>所属代表团</th>
-                <th>手机号码</th>
-                <th>邮箱</th>
-                <th>操作</th>
-            </tr>
+        <tr>
+            <th>姓名</th>
+            <th>申请类型</th>
+            <th>申请状态</th>
+            <th>所属代表团</th>
+            <th>手机号码</th>
+            <th>邮箱</th>
+            <th>允许登录</th>
+        </tr>
         </thead>
         <tr th:each="member:${memberList}">
-            <td th:text="${member.name}"></td>
+            <td>
+                <i th:text="${member.name}"></i>
+                <a th:href="@{/admin/memberDetail(id=${member.ID})}">
+                <span class="fa fa-info-circle"
+                      aria-hidden="true"></span>
+                </a>
+            </td>
             <td th:text="${member.applicationType}"></td>
             <td th:text="${member.applicationStatus}"></td>
             <td th:text="${member.schoolName}"></td>
             <td th:text="${member.phone}"></td>
             <td th:text="${member.email}"></td>
-            <td><button>test</button></td>
+            <td>
+                    <span th:if="${member.enable_Login}" class="fa fa-check"></span>
+                    <span th:unless="${member.enable_Login}" class="fa fa-times" aria-hidden="true"></span>
+            </td>
         </tr>
     </table>
 </div>
