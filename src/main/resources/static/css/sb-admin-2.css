@@ -9906,7 +9906,7 @@ a:focus {
   border: 0;
   font-weight: 900;
   content: '\f105';
-  font-family: 'Font Awesome 5 Free';
+  font-family: 'FontAwesome';
 }
 
 .sidebar .nav-item.dropdown.show .dropdown-toggle::after,
@@ -10176,7 +10176,7 @@ a:focus {
 .sidebar #sidebarToggle::after {
   font-weight: 900;
   content: '\f104';
-  font-family: 'Font Awesome 5 Free';
+  font-family: 'FontAwesome';
   margin-right: 0.1rem;
 }
 
@@ -10195,7 +10195,7 @@ a:focus {
 
 .sidebar.toggled #sidebarToggle::after {
   content: '\f105';
-  font-family: 'Font Awesome 5 Free';
+  font-family: 'FontAwesome';
   margin-left: 0.25rem;
 }
 
@@ -10277,7 +10277,7 @@ a:focus {
     border: 0;
     font-weight: 900;
     content: '\f107';
-    font-family: 'Font Awesome 5 Free';
+    font-family: 'FontAwesome';
   }
   .sidebar .nav-item .nav-link[data-toggle="collapse"].collapsed::after {
     content: '\f105';
@@ -10535,7 +10535,7 @@ a:focus {
   line-height: 51px;
   font-weight: 900;
   content: '\f107';
-  font-family: 'Font Awesome 5 Free';
+  font-family: 'FontAwesome';
   color: #d1d3e2;
 }
 
