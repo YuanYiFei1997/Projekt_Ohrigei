@@ -23,4 +23,6 @@ interface AdminDao {
     String emailCheck(String email)
 
     Admin adminDetail(int id)
+
+    int countDelegate(int roleId)
 }

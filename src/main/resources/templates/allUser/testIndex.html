@@ -14,7 +14,7 @@
     <link href="../css/sb-admin-2.css" rel="stylesheet">
     <link href="../css/font-awesome.css" rel="stylesheet">
     <link href="../css/googleapis.css" rel="stylesheet">
-    <title>Title</title>
+    <title>DashBoard-Гулаш&nbsp;система&nbsp;会议管理系统</title>
 </head>
 <body id="page-top" th:fragment="testheader">
 <!-- Page Wrapper -->
@@ -52,7 +52,7 @@
         <li class="nav-item">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                aria-expanded="true" aria-controls="collapseTwo">
-                <i class="fa fa-fw fa-cog"></i>
+                <i class="fa fa-fw fa-user"></i>
                 <span>人员管理</span>
             </a>
             <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
@@ -72,19 +72,20 @@
 
         <!-- Nav Item - Utilities Collapse Menu -->
         <li class="nav-item">
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
-               aria-expanded="true" aria-controls="collapseUtilities">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseInterview"
+               aria-expanded="true" aria-controls="collapseInterview">
                 <i class="fa fa-fw fa-wrench"></i>
-                <span>Utilities</span>
+                <span>面试管理</span>
             </a>
-            <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
+            <div id="collapseInterview" class="collapse" aria-labelledby="headingInterview"
                  data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
-                    <h6 class="collapse-header">Custom Utilities:</h6>
-                    <a class="collapse-item" href="utilities-color.html">Colors</a>
-                    <a class="collapse-item" href="utilities-border.html">Borders</a>
-                    <a class="collapse-item" href="utilities-animation.html">Animations</a>
-                    <a class="collapse-item" href="utilities-other.html">Other</a>
+                    <a class="collapse-item" href="utilities-color.html">全部面试</a>
+                    <a class="collapse-item" href="utilities-border.html">全部未完成面试</a>
+                    <h6 class="collapse-header">我分配的面试：</h6>
+                    <a class="collapse-item" href="utilities-animation.html">面试队列</a>
+                    <a class="collapse-item" href="utilities-other.html">未完成面试</a>
+                    <a class="collapse-item" href="utilities-other.html">已完成面试</a>
                 </div>
             </div>
         </li>
@@ -97,34 +98,77 @@
             Addons
         </div>
 
-        <!-- Nav Item - Pages Collapse Menu -->
+        <!-- Nav Item - Committee Collapse Menu -->
         <li class="nav-item">
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
-               aria-expanded="true" aria-controls="collapsePages">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseCommittee"
+               aria-expanded="true" aria-controls="collapseCommittee">
                 <i class="fa fa-fw fa-folder"></i>
-                <span>Pages</span>
+                <span>代表团管理</span>
             </a>
-            <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+            <div id="collapseCommittee" class="collapse" aria-labelledby="headingCommittee" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
-                    <h6 class="collapse-header">Login Screens:</h6>
-                    <a class="collapse-item" href="login.html">Login</a>
-                    <a class="collapse-item" href="register.html">Register</a>
-                    <a class="collapse-item" href="forgot-password.html">Forgot Password</a>
-                    <div class="collapse-divider"></div>
-                    <h6 class="collapse-header">Other Pages:</h6>
-                    <a class="collapse-item" href="404.html">404 Page</a>
-                    <a class="collapse-item" href="blank.html">Blank Page</a>
+                    <a class="collapse-item" href="#">代表团列表</a>
+                    <a class="collapse-item" href="#">添加代表团</a>
                 </div>
             </div>
         </li>
-
-        <!-- Nav Item - Charts -->
+        <!-- Nav Item - Seat Collapse Menu -->
         <li class="nav-item">
-            <a class="nav-link" href="charts.html">
-                <i class="fa fa-fw fa-chart-line"></i>
-                <span>Charts</span></a>
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSeat"
+               aria-expanded="true" aria-controls="collapsePages">
+                <i class="fa fa-fw fa-folder"></i>
+                <span>席位管理</span>
+            </a>
+            <div id="collapseSeat" class="collapse" aria-labelledby="headingSeat" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <a class="collapse-item" href="#">全部席位</a>
+                    <a class="collapse-item" href="#">添加席位</a>
+                </div>
+            </div>
         </li>
-
+        <!-- Nav Item - Action Collapse Menu -->
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseAct"
+               aria-expanded="true" aria-controls="collapseAct">
+                <i class="fa fa-fw fa-folder"></i>
+                <span>活动管理</span>
+            </a>
+            <div id="collapseAct" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <a class="collapse-item" href="#">发起活动</a>
+                    <a class="collapse-item" href="#">全部活动</a>
+                    <a class="collapse-item" href="#">管理已发起的活动</a>
+                    <a class="collapse-item" href="#">已取消的活动</a>
+                </div>
+            </div>
+        </li>
+        <!-- Nav Item - File -->
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFile"
+               aria-expanded="true" aria-controls="collapseFile">
+                <i class="fa fa-fw fa-file"></i>
+                <span>文件</span>
+            </a>
+            <div id="collapseFile" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <a class="collapse-item" href="#">全部文件</a>
+                    <a class="collapse-item" href="#">发布文件</a>
+                </div>
+            </div>
+        </li>
+        <!-- Nav Item - Util -->
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtil" aria-expanded="true" aria-controls="collapseUtil">
+                <i class="fa fa-fw fa-wrench"></i>
+                <span>工具列表</span>
+            </a>
+            <div id="collapseUtil" class="collapse" aria-labelledby="headingUtil" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <a class="collapse-item" href="#">统计图表</a>
+                    <a class="collapse-item" href="#">导出信息</a>
+                </div>
+            </div>
+        </li>
         <!-- Nav Item - Tables -->
         <li class="nav-item">
             <a class="nav-link" href="tables.html">
@@ -363,7 +407,7 @@
                                 <div class="row no-gutters align-items-center">
                                     <div class="col mr-2">
                                         <div class="text-xs font-weight-bold text-primary">参会代表数量</div>
-                                        <div class="h5 mb-0 font-weight-bold text-gray-800">20</div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${countMap['delegate']}">0</div>
                                     </div>
                                     <div class="col-auto">
                                         <i class="fa fa-user fa-2x text-gray-300"></i>
@@ -378,7 +422,7 @@
                                 <div class="row no-gutters align-items-center">
                                     <div class="col mr-2">
                                         <div class="text-xs font-weight-bold text-success">指导教师数量</div>
-                                        <div class="h5 mb-0 font-weight-bold text-gray-800">20</div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${countMap['teacher']}">0</div>
                                     </div>
                                     <div class="col-auto">
                                         <i class="fa fa-user fa-2x text-gray-300"></i>
@@ -393,7 +437,7 @@
                                 <div class="row no-gutters align-items-center">
                                     <div class="col mr-2">
                                         <div class="text-xs font-weight-bold text-info">领队数量</div>
-                                        <div class="h5 mb-0 font-weight-bold text-gray-800">20</div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${countMap['leader']}">0</div>
                                     </div>
                                     <div class="col-auto">
                                         <i class="fa fa-user fa-2x text-gray-300"></i>
@@ -408,7 +452,7 @@
                                 <div class="row no-gutters align-items-center">
                                     <div class="col mr-2">
                                         <div class="text-xs font-weight-bold text-warning">观察员数量</div>
-                                        <div class="h5 mb-0 font-weight-bold text-gray-800">20</div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${countMap['observer']}">0</div>
                                     </div>
                                     <div class="col-auto">
                                         <i class="fa fa-user fa-2x text-gray-300"></i>
@@ -442,7 +486,7 @@
                         <div class="card shadow h-100">
                             <div class="card-header">周代表增量统计</div>
                             <div class="card-body">
-                                <div id="dataChart" style="width: 100%;height: 100%"></div>
+                                <div id="dataChart" style="width: 100%;height: 300px"></div>
                             </div>
                         </div>
                     </div>
