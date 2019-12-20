@@ -1,6 +1,7 @@
 package edu.dlufl.ohrigei.controller;
 
 import edu.dlufl.ohrigei.model.User;
+import edu.dlufl.ohrigei.service.adminService.service.AdminCountService;
 import edu.dlufl.ohrigei.service.userService.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,6 +15,8 @@ import javax.servlet.http.HttpSession;
 public class IndexController {
     int cont = 0;
     @Autowired
+    AdminCountService adminCountService;
+    @Autowired
     UserService userService;
     @RequestMapping("/")
     public String index(Model model, HttpSession session) {
@@ -23,6 +26,14 @@ public class IndexController {
             return "user/UserIndex";
         }
         return "allUser/index";
+    }
+    @RequestMapping("/testIndex")
+    public String testIndex(Model model,HttpSession httpSession){
+        return adminCountService.countDelegate(model,httpSession);
+    }
+    @RequestMapping("/testUpload")
+    public String testUpload(){
+        return "allUser/testUpload";
     }
     @RequestMapping("/header")
     public String header(){

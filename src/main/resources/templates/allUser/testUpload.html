@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script src="../js/jquery-3.4.1.min.js"></script>
+    <script src="../js/sb-admin-2.js"></script>
+    <script src="../js/popper.min.js"></script>
+    <script src="../js/bootstrap.js"></script>
+    <script src="../js/jquery.easing.js"></script>
+    <script src="../js/bootstrap.bundle.min.js"></script>
+    <script src="../js/cropper.js"></script>
+    <script src="../js/cropper-main.js"></script>
+    <link href="../css/bootstrap.css" rel="stylesheet">
+    <link href="../css/sb-admin-2.css" rel="stylesheet">
+    <link href="../css/font-awesome.css" rel="stylesheet">
+    <link href="../css/googleapis.css" rel="stylesheet">
+    <link href="../css/cropper-main.css" rel="stylesheet">
+    <link href="../css/cropper.css" rel="stylesheet">
+    <title>Title</title>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="card align-center" style="width: auto;height: auto">
+        <div class="box">
+            <img src="../img/logo/logo红底.png" alt="" id="img">
+        </div>
+    </div>
+</div>
+<script>
+    $('#img').cropper({
+        aspectRatio: 16 / 9,
+        viewMode: 1,
+        crop: function (e) {
+            console.log(e);
+        }
+    });
+</script>
+</body>
+</html>

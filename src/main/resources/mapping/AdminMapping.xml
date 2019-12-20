@@ -115,4 +115,7 @@
                  LEFT JOIN ohrigei.committee ON ohrigei.admin.committee_ID = ohrigei.committee.id
         where user.id=#{id}
     </select>
+    <select id="countDelegate" resultType="int">
+        SELECT count(*) from ohrigei.delegate where role_ID=#{roleId}
+    </select>
 </mapper>
