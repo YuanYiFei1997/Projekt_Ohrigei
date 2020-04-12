@@ -1,36 +1,138 @@
 <!DOCTYPE html>
-<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<html lang="zh" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
     <meta charset="UTF-8">
-    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>
-    <script src="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/js/bootstrap.js"></script>
-    <link href="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/css/bootstrap.css" rel="stylesheet">
-    <script src="https://cdn.bootcss.com/popper.js/1.15.0/esm/popper.min.js"></script>
-    <title>用户界面</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script src="../js/jquery-3.4.1.min.js"></script>
+    <script src="../js/sb-admin-2.js"></script>
+    <script src="../js/popper.min.js"></script>
+    <script src="../js/bootstrap.js"></script>
+    <script src="../js/jquery.easing.js"></script>
+    <script src="../js/echarts.min.js"></script>
+    <script src="../js/bootstrap.bundle.min.js"></script>
+    <link href="../css/bootstrap.css" rel="stylesheet">
+    <link href="../css/sb-admin-2.css" rel="stylesheet">
+    <link href="../css/font-awesome.css" rel="stylesheet">
+    <title>申请进度-Гулаш&nbsp;система&nbsp;会议管理系统</title>
 </head>
-<div th:replace="header::header"></div>
-<body>
-<ul>
-    <li>首页</li>
-    <li>个人信息</li>
-    <li>学术测试</li>
-    <li>文件</li>
-    <li>代表团</li>
-    <li>后勤管理</li>
-    <li>活动</li>
-    <li>账单</li>
-</ul>
-<form>
-    <table>
-        <thead><h2>待办事项</h2></thead>
-        <tbody>
-        <tr>
-            <td>xx项文件待查看</td>
-            <td>x项文件收取待提交</td>
-            <td>x份账单待支付</td>
-        </tr>
-        </tbody>
-    </table>
-</form>
+<body id="page-top">
+<div th:replace="allUser/userHeader::userHeader"></div>
+<div id="res">
+    <div>
+        <div class="card shadow">
+            <div class="card-header">
+                <div class="card-header-pills">申请进度</div>
+            </div>
+            <div class="card-body">
+                <div class="progress" style="height: 30px">
+                    <div id="applyProgressBar" class="progress-bar"></div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <div class="card shadow">
+                    <div class="card-header"><span th:text="#{applicationStatus}"></span></div>
+                    <div class="card-body">
+                        <span th:text="${description}"></span>
+                    </div>
+                </div>
+                <div class="card shadow mt-4">
+                    <div class="card-header">公告</div>
+                    <div class="card-body">
+                        <ul>
+                            <li th:each="post:${postList}" th:text="${post.postMessage}"></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card shadow">
+                    <div class="card-header"><span th:text="#{personalInformation}"></span></div>
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <img th:unless="${#strings.isEmpty(session.USER_INFO.avatarPath)}"
+                                         th:src="${session.USER_INFO.avatarPath}" alt="head"
+                                         class="rounded img-fluid float-md-right">
+                                    <img th:if="${#strings.isEmpty(session.USER_INFO.avatarPath)}"
+                                         src="../img/head/defaultHead.png" alt="head"
+                                         class="rounded img-fluid float-md-right">
+                                </div>
+                                <div class="col-md-8">
+                                    <p><strong th:text="${session.USER_INFO.name}"></strong></p>
+                                    <span th:text="#{applicationType}"></span>：<span id="applicationType"
+                                                                                     th:text="${delegateInfo.applicationType}"></span>
+                                    <br>
+                                    <span th:text="#{applicationStatus}"></span>：<span id="applicationStatus"
+                                                                                       th:text="${delegateInfo.applicationStatus}"></span>
+                                    <hr>
+                                    <p><strong th:text="#{contactInformation}"></strong></p>
+                                    <i class="fa fa-phone"></i>&nbsp;<span th:text="${delegateInfo.phone}"></span>
+                                    <br>
+                                    <i class="fa fa-envelope"></i>&nbsp;<span th:text="${delegateInfo.email}"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <a th:href="@{/user/userProfile(id=${delegateInfo.ID})}"><i class="fa fa-edit"></i><span
+                                    th:text="#{editInformation}"></span></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
+<script>
+    $(function () {
+        $('#main').append($('#res').html());
+        $('#res').remove();
+        applyStatusBar();
+    });
+
+    function applyStatusBar() {
+        var applyStatus = [[${delegateInfo.applicationStatusID}]];
+        switch (applyStatus) {
+            case 1:
+                $('#applyProgressBar').css('width', '16.6%');
+                break;
+            case 3:
+                $('#applyProgressBar').css('width', '33.2%');
+                break;
+            case 5:
+                $('#applyProgressBar').css('width', '50%');
+                break;
+            case 7:
+                $('#applyProgressBar').css('width', '66.5');
+                break;
+            case 8:
+                $('#applyProgressBar').css('width', '83%');
+                break;
+            case 10:
+                $('#applyProgressBar').css('width', '100%').addClass('bg-success');
+                break;
+            default:
+                $('#applyProgressBar').css('width', '100%').addClass('bg-danger');
+                break;
+        }
+    }
+
+    function test() {
+        var applyStatusText = $('#applicationStatus').text();
+        console.log(applyStatusText)
+    }
+</script>
+<script>
+    $("#sidebarToggle, #sidebarToggleTop").onclick(function (e) {
+        $("body").attr("class", "sidebar-toggled");
+        $(".sidebar").toggleClass("toggled");
+        if ($(".sidebar").hasClass("toggled")) {
+            $('.sidebar .collapse').collapse('hide');
+        }
+    });
+</script>
 </html>

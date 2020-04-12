@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh-cn" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script src="../js/jquery-3.4.1.min.js"></script>
+    <script src="../js/popper.min.js"></script>
+    <script src="../js/bootstrap.js"></script>
+    <script src="../js/sb-admin-2.js"></script>
+    <script src="../js/cropper.js"></script>
+    <script src="../js/jquery.easing.js"></script>
+    <script src="../js/jquery-cropper.js"></script>
+    <script src="../js/bootstrap.bundle.min.js"></script>
+    <script src="../js/bootstrap-select.js"></script>
+    <script src="../js/bootstrap-select-defaults-zh_CN.js"></script>
+    <link href="../css/bootstrap.css" rel="stylesheet">
+    <link href="../css/sb-admin-2.css" rel="stylesheet">
+    <link href="../css/font-awesome.css" rel="stylesheet">
+    <link href="../css/cropper.css" rel="stylesheet">
+    <link href="../css/bootstrap-select.css" rel="stylesheet">
+    <title>添加委员会-Гулаш&nbsp;система&nbsp;会议管理系统</title>
+</head>
+<body>
+<div th:replace="allUser/adminHeader::adminHeader"></div>
+<div id="res">
+    <h3>委员会管理</h3>
+    <hr>
+    <div class="card shadow h-100">
+        <div class="card-header">
+            <span>添加委员会</span>
+        </div>
+        <div class="card-body">
+            <div>
+                <div class="mt-2">
+                    <label for="committeeName">委员会名称<span style="color: red">*</span></label>
+                    <input id="committeeName" type="text">
+                </div>
+                <div class="mt-2">
+                    <label for="seatWidth">席位容量<span style="color: red">*</span></label>
+                    <input id="seatWidth" type="number">
+                </div>
+                <div class="mt-2">
+                    <label for="chairmanID">设置委员会主席</label>
+                    <select id="chairmanID" class="selectpicker" title="请选择一位管理员">
+                        <option th:each="admin:${adminList}" th:text="${admin.name}" th:value="${admin.id}"></option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="btn-group">
+                <button class="btn btn-primary" onclick="addCommittee()">添加委员会</button>
+                <button class="btn btn-secondary" onclick="history.back(-1)">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    $(function () {
+        $('#main').append($('#res').html());
+        $('.selectpicker').selectpicker(
+            {
+                liveSearch: true
+            }
+        );
+        $('#res').remove();
+    });
+
+    function addCommittee() {
+        var committeeName = $('#committeeName').val();
+        var seatWidth = $('#seatWidth').val();
+        var chairmanID = $('#chairmanID').val();
+        if (seatWidth <= 0) {
+            alert('席位容量不能小于0')
+        } else if (seatWidth === '' || committeeName === '') {
+            alert('必填项不能为空')
+        } else {
+            $.ajax({
+                type: 'POST',
+                url: '/admin/addCommittee',
+                datatype: 'json',
+                data: {
+                    'committeeName': committeeName,
+                    'seatWidth': seatWidth,
+                    'chairmanID': chairmanID
+                },
+                success: function (data) {
+                    if (data['status'] === 'SUCCESS') {
+                        alert('添加成功');
+                        window.location.reload()
+                    } else if (data['status'] === 'ERROR') {
+                        alert('添加失败，请稍后再试');
+                        window.location.reload()
+                    }
+                }
+            })
+        }
+    }
+</script>
+</html>

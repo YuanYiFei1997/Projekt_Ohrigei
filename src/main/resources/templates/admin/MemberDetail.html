@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script src="../js/jquery-3.4.1.min.js"></script>
+    <script src="../js/popper.min.js"></script>
+    <script src="../js/bootstrap.js"></script>
+    <script src="../js/sb-admin-2.js"></script>
+    <script src="../js/cropper.js"></script>
+    <script src="../js/jquery.easing.js"></script>
+    <script src="../js/jquery-cropper.js"></script>
+    <script src="../js/bootstrap.bundle.min.js"></script>
+    <script src="../js/dataTables.bootstrap4.min.js"></script>
+    <script src="../js/bootstrap-select.js"></script>
+    <script src="../js/bootstrap-select-defaults-zh_CN.js"></script>
+    <link href="../css/bootstrap.css" rel="stylesheet">
+    <link href="../css/sb-admin-2.css" rel="stylesheet">
+    <link href="../css/font-awesome.css" rel="stylesheet">
+    <link href="../css/cropper.css" rel="stylesheet">
+    <link href="../css/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <link href="../css/bootstrap-select.css" rel="stylesheet">
+    <title>用户详情-Гулаш&nbsp;система&nbsp;会议管理系统</title>
+</head>
+<body>
+<div th:replace="allUser/adminHeader::adminHeader"></div>
+<div id="res">
+    <h2>代表详细信息</h2>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card shadow h-100" th:object="${delegate}">
+                <div class="card-header">
+                    <img class="rounded-circle" src="../img/head/test.png" alt="" style="width: 3em;height: 3em"><span
+                        class="ml-2" th:text="${delegate.name}"></span>
+                </div>
+                <div class="card-body">
+                    <h3>基础信息</h3>
+                    <table class="table table-hover text-center">
+                        <tr>
+                            <td>代表ID</td>
+                            <td><span th:text="${delegate.ID}"></span></td>
+                        </tr>
+                        <tr>
+                            <td>代表姓名</td>
+                            <td><span th:text="${delegate.name}"></span></td>
+                        </tr>
+                        <tr>
+                            <td>代表电子邮箱</td>
+                            <td><span th:text="${delegate.email}"></span></td>
+                        </tr>
+                        <tr>
+                            <td>代表手机号码</td>
+                            <td><span th:text="${delegate.phone}"></span></td>
+                        </tr>
+                        <tr>
+                            <td>是否允许登录</td>
+                            <td>
+                                <span id="loginStatus" th:if="${delegate.enable_Login}" class="fa fa-check"></span>
+                                <span id="loginStatus" th:unless="${delegate.enable_Login}" class="fa fa-times"
+                                      aria-hidden="true"></span>
+                            </td>
+                        </tr>
+                    </table>
+                    <h3>申请信息</h3>
+                    <table class="table table-hover text-center">
+                        <tr>
+                            <td>申请类型</td>
+                            <td><span th:text="${delegate.applicationType}"></span></td>
+                        </tr>
+                        <tr>
+                            <td>申请状态</td>
+                            <td><span id="applicationStatus" th:text="${delegate.applicationStatus}"></span>
+                                <button id="applicationStatusButton" class="btn btn-primary"
+                                        onclick="editApplication()"><i class="fa fa-edit"></i></button>
+                                <div id="applicationSelectGroup" hidden="hidden">
+                                    <select id="applicationStatusSelect" title="选择一个申请状态"></select>
+                                    <button id="cancelApplicationStatusEdit" class="btn btn-secondary" onclick="cancelEditApplication()"><i
+                                            class="fa fa-times"></i></button>
+                                    <button id="submitApplicationStatusEdit" class="btn btn-primary" onclick="submitEditApplication()"><i
+                                            class="fa fa-check"></i></button>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                    <h3>其他信息</h3>
+                    <table class="table table-hover text-center">
+                        <tr>
+                            <td>所属代表团</td>
+                            <td><a th:text="${delegate.schoolName}"
+                                   th:href="@{/admin/groupMemberDetailPage(groupID=${delegate.groupID})}"></a></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <h3>修改登陆权限</h3>
+            <button class="btn btn-primary" id="editLoginStatusButton" onclick="editLoginStatus()">修改</button>
+            <hr>
+            <h3>修改申请状态</h3>
+            <button class="btn btn-primary" id="editApplyStatusButton">修改</button>
+            <hr>
+            <h3>修改代表团</h3>
+            <button class="btn btn-primary" id="editGroupInfoButton">修改</button>
+        </div>
+    </div>
+</div>
+<script>
+    $("#sidebarToggle, #sidebarToggleTop").onclick(function (e) {
+        $("body").attr("class", "sidebar-toggled");
+        $(".sidebar").toggleClass("toggled");
+        if ($(".sidebar").hasClass("toggled")) {
+            $('.sidebar .collapse').collapse('hide');
+        }
+    });
+</script>
+<script>
+    $(function () {
+        $('#main').append($('#res').html());
+        $('#res').remove();
+    });
+
+    function editLoginStatus() {
+        var statusCheck = $('#loginStatus').hasClass('fa-check');
+        if (statusCheck === true) {
+            $.ajax({
+                type: 'POST',
+                url: '/admin/modifyUserLoginStatus',
+                dataType: 'json',
+                data: {
+                    'LoginStatus': 'true',
+                    'userID': [[${delegate.ID}]]
+                },
+                success: function (data) {
+                    if (data['status'] === 'SUCCESS') {
+                        $('#loginStatus').removeClass('fa-check').addClass('fa-times')
+                    } else if (data['status'] === 'ERROR') {
+                        alert('修改登陆权限失败请稍后再试')
+                    }
+                }
+            })
+        } else if (statusCheck === false) {
+            $.ajax({
+                type: 'POST',
+                url: '/admin/modifyUserLoginStatus',
+                dataType: 'json',
+                data: {
+                    'LoginStatus': 'false',
+                    'userID': [[${delegate.ID}]]
+                },
+                success: function (data) {
+                    if (data['status'] === 'SUCCESS') {
+                        $('#loginStatus').removeClass('fa-times').addClass('fa-check')
+                    } else if (data['status'] === 'ERROR') {
+                        alert('修改登陆权限失败请稍后再试')
+                    }
+                }
+            })
+        }
+    }
+    function editApplication() {
+        $('#applicationStatus').attr('hidden', 'hidden');
+        $('#applicationStatusButton').attr('hidden', 'hidden');
+        $('#applicationSelectGroup').removeAttr('hidden');
+        var count=0;
+        if(count === 0){
+            $.ajax({
+                url: '/admin/getApplicationStatusList',
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    for (var i = 0; i < data.length; i++) {
+                        $('#applicationStatusSelect').append("<option value=" + data[i].id + ">" + data[i].text + "</option>")
+                    }
+                    $('#applicationStatusSelect').selectpicker('refresh');
+                    $('#applicationStatusSelect').selectpicker('render');
+                    count=count+1
+                }
+            });
+        }
+
+    }
+    function cancelEditApplication(){
+        $('#applicationStatus').removeAttr('hidden');
+        $('#applicationStatusButton').removeAttr('hidden');
+        $('#applicationSelectGroup').attr('hidden','hidden');
+    }
+    function submitEditApplication(){
+        var id=[[${delegate.ID}]];
+        var applicationStatus= $('#applicationStatusSelect').val();
+        $.ajax({
+            url:'/admin/modifyApplicationStatus',
+            type:'POST',
+            dataType:'json',
+            data:{
+                'id':id,
+                'applicationStatus':applicationStatus
+            },
+            success:function (data) {
+                if (data['status']==='SUCCESS'){
+                    alert('修改申请状态成功');
+                    window.location.reload()
+                }else{
+                    alert('修改申请状态失败');
+                    window.location.reload()
+                }
+            }
+        })
+    }
+    $(function () {
+        $('#applicationStatusSelect').selectpicker(
+            {
+                liveSearch: true
+            }
+        );
+    })
+</script>
+</body>
+</html>

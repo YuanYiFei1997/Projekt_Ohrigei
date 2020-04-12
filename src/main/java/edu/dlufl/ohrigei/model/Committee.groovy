@@ -2,9 +2,34 @@ package edu.dlufl.ohrigei.model
 
 class Committee {
     private int id
-    private String name
+    private String committeeName
     private int seatWidth
-    private String chairManName
+    private int chairmanID
+    private String chairmanName
+
+    String getCommitteeName() {
+        return committeeName
+    }
+
+    void setCommitteeName(String committeeName) {
+        this.committeeName = committeeName
+    }
+
+    int getChairmanID() {
+        return chairmanID
+    }
+
+    void setChairmanID(int chairmanID) {
+        this.chairmanID = chairmanID
+    }
+
+    String getChairmanName() {
+        return chairmanName
+    }
+
+    void setChairmanName(String chairmanName) {
+        this.chairmanName = chairmanName
+    }
 
     int getId() {
         return id
@@ -14,13 +39,6 @@ class Committee {
         this.id = id
     }
 
-    String getName() {
-        return name
-    }
-
-    void setName(String name) {
-        this.name = name
-    }
 
     int getSeatWidth() {
         return seatWidth
@@ -30,21 +48,14 @@ class Committee {
         this.seatWidth = seatWidth
     }
 
-    String getChairManName() {
-        return chairManName
-    }
-
-    void setChairManName(String chairManName) {
-        this.chairManName = chairManName
-    }
-
     @Override
-    String toString() {
+    public String toString() {
         return "Committee{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", seatWidth=" + seatWidth +
-                ", chairManName='" + chairManName + '\'' +
+                ", chairmanID=" + chairmanID +
+                ", chairmanName='" + chairmanName + '\'' +
                 '}';
     }
 }

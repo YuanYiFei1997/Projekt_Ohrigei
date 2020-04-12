@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="zh-cn" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script src="../js/jquery-3.4.1.min.js"></script>
+    <script src="../js/popper.min.js"></script>
+    <script src="../js/bootstrap.js"></script>
+    <script src="../js/sb-admin-2.js"></script>
+    <script src="../js/cropper.js"></script>
+    <script src="../js/jquery.easing.js"></script>
+    <script src="../js/jquery-cropper.js"></script>
+    <script src="../js/bootstrap.bundle.min.js"></script>
+    <script src="../js/bootstrap-select.js"></script>
+    <script src="../js/bootstrap-select-defaults-zh_CN.js"></script>
+    <link href="../css/bootstrap.css" rel="stylesheet">
+    <link href="../css/sb-admin-2.css" rel="stylesheet">
+    <link href="../css/font-awesome.css" rel="stylesheet">
+    <link href="../css/cropper.css" rel="stylesheet">
+    <link href="../css/bootstrap-select.css" rel="stylesheet">
+    <title>DashBoard-Гулаш&nbsp;система&nbsp;会议管理系统</title>
+</head>
+<body id="page-top">
+<div th:fragment="adminHeader">
+    <!-- Page Wrapper -->
+    <div id="wrapper" th:object="${session.USER_INFO}">
+
+        <!-- Sidebar -->
+        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+            <!-- Sidebar - Brand -->
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/admin/DashBoard">
+                <div class="sidebar-brand-icon rotate-n-15">
+                    <i class="fa fa-github"></i>
+                </div>
+                <div class="sidebar-brand-text mx-3">Гулаш&nbsp;система</div>
+            </a>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider my-0">
+            <!-- Nav Item - Dashboard -->
+            <li class="nav-item active">
+                <a class="nav-link" th:href="@{/admin/DashBoard}">
+                    <i class="fa fa-fw fa-tachometer"></i>
+                    <span>Dashboard</span></a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                Interface
+            </div>
+
+            <!-- Nav Item - Pages Collapse Menu -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+                   aria-expanded="true" aria-controls="collapseTwo">
+                    <i class="fa fa-fw fa-user"></i>
+                    <span>人员管理</span>
+                </a>
+                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">代表管理：</h6>
+                        <a class="collapse-item" th:href="@{/admin/manage(type=delegate)}">参会代表</a>
+                        <a class="collapse-item" th:href="@{/admin/manage(type=teacher)}">指导教师</a>
+                        <a class="collapse-item" th:href="@{/admin/manage(type=observer)}">观察员</a>
+                        <a class="collapse-item" th:href="@{/admin/manage(type=leader)}">领队</a>
+                        <div class="collapse-divider"></div>
+                        <h6 class="collapse-header">管理员管理：</h6>
+                        <a class="collapse-item" th:href="@{/admin/manage(type=admin)}">管理员列表</a>
+                        <a class="collapse-item" th:href="@{/admin/addAdminPage}">添加管理员</a>
+                    </div>
+                </div>
+            </li>
+
+            <!-- Nav Item - Utilities Collapse Menu -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseInterview"
+                   aria-expanded="true" aria-controls="collapseInterview">
+                    <i class="fa fa-fw fa-wrench"></i>
+                    <span>面试管理</span>
+                </a>
+                <div id="collapseInterview" class="collapse" aria-labelledby="headingInterview"
+                     data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" th:href="@{/admin/addInterview}">发起面试</a>
+                        <a class="collapse-item" th:href="@{/admin/interviewList(type=all)}">全部面试</a>
+                        <a class="collapse-item" th:href="@{/admin/interviewList(type=undone)}">全部未完成面试</a>
+                        <h6 class="collapse-header">我分配的面试：</h6>
+                        <a class="collapse-item" th:href="@{/admin/interviewList(type=assignToMe)}">面试队列</a>
+                        <a class="collapse-item" th:href="@{/admin/interviewList(type=undoneByMe)}">未完成面试</a>
+                        <a class="collapse-item" th:href="@{/admin/interviewList(type=doneByMe)}">已完成面试</a>
+                    </div>
+                </div>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                Addons
+            </div>
+
+            <!-- Nav Item - Committee Collapse Menu -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseGroup"
+                   aria-expanded="true" aria-controls="collapseGroup">
+                    <i class="fa fa-fw fa-folder"></i>
+                    <span>代表团管理</span>
+                </a>
+                <div id="collapseGroup" class="collapse" aria-labelledby="headingCommittee"
+                     data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" th:href="@{/admin/groupDetailPage}">代表团列表</a>
+                        <a class="collapse-item" th:href="@{/admin/addGroupPage}">添加代表团</a>
+                    </div>
+                </div>
+            </li>
+            <!-- Nav Item - Seat Collapse Menu -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSeat"
+                   aria-expanded="true" aria-controls="collapsePages">
+                    <i class="fa fa-fw fa-folder"></i>
+                    <span>席位管理</span>
+                </a>
+                <div id="collapseSeat" class="collapse" aria-labelledby="headingSeat" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" th:href="@{/admin/allSeatList}">全部席位</a>
+                        <a class="collapse-item" th:href="@{/admin/addSeatPage}">添加席位</a>
+                        <h6 class="collapse-header">处理席位选定</h6>
+                        <a class="collapse-item" th:href="@{/admin/seatWaitProcess}">待确认的席位</a>
+                    </div>
+                </div>
+            </li>
+            <!-- Nav Item - school Collapse Menu -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSchool"
+                   aria-expanded="true" aria-controls="collapsePages">
+                    <i class="fa fa-fw fa-folder"></i>
+                    <span>学校管理</span>
+                </a>
+                <div id="collapseSchool" class="collapse" aria-labelledby="headingSchool"
+                     data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" th:href="@{/admin/allSchoolList}">全部学校</a>
+                        <a class="collapse-item" th:href="@{/admin/addSchoolPage}">添加学校</a>
+                    </div>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseCommittee"
+                   aria-expanded="true" aria-controls="collapseCommittee">
+                    <i class="fa fa-fw fa-folder"></i>
+                    <span>委员会管理</span>
+                </a>
+                <div id="collapseCommittee" class="collapse" aria-labelledby="headingCommittee"
+                     data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" th:href="@{/admin/committeeListPage}">委员会列表</a>
+                        <a class="collapse-item" th:href="@{/admin/addCommitteePage}">添加委员会</a>
+                    </div>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseBill"
+                   aria-expanded="true" aria-controls="collapseBill">
+                    <i class="fa fa-fw fa-folder"></i>
+                    <span>账单管理</span>
+                </a>
+                <div id="collapseBill" class="collapse" aria-labelledby="headingBill"
+                     data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" th:href="@{/admin/allBillList(type=all)}">全部账单</a>
+                        <a class="collapse-item" th:href="@{/admin/allBillList(type=unpaid)}">未支付账单</a>
+                        <a class="collapse-item" th:href="@{/admin/allBillList(type=paid)}">已支付账单</a>
+                    </div>
+                </div>
+            </li>
+            <!-- Nav Item - File -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFile"
+                   aria-expanded="true" aria-controls="collapseFile">
+                    <i class="fa fa-fw fa-file"></i>
+                    <span>文件</span>
+                </a>
+                <div id="collapseFile" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" href="#">全部文件</a>
+                        <a class="collapse-item" href="#">发布文件</a>
+                    </div>
+                </div>
+            </li>
+            <!-- Nav Item - Util -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtil"
+                   aria-expanded="true" aria-controls="collapseUtil">
+                    <i class="fa fa-fw fa-wrench"></i>
+                    <span>工具列表</span>
+                </a>
+                <div id="collapseUtil" class="collapse" aria-labelledby="headingUtil" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" href="#">统计图表</a>
+                        <a class="collapse-item" href="#">导出信息</a>
+                    </div>
+                </div>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider d-none d-md-block">
+            <div class="text-center d-none d-md-inline">
+                <button class="rounded-circle border-0" id="sidebarToggle"></button>
+            </div>
+
+        </ul>
+        <!-- End of Sidebar -->
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+
+                <!-- Topbar -->
+                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+                    <!-- Sidebar Toggle (Topbar) -->
+                    <button id="sidebarToggle" class="btn btn-link d-md-none rounded-circle mr-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
+
+                    <!-- Topbar Search -->
+                    <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+                        <div class="input-group">
+                            <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
+                                   aria-label="Search" aria-describedby="basic-addon2">
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" type="button">
+                                    <i class="fa fa-search fa-sm"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <!-- Topbar Navbar -->
+                    <ul class="navbar-nav ml-auto">
+
+                        <!-- Nav Item - Search Dropdown (Visible Only XS) -->
+                        <li class="nav-item dropdown no-arrow d-sm-none">
+                            <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fa fa-search fa-fw"></i>
+                            </a>
+                            <!-- Dropdown - Messages -->
+                            <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
+                                 aria-labelledby="searchDropdown">
+                                <form class="form-inline mr-auto w-100 navbar-search">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control bg-light border-0 small"
+                                               placeholder="Search for..." aria-label="Search"
+                                               aria-describedby="basic-addon2">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary" type="button">
+                                                <i class="fa fa-search fa-sm"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </li>
+
+                        <div class="topbar-divider d-none d-sm-block"></div>
+
+                        <!-- Nav Item - User Information -->
+                        <li class="nav-item dropdown no-arrow">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small"
+                                      th:text="${session.USER_INFO.name}">test User</span>
+                                <img class="img-profile rounded-circle"
+                                     th:unless="${#strings.isEmpty(session.USER_INFO.avatarPath)}"
+                                     th:src="${session.USER_INFO.avatarPath}" alt="head">
+                                <img class="img-profile rounded-circle"
+                                     th:if="${#strings.isEmpty(session.USER_INFO.avatarPath)}"
+                                     src="../img/head/defaultHead.png" alt="head">
+                            </a>
+                            <!-- Dropdown - User Information -->
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                 aria-labelledby="userDropdown">
+                                <a class="dropdown-item" th:href="@{/admin/profile(id=${session.USER_INFO.id})}">
+                                    <i class="fa fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    个人资料
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                    <i class="fa fa-sign-out fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    登出
+                                </a>
+                            </div>
+                        </li>
+                    </ul>
+                </nav>
+                <!-- End of Topbar -->
+                <div class="container-fluid" id="main"></div>
+            </div>
+            <!-- End of Main Content -->
+
+            <div th:replace="allUser/footer::footer"></div>
+        </div>
+        <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Logout Modal-->
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">确定离开？</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">请选择登出按钮以离开</div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">取消</button>
+                    <a class="btn btn-primary" th:href="@{/logout}">登出</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fa fa-angle-up"></i>
+    </a>
+    <script>
+        $("#sidebarToggle, #sidebarToggleTop").on('click', function (e) {
+            $("body").toggleClass("sidebar-toggled");
+            $(".sidebar").toggleClass("toggled");
+            if ($(".sidebar").hasClass("toggled")) {
+                $('.sidebar .collapse').collapse('hide');
+            }
+        });
+    </script>
+</div>
+</body>
+</html>

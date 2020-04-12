@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script src="../js/jquery-3.4.1.min.js"></script>
+    <script src="../js/popper.min.js"></script>
+    <script src="../js/bootstrap.js"></script>
+    <script src="../js/sb-admin-2.js"></script>
+    <script src="../js/cropper.js"></script>
+    <script src="../js/jquery.easing.js"></script>
+    <script src="../js/jquery-cropper.js"></script>
+    <script src="../js/bootstrap.bundle.min.js"></script>
+    <script src="../js/dataTables.bootstrap4.min.js"></script>
+    <link href="../css/bootstrap.css" rel="stylesheet">
+    <link href="../css/sb-admin-2.css" rel="stylesheet">
+    <link href="../css/font-awesome.css" rel="stylesheet">
+    <link href="../css/cropper.css" rel="stylesheet">
+    <link href="../css/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <title>代表团信息-Гулаш&nbsp;система&nbsp;会议管理系统</title>
+</head>
+<body>
+<div th:replace="allUser/adminHeader::adminHeader"></div>
+<div id="res" hidden="hidden">
+    <h1>代表团列表</h1>
+    <hr>
+    <table id="groupDetailTable" class="table table-hover text-center">
+        <thead>
+        <tr>
+            <td>#</td>
+            <td>所属学校</td>
+            <td>领队代表</td>
+            <td>代表团容量</td>
+            <td>操作</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="group:${groupList}">
+            <td th:text="${group.id}"></td>
+            <td><a th:text="${group.schoolName}" th:href="@{/admin/schoolDetail(id=${group.schoolID})}"></a></td>
+            <td><a th:text="${group.headDelegateName}"
+                   th:href="@{/admin/memberDetailPage(id=${group.headDelegateID})}"></a>
+            </td>
+            <td th:text="${group.groupSize}+'人'"></td>
+            <td>
+                <a th:href="@{/admin/groupMemberDetail(groupID=${group.id})}"><i class="fa fa-users" aria-hidden="true"></i>成员</a>
+                <a th:href="@{/admin/modifyGroupPage(groupID=${group.id})}"><i class="fa fa-pencil-square-o"
+                                                                      aria-hidden="true"></i>编辑</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+<script>
+    $("#sidebarToggle, #sidebarToggleTop").onclick(function (e) {
+        $("body").attr("class", "sidebar-toggled");
+        $(".sidebar").toggleClass("toggled");
+        if ($(".sidebar").hasClass("toggled")) {
+            $('.sidebar .collapse').collapse('hide');
+        }
+    });
+</script>
+<script>
+    //将id=res的div内部的html标签传递给id为main的div
+    $(function () {
+        $('#main').append($('#res').html());
+        $('#res').remove();
+    });
+</script>
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script src="../js/jquery-3.4.1.min.js"></script>
+    <script src="../js/popper.min.js"></script>
+    <script src="../js/bootstrap.js"></script>
+    <script src="../js/sb-admin-2.js"></script>
+    <script src="../js/cropper.js"></script>
+    <script src="../js/jquery.easing.js"></script>
+    <script src="../js/jquery-cropper.js"></script>
+    <script src="../js/bootstrap.bundle.min.js"></script>
+    <script src="../js/dataTables.bootstrap4.min.js"></script>
+    <script src="../js/bootstrap-select.js"></script>
+    <script src="../js/bootstrap-select-defaults-zh_CN.js"></script>
+    <link href="../css/bootstrap.css" rel="stylesheet">
+    <link href="../css/sb-admin-2.css" rel="stylesheet">
+    <link href="../css/font-awesome.css" rel="stylesheet">
+    <link href="../css/cropper.css" rel="stylesheet">
+    <link href="../css/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <link href="../css/bootstrap-select.css" rel="stylesheet">
+    <title>分配面试-Гулаш&nbsp;система&nbsp;会议管理系统</title>
+</head>
+<body>
+<div th:replace="allUser/adminHeader::adminHeader"></div>
+<div id="res">
+    <h2>分配面试</h2>
+    <hr>
+    <div class="card shadow h-100">
+        <div class="card-header">
+            <span>分配面试</span>
+        </div>
+        <div class="card-body">
+            <div class="mt-2">
+                <label for="delegateSelect">选择一名代表<span style="color: red">*</span></label>
+                <select id="delegateSelect" title="请选择一名代表" class="selectpicker">
+                    <option th:each="delegate:${delegateList}" th:text="${delegate.name}"
+                            th:value="${delegate.ID}"></option>
+                </select>
+            </div>
+            <div class="mt-2">
+                <label for="adminSelect">指定一名管理员<span style="color: red">*</span></label>
+                <select id="adminSelect" title="请指定一名管理员" class="selectpicker">
+                    <option th:each="admin:${adminList}" th:text="${admin.name}" th:value="${admin.id}"></option>
+                </select>
+            </div>
+            <div class="mt-2">
+                <label for="interviewTime">指定面试时间<span style="color: red">*</span></label>
+                <input id="interviewTime" type="datetime-local">
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="btn-group">
+                <button class="btn btn-primary" onclick="submitInterview()">保存面试信息</button>
+                <button class="btn btn-secondary" onclick="history.back(-1)">取消分配面试</button>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    //将id=res的div内部的html标签传递给id为main的div
+    $(function () {
+        $('#main').append($('#res').html());
+        //select插件配置信息
+        $('.selectpicker').selectpicker(
+            {
+                liveSearch: true
+            }
+        );
+        $('#res').remove();
+    });
+    function submitInterview() {
+        var delegateID=$('#delegateSelect').val();
+        var adminID=$('#adminSelect').val();
+        var interviewDate=$('#interviewTime').val();
+        if (delegateID===''&&adminID===''&&interviewDate===''){
+            alert('必填项不能为空')
+        }else {
+            $.ajax({
+                type:'POST',
+                url:'/admin/addInterview',
+                datatype:'json',
+                data:{
+                    'delegateID':delegateID,
+                    'adminID':adminID,
+                    'interviewDate':interviewDate
+                },
+                success:function (data) {
+                    if(data['status']==='SUCCESS'){
+                        alert('添加面试成功');
+                        window.location.reload()
+                    }else {
+                        alert('添加失败请稍后重试');
+                        window.location.reload()
+                    }
+                }
+            })
+        }
+    }
+</script>
+</html>

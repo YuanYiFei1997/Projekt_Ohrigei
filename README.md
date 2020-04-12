@@ -10,3 +10,4 @@
 * Step one : git clone git@github.com:Iwakawa\-Tech/Projekt\_Ohrigei.git.
 * Step two : deploy it by IDEA.
 * Step three : run the sql file under sql dir.
+

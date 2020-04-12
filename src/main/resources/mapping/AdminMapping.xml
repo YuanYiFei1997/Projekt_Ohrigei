@@ -2,15 +2,23 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="edu.dlufl.ohrigei.dao.AdminDao">
     <resultMap id="Delegate" type="edu.dlufl.ohrigei.model.Delegate">
+        <result column="id" property="ID"/>
         <result column="name" property="name"/>
+        <result column="enable_login" property="enable_Login"/>
         <result column="school_name" property="schoolName"/>
         <result column="application_type" property="applicationType"/>
         <result column="application_status_text" property="applicationStatus"/>
         <result column="email" property="email"/>
         <result column="phone" property="phone"/>
+        <result column="group_ID" property="groupID"/>
+        <result column="avatar_path" property="avatarPath"/>
+        <result column="application_status_ID" property="applicationStatusID"/>
     </resultMap>
     <resultMap id="Group" type="edu.dlufl.ohrigei.model.Group">
+        <result column="id" property="id"/>
+        <result column="school_ID" property="schoolID"/>
         <result column="school_name" property="schoolName"/>
+        <result column="head_delegate_ID" property="headDelegateID"/>
         <result column="name" property="headDelegateName"/>
         <result column="group_size" property="groupSize"/>
     </resultMap>
@@ -23,37 +31,125 @@
         <result column="role_F" property="role_F"/>
         <result column="role_L" property="role_L"/>
         <result column="role_SG" property="role_SG"/>
+        <result column="password" property="password"/>
+        <result column="email" property="email"/>
+        <result column="phone" property="phone"/>
+        <result column="avatar_path" property="avatarPath"/>
+        <result column="committee_name" property="committeeName"/>
     </resultMap>
     <resultMap id="Committee" type="edu.dlufl.ohrigei.model.Committee">
-        <result column="name" property="name"/>
+        <result column="id" property="id"/>
+        <result column="committee_name" property="committeeName"/>
         <result column="seat_width" property="seatWidth"/>
-        <result column="uname" property="chairManName"/>
+        <result column="chairman_name" property="chairmanName"/>
+        <result column="name" property="chairmanName"/>
+        <result column="chairman_ID" property="chairmanID"/>
     </resultMap>
+    <resultMap id="School" type="edu.dlufl.ohrigei.model.School">
+        <result column="id" property="id"/>
+        <result column="school_name" property="schoolName"/>
+        <result column="school_name_EN" property="schoolNameEN"/>
+        <result column="school_type" property="schoolType"/>
+        <result column="school_address" property="schoolAddress"/>
+        <result column="size" property="size"/>
+        <result column="club_ID" property="clubID"/>
+    </resultMap>
+    <resultMap id="SchoolType" type="edu.dlufl.ohrigei.model.SchoolType">
+        <result column="id" property="id"/>
+        <result column="school_type" property="schoolType"/>
+    </resultMap>
+    <resultMap id="Seat" type="edu.dlufl.ohrigei.model.Seat">
+        <result column="id" property="id"/>
+        <result column="seat_name" property="seatName"/>
+        <result column="committee_ID" property="committeeID"/>
+        <result column="committee_name" property="committeeName"/>
+        <result column="seat_difficulty" property="seatDifficulty"/>
+        <result column="delegate_ID" property="delegateID"/>
+        <result column="name" property="delegateName"/>
+        <result column="seat_select_date" property="seatSelectDate"/>
+        <result column="seat_select_status" property="seatSelectStatus"/>
+        <result column="seat_confirm_status" property="seatConfirmStatus"/>
+        <result column="phone" property="delegatePhone"/>
+        <result column="email" property="delegateEmail"/>
+    </resultMap>
+    <resultMap id="ApplicationStatus" type="edu.dlufl.ohrigei.model.ApplicationStatus">
+        <result column="id" property="id"/>
+        <result column="application_status_text" property="applicationStatusText"/>
+        <result column="application_status_text_en" property="applicationStatusTextEN"/>
+    </resultMap>
+    <resultMap id="Interview" type="edu.dlufl.ohrigei.model.Interview">
+        <result column="id" property="id"/>
+        <result column="admin_id" property="adminID"/>
+        <result column="date" property="date"/>
+        <result column="interview_score" property="interviewScore"/>
+        <result column="academic_score" property="academicScore"/>
+        <result column="passion_score" property="passionScore"/>
+        <result column="interview_status" property="interviewStatus"/>
+        <result column="comment" property="comment"/>
+    </resultMap>
+    <resultMap id="Bill" type="edu.dlufl.ohrigei.model.Bill">
+        <result column="id" property="id"/>
+        <result column="name" property="delegateName"/>
+        <result column="bill_type_ID" property="billTypeID"/>
+        <result column="bill_amount" property="billAmount"/>
+        <result column="bill_serial_number" property="billSerialNumber"/>
+        <result column="bill_generate_date" property="billGenerateDate"/>
+        <result column="bill_pay_date" property="billPayDate"/>
+        <result column="bill_status" property="billStatus"/>
+    </resultMap>
+    <resultMap id="Post" type="edu.dlufl.ohrigei.model.Post">
+        <result column="id" property="id"/>
+        <result column="post" property="postMessage"/>
+    </resultMap>
+    <!--    select-->
     <select id="queryAllMember" resultMap="Delegate">
-        SELECT ohrigei.user.name,
+        SELECT ohrigei.user.id,
+               ohrigei.user.name,
+               ohrigei.user.enable_login,
                ohrigei.user.email,
                ohrigei.user.phone,
+               ohrigei.delegate.group_ID,
                ohrigei.school_info.school_name,
                ohrigei.application_type.application_type,
                ohrigei.application_status.application_status_text
         FROM ohrigei.delegate
-                 left join user  on delegate.id = ohrigei.user.id
-                 left join `group`  on delegate.group_ID = `group`.id
+                 left join user on delegate.id = ohrigei.user.id
+                 left join `group` on delegate.group_ID = `group`.id
                  left join school_info on ohrigei.group.school_ID = school_info.id
-                 left join application_type  on application_type.id=delegate.application_type_ID
-                 left join application_status  on application_status.id=delegate.application_status_ID
-        WHERE ohrigei.delegate.role_ID =#{type}
+                 left join application_type on application_type.id = delegate.application_type_ID
+                 left join application_status on application_status.id = delegate.application_status_ID
+        WHERE ohrigei.delegate.role_ID = #{type}
+          AND `user`.role_ID = 2
+    </select>
+    <select id="queryMemberById" resultMap="Delegate">
+        SELECT ohrigei.user.id,
+               ohrigei.user.name,
+               ohrigei.user.enable_login,
+               ohrigei.user.email,
+               ohrigei.user.phone,
+               ohrigei.delegate.group_ID,
+               ohrigei.school_info.school_name,
+               ohrigei.application_type.application_type,
+               ohrigei.application_status.application_status_text
+        FROM ohrigei.delegate
+                 left join user on delegate.id = ohrigei.user.id
+                 left join `group` on delegate.group_ID = `group`.id
+                 left join school_info on ohrigei.group.school_ID = school_info.id
+                 left join application_type on application_type.id = delegate.application_type_ID
+                 left join application_status on application_status.id = delegate.application_status_ID
+        WHERE `user`.id = #{id}
     </select>
     <select id="queryAllGroup" resultMap="Group">
-        SELECT school_name, ohrigei.user.name, ohrigei.`group`.group_size
-        from ohrigei.`group`,
-             school_info,
-             ohrigei.user
-        where school_info.id = school_ID
-          and ohrigei.user.id = head_delegate_ID
+        SELECT `group`.id, school_ID, head_delegate_ID, group_size, school_name, name
+        FROM `group`
+                 LEFT JOIN delegate d on `group`.head_delegate_ID = d.id
+                 LEFT JOIN user u on d.id = u.id
+                 LEFT JOIN school_info si on `group`.school_ID = si.id
+        WHERE `group`.delete_status = 0
     </select>
     <select id="queryAllAdmin" resultMap="Admin">
-        SELECT ohrigei.user.name,
+        SELECT ohrigei.user.id,
+               ohrigei.user.name,
                admin.title,
                ohrigei.committee.committee_name,
                ohrigei.admin.role_AG,
@@ -62,17 +158,426 @@
                ohrigei.admin.role_F,
                ohrigei.admin.role_L,
                ohrigei.admin.role_SG
-        from ohrigei.user,
-             ohrigei.admin,
-             ohrigei.committee
-        where type = 0
-          and ohrigei.user.id = ohrigei.admin.id
-          and admin.committee_ID = committee.committee_name
+        from ohrigei.user
+                 LEFT JOIN ohrigei.admin ON ohrigei.user.id = admin.id
+                 LEFT JOIN ohrigei.committee ON ohrigei.admin.committee_ID = ohrigei.committee.id
+        where role_ID = 1
     </select>
     <select id="queryAllCommittee" resultMap="Committee">
-        SELECT committee.name, seat_width, ohrigei.user.name uname
-        from committee,
-             user
-        where ohrigei.committee.chairman_ID
+        SELECT committee.id, committee.committee_name, seat_width, ohrigei.user.name, chairman_ID
+        FROM committee
+                 left join user on chairman_ID = user.id
     </select>
+    <select id="queryCommitteeIDAndName" resultMap="Committee">
+        SELECT id, committee_name
+        FROM committee
+    </select>
+    <select id="emailCheck" resultType="string">
+        SELECT ohrigei.user.email
+        from ohrigei.user
+        where email = #{email}
+    </select>
+    <select id="adminDetail" resultMap="Admin">
+        SELECT ohrigei.user.name,
+               user.email,
+               user.phone,
+               admin.title,
+               ohrigei.committee.committee_name,
+               ohrigei.admin.role_AG,
+               ohrigei.admin.role_AD,
+               ohrigei.admin.role_D,
+               ohrigei.admin.role_F,
+               ohrigei.admin.role_L,
+               ohrigei.admin.role_SG
+        from ohrigei.user
+                 LEFT JOIN ohrigei.admin ON ohrigei.user.id = admin.id
+                 LEFT JOIN ohrigei.committee ON ohrigei.admin.committee_ID = ohrigei.committee.id
+        where user.id = #{id}
+    </select>
+    <select id="countDelegate" resultType="int">
+        SELECT count(*)
+        from ohrigei.delegate
+        where role_ID = #{roleId}
+    </select>
+    <select id="countSeatByCommitteeID" resultType="int">
+        SELECT count(*)
+        FROM seat
+        WHERE committee_ID = #{committeeID}
+    </select>
+    <select id="committeeWidthSizeGet" resultType="int">
+        SELECT seat_width
+        FROM committee
+        WHERE id = #{committeeID}
+    </select>
+    <select id="queryAllSchool" resultMap="School">
+        SELECT school_info.id, school_name, school_name_EN, school_address, size, club_ID, school_type
+        FROM school_info
+                 LEFT JOIN school_type st on school_info.school_type_ID = st.id
+    </select>
+    <select id="queryMemberAbleToUse" resultMap="Delegate">
+        SELECT ohrigei.user.id,
+               ohrigei.user.name,
+               ohrigei.user.email,
+               ohrigei.user.phone,
+               ohrigei.school_info.school_name,
+               ohrigei.application_type.application_type,
+               ohrigei.application_status.application_status_text
+        FROM ohrigei.delegate
+                 left join user on delegate.id = ohrigei.user.id
+                 left join `group` on delegate.group_ID = `group`.id
+                 left join school_info on ohrigei.group.school_ID = school_info.id
+                 left join application_type on application_type.id = delegate.application_type_ID
+                 left join application_status on application_status.id = delegate.application_status_ID
+        WHERE ohrigei.delegate.role_ID = 1
+          AND user.enable_login = 1
+          AND `user`.role_ID = 2
+    </select>
+    <select id="getInsertID" resultType="int">
+        select ohrigei.user.id
+        from ohrigei.user
+        where email = #{email}
+    </select>
+    <select id="queryGroupById" resultMap="Group">
+        SELECT `group`.id, school_ID, head_delegate_ID, group_size, school_name, name
+        FROM `group`
+                 LEFT JOIN delegate d on `group`.head_delegate_ID = d.id
+                 LEFT JOIN user u on d.id = u.id
+                 LEFT JOIN school_info si on `group`.school_ID = si.id
+        WHERE `group`.id = #{id}
+    </select>
+    <select id="queryAllSchoolType" resultMap="SchoolType">
+        select *
+        from school_type
+    </select>
+    <select id="queryAdminIDAndName" resultMap="Admin">
+        SELECT ohrigei.user.id, name
+        FROM user
+        WHERE role_ID = 1
+    </select>
+    <select id="queryAllSeat" resultMap="Seat">
+        SELECT seat.id, seat_name, committee_ID, seat_difficulty, committee_name
+        FROM seat,
+             committee
+        WHERE committee_ID = committee.id
+    </select>
+    <select id="queryAllApplicationStatus" resultMap="ApplicationStatus">
+        SELECT *
+        FROM application_status
+    </select>
+    <select id="queryAdminCanInterview" resultMap="Admin">
+        SELECT ohrigei.user.id,
+               ohrigei.user.name,
+               admin.title,
+               ohrigei.committee.committee_name,
+               ohrigei.admin.role_AG,
+               ohrigei.admin.role_AD,
+               ohrigei.admin.role_D,
+               ohrigei.admin.role_F,
+               ohrigei.admin.role_L,
+               ohrigei.admin.role_SG
+        from ohrigei.user
+                 LEFT JOIN ohrigei.admin ON ohrigei.user.id = admin.id
+                 LEFT JOIN ohrigei.committee ON ohrigei.admin.committee_ID = ohrigei.committee.id
+        where role_ID = 1
+          AND (admin.role_AD = 1 OR admin.role_AG = 1)
+    </select>
+    <select id="queryDelegate" resultMap="Delegate">
+        SELECT ohrigei.user.id,
+               ohrigei.user.name,
+               ohrigei.user.enable_login,
+               ohrigei.user.email,
+               ohrigei.user.phone,
+               ohrigei.delegate.group_ID,
+               ohrigei.school_info.school_name,
+               ohrigei.application_type.application_type,
+               ohrigei.application_status.application_status_text
+        FROM ohrigei.delegate
+                 left join user on delegate.id = ohrigei.user.id
+                 left join `group` on delegate.group_ID = `group`.id
+                 left join school_info on ohrigei.group.school_ID = school_info.id
+                 left join application_type on application_type.id = delegate.application_type_ID
+                 left join application_status on application_status.id = delegate.application_status_ID
+        WHERE ohrigei.delegate.role_ID = 1
+          AND user.id not IN (SELECT id from interview_info)
+          AND application_status_ID = 3
+    </select>
+    <select id="queryAllInterview" resultMap="Interview">
+        SELECT *
+        FROM interview_info
+    </select>
+    <select id="getNameByID" resultType="string">
+        SELECT name
+        FROM user
+        where id = #{id}
+    </select>
+    <select id="queryInterviewUndone" resultMap="Interview">
+        SELECT *
+        FROM interview_info
+        where interview_status = #{interviewStatus}
+    </select>
+    <select id="queryInterviewAssignToMe" resultMap="Interview">
+        SELECT *
+        FROM interview_info
+        WHERE admin_id = #{id}
+    </select>
+    <select id="queryInterviewAssignToMeDoneOrUndone" resultMap="Interview">
+        SELECT *
+        FROM interview_info
+        WHERE admin_id = #{param1}
+          AND interview_status = #{param2}
+    </select>
+    <select id="queryInterviewByID" resultMap="Interview">
+        SELECT *
+        FROM interview_info
+        WHERE id = #{id}
+    </select>
+    <select id="getRoleIDByID" resultType="int">
+        SELECT role_ID
+        FROM delegate
+        WHERE role_ID = #{id}
+    </select>
+    <select id="creatBillCheck" resultType="int">
+        SELECT id
+        FROM bill_status
+        WHERE id = #{id}
+    </select>
+    <select id="queryAllBillList" resultMap="Bill">
+        SELECT bill_status.id,
+               bill_type_ID,
+               bill_serial_number,
+               bill_generate_date,
+               bill_pay_date,
+               bill_status.bill_status,
+               bill_amount,
+               u.name
+        FROM bill_status
+                 LEFT JOIN bill_amount_type bat on bill_status.bill_type_ID = bat.id
+                 LEFT JOIN delegate d on bill_status.id = d.id
+                 LEFT JOIN user u on d.id = u.id
+    </select>
+    <select id="queryBillList" resultMap="Bill">
+        SELECT bill_status.id,
+               bill_type_ID,
+               bill_serial_number,
+               bill_generate_date,
+               bill_pay_date,
+               bill_status.bill_status,
+               bill_amount,
+               u.name
+        FROM bill_status
+                 LEFT JOIN bill_amount_type bat on bill_status.bill_type_ID = bat.id
+                 LEFT JOIN delegate d on bill_status.id = d.id
+                 LEFT JOIN user u on d.id = u.id
+        WHERE bill_status = #{billStatus}
+    </select>
+    <select id="queryBillDetail" resultMap="Bill">
+        SELECT bill_status.id,
+               bill_type_ID,
+               bill_serial_number,
+               bill_generate_date,
+               bill_pay_date,
+               bill_status.bill_status,
+               bill_amount
+        FROM bill_status
+                 LEFT JOIN bill_amount_type bat on bill_status.bill_type_ID = bat.id
+        WHERE bill_status.id = #{id}
+    </select>
+    <select id="allSeatWaitProcess" resultMap="Seat">
+        SELECT seat.id,
+               seat_name,
+               delegate_ID,
+               committee_ID,
+               committee_name,
+               seat_difficulty,
+               seat_select_status,
+               seat_select_date,
+               seat_confirm_status,
+               name,
+               phone,
+               email
+        FROM seat
+                 LEFT JOIN committee c on seat.committee_ID = c.id
+                 LEFT JOIN delegate d on seat.delegate_ID = d.id
+                 LEFT JOIN user u on d.id = u.id
+        WHERE seat_select_status = true
+          and seat_confirm_status = false
+    </select>
+    <select id="countSeatSelectWaitConfirm" resultType="int">
+        SELECT count(id)
+        FROM seat
+        WHERE seat_select_status = 1
+          AND seat_confirm_status = 0
+    </select>
+    <select id="countDelegateWaitConfirm" resultType="int">
+        SELECT count(id)
+        FROM delegate
+        WHERE application_status_ID = 1
+    </select>
+    <select id="countBillWaitConfirm" resultType="int">
+        SELECT count(id)
+        FROM bill_status
+        WHERE bill_generate_date IS NOT NULL
+          AND bill_status = 0
+    </select>
+    <select id="getPost" resultMap="Post">
+        SELECT *
+        FROM post
+    </select>
+    <select id="getGroupMember" resultMap="Delegate">
+        SELECT ohrigei.user.id,
+               ohrigei.user.name,
+               ohrigei.user.enable_login,
+               ohrigei.user.email,
+               ohrigei.user.phone,
+               ohrigei.delegate.group_ID,
+               ohrigei.school_info.school_name,
+               ohrigei.application_type.application_type,
+               ohrigei.application_status.application_status_text
+        FROM ohrigei.delegate
+                 left join user on delegate.id = ohrigei.user.id
+                 left join `group` on delegate.group_ID = `group`.id
+                 left join school_info on ohrigei.group.school_ID = school_info.id
+                 left join application_type on application_type.id = delegate.application_type_ID
+                 left join application_status on application_status.id = delegate.application_status_ID
+        WHERE ohrigei.delegate.group_ID = #{id}
+    </select>
+    <select id="queryGroupLeaderList" resultMap="Delegate">
+        SELECT ohrigei.user.id,
+               ohrigei.user.name,
+               ohrigei.user.enable_login,
+               ohrigei.user.email,
+               ohrigei.user.phone,
+               ohrigei.delegate.group_ID,
+               ohrigei.school_info.school_name,
+               ohrigei.application_type.application_type,
+               ohrigei.application_status.application_status_text
+        FROM ohrigei.delegate
+                 left join user on delegate.id = ohrigei.user.id
+                 left join `group` on delegate.group_ID = `group`.id
+                 left join school_info on ohrigei.group.school_ID = school_info.id
+                 left join application_type on application_type.id = delegate.application_type_ID
+                 left join application_status on application_status.id = delegate.application_status_ID
+        WHERE ohrigei.delegate.id IN (SELECT head_delegate_ID FROM `group` WHERE head_delegate_ID IS NOT NULL)
+    </select>
+    <!--    insert-->
+
+    <insert id="addAdminStep1" parameterType="edu.dlufl.ohrigei.model.Admin">
+        insert into ohrigei.user(name, email, password, phone, role_ID)
+        values (#{name}, #{email}, #{password}, #{phone}, 1)
+    </insert>
+    <insert id="addAdminStep2" parameterType="edu.dlufl.ohrigei.model.Admin">
+        insert into ohrigei.admin(id, title, role_AG, role_AD, role_D, role_L, role_F, role_SG)
+        VALUES (#{id}, #{title}, #{role_AG}, #{role_AD}, #{role_D}, #{role_L}, #{role_F}, #{role_SG})
+    </insert>
+    <insert id="addGroup">
+        INSERT into `group`(school_ID, head_delegate_ID, group_size)
+        VALUES (#{param1}, #{param2}, #{param3})
+    </insert>
+    <insert id="addSchool">
+        insert into school_info(school_name, school_name_EN, school_type_ID, school_address, size)
+        VALUES (#{param1}, #{param2}, #{param4}, #{param3}, #{param5})
+    </insert>
+    <insert id="addCommittee">
+        INSERT INTO committee(committee_name, seat_width, chairman_ID)
+        VALUES (#{param1}, #{param2}, #{param3})
+    </insert>
+    <insert id="addSeat">
+        INSERT INTO seat(seat_name, committee_ID, seat_difficulty)
+        VALUES (#{param1}, #{param2}, #{param3})
+    </insert>
+    <insert id="addInterview">
+        INSERT INTO interview_info(id, admin_id, date)
+        VALUES (#{param1}, #{param2}, #{param3})
+    </insert>
+    <insert id="addPost">
+        INSERT INTO post(post)
+        VALUES (#{post})
+    </insert>
+    <!--    update-->
+
+    <update id="modifyGroup">
+        UPDATE `ohrigei`.`group`
+        SET `school_ID`        = #{param1},
+            `head_delegate_ID` = #{param2},
+            `group_size`       = #{param3}
+        WHERE `id` = #{param4}
+    </update>
+    <update id="deleteGroup">
+        UPDATE `ohrigei`.`group`
+        SET `group`.delete_status=1
+        WHERE `id` = #{groupID}
+    </update>
+    <update id="modifyLoginStatusById">
+        UPDATE `ohrigei`.`user`
+        SET `user`.enable_login=#{param2}
+        WHERE `id` = #{param1}
+    </update>
+    <update id="modifyApplicationStatus">
+        UPDATE delegate
+        SET application_status_ID=#{param2}
+        WHERE `id` = #{param1}
+    </update>
+    <update id="modifyInterviewScore">
+        UPDATE interview_info
+        SET academic_score=#{param2},
+            passion_score=#{param3},
+            interview_score=#{param4}
+        WHERE id = #{param1}
+    </update>
+    <update id="modifyInterviewDate">
+        UPDATE interview_info
+        SET date=#{param2}
+        WHERE id = #{param1}
+    </update>
+    <update id="modifyInterviewStatus">
+        UPDATE interview_info
+        SET interview_status=#{param2}
+        WHERE id = #{param1}
+    </update>
+    <update id="modifyUserStatus">
+        UPDATE delegate
+        SET application_status_ID=#{param2}
+        WHERE id = #{param1}
+    </update>
+    <update id="modifyInterviewComment">
+        UPDATE interview_info
+        SET comment=#{param2}
+        WHERE id = #{param1}
+    </update>
+    <update id="confirmBill">
+        UPDATE bill_status
+        SET bill_status.bill_status= true
+        WHERE id = #{id}
+    </update>
+    <update id="seatSelectConfirm">
+        UPDATE seat
+        SET seat_confirm_status= true
+        WHERE id = #{seatID}
+    </update>
+    <update id="updateUserApplicationStatus">
+        UPDATE delegate
+        SET application_status_ID=#{param2}
+        WHERE id = #{param1}
+    </update>
+    <update id="deleteGroupIDFromDelegate">
+        UPDATE delegate
+        SET group_ID=null
+        WHERE group_ID = #{groupID}
+    </update>
+    <update id="removeDelegateFromGroup">
+        UPDATE delegate
+        SET group_ID =null
+        WHERE id = #{param1}
+    </update>
+    <update id="addImgPath">
+        UPDATE user
+        SET avatar_path=#{param2}
+        WHERE id = #{param1}
+    </update>
+    <!--    Delete-->
+    <delete id="deletePost">
+        DELETE
+        FROM post
+        WHERE id = #{id}
+    </delete>
 </mapper>

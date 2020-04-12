@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="zh-cn" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script src="../js/jquery-3.4.1.min.js"></script>
+    <script src="../js/popper.min.js"></script>
+    <script src="../js/bootstrap.js"></script>
+    <script src="../js/sb-admin-2.js"></script>
+    <script src="../js/cropper.js"></script>
+    <script src="../js/jquery.easing.js"></script>
+    <script src="../js/jquery-cropper.js"></script>
+    <script src="../js/bootstrap.bundle.min.js"></script>
+    <script src="../js/bootstrap-select.js"></script>
+    <script src="../js/bootstrap-select-defaults-zh_CN.js"></script>
+    <link href="../css/bootstrap.css" rel="stylesheet">
+    <link href="../css/sb-admin-2.css" rel="stylesheet">
+    <link href="../css/font-awesome.css" rel="stylesheet">
+    <link href="../css/cropper.css" rel="stylesheet">
+    <link href="../css/bootstrap-select.css" rel="stylesheet">
+    <title>委员会列表-Гулаш&nbsp;система&nbsp;会议管理系统</title>
+</head>
+<body>
+<div th:replace="allUser/adminHeader::adminHeader"></div>
+<div id="res">
+    <h3>委员会列表</h3>
+    <hr>
+    <table class="table table-hover text-center">
+        <thead>
+        <tr>
+            <td>#</td>
+            <td>委员会名称</td>
+            <td>席位容量</td>
+            <td>委员会主席</td>
+            <td>操作</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="committee:${committeeList}">
+            <td th:text="${committee.id}"></td>
+            <td th:text="${committee.committeeName}"></td>
+            <td th:text="${committee.seatWidth}"></td>
+            <td><a th:text="${committee.chairmanName}" th:href="@{/admin/adminDetail(id=${committee.chairmanID})}"></a></td>
+            <td><a th:text="详情" th:href="@{/admin/modifyCommitteePage(id=${committee.id})}"></a></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+<script>
+    $(function () {
+        $('#main').append($('#res').html());
+        $('#res').remove();
+    });
+</script>
+</html>

@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script src="../js/jquery-3.4.1.min.js"></script>
+    <script src="../js/bootstrap.js"></script>
+    <script src="../js/popper.min.js"></script>
+    <script src="../js/sb-admin-2.js"></script>
+    <script src="../js/cropper.js"></script>
+    <script src="../js/jquery.easing.js"></script>
+    <script src="../js/jquery-cropper.js"></script>
+    <script src="../js/bootstrap.bundle.min.js"></script>
+    <script src="../js/bootstrap-select.js"></script>
+    <script src="../js/bootstrap-select-defaults-zh_CN.js"></script>
+    <link href="../css/bootstrap.css" rel="stylesheet">
+    <link href="../css/sb-admin-2.css" rel="stylesheet">
+    <link href="../css/font-awesome.css" rel="stylesheet">
+    <link href="../css/cropper.css" rel="stylesheet">
+    <link href="../css/bootstrap-select.css" rel="stylesheet">
+    <title>席位详细信息-Гулаш&nbsp;система&nbsp;会议管理系统</title>
+</head>
+<body>
+<div th:replace="allUser/userHeader::userHeader"></div>
+<div id="res">
+    <h2>席位信息</h2>
+    <div th:unless="${#strings.isEmpty(info)}">
+        <hr>
+        <p th:text="${info}"></p>
+    </div>
+    <div class="row" th:if="${#strings.isEmpty(info)}">
+        <div class="menu-bar col-12">
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <a class="nav-link active" data-toggle="tab" href="#mySeat">我的席位</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#chooseSeat">席位选择</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#sameCommittee">同委员会席位</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="tab-content mt-4">
+        <div class="tab-pane active" id="mySeat">
+            <div th:unless="${#strings.isEmpty(userSeatInfo)}">
+                <p th:text="${userSeatInfo}"></p>
+            </div>
+            <div th:if="${#strings.isEmpty(userSeatInfo)}">
+                <div class="row">
+                    <div class="col-md-8">
+                        <h3>已选择席位</h3>
+                        <table class="table table-hover text-center">
+                            <tr>
+                                <td>席位名称</td>
+                                <td><span th:text="${userSeat.seatName}"></span></td>
+                            </tr>
+                            <tr>
+                                <td>委员会</td>
+                                <td><span th:text="${userSeat.committeeName}"></span></td>
+                            </tr>
+                            <tr>
+                                <td>选择时间</td>
+                                <td><span th:text="${userSeat.seatSelectDate}"></span></td>
+                            </tr>
+                            <tr>
+                                <td>席位状态</td>
+                                <td><span th:if="${userSeat.seatConfirmStatus}" style="color: green">已确认</span>
+                                    <span th:unless="${userSeat.seatConfirmStatus}" style="color: orange">未确认</span>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-md-4">
+                        <h3>更改席位</h3>
+                        <hr>
+                        <p>您已选择席位，在管理员确认席位选定之前您可以更换席位。在确认选定之后，您将无法更换座位。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane" id="chooseSeat">
+            <div class="row">
+                <div class="col-md-8">
+                    <h3>席位选择</h3>
+                    <p>您可以选择表格中的任一席位，在由管理员确认之后，席位将被锁定。</p>
+                    <table class="table table-hover text-center">
+                        <thead>
+                        <tr>
+                            <td>#</td>
+                            <td>席位名称</td>
+                            <td>所属代表团</td>
+                            <td>席位难度</td>
+                            <td>操作</td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="seat:${allSeatList}">
+                            <td><span th:text="${seat.id}"></span></td>
+                            <td><span th:text="${seat.seatName}"></span></td>
+                            <td><span th:text="${seat.committeeName}"></span></td>
+                            <td><span th:text="${seat.seatDifficulty}"></span></td>
+                            <td>
+                                <button th:unless="${userSeat.seatConfirmStatus}" id="selectSeatButton" class="btn btn-success selectSeatButton"
+                                        th:onclick="selectSeat([[${seat.id}]]);"><i
+                                        class="fa fa-check"></i>选定
+                                </button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-4">
+                    <h3><i class="fa fa-info-circle"></i>提示</h3>
+                    <p>在您选择席位之后席位将变为被选定状态，此时其他代表将无法选择此席位。在管理员确定选择之后您的席位将被锁定，您同时无法更换席位</p>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane" id="sameCommittee">
+            <div th:unless="${#strings.isEmpty(committeeInfo)}">
+                <p th:text="${committeeInfo}"></p>
+            </div>
+            <div th:if="${#strings.isEmpty(committeeInfo)}">
+                <div class="row">
+                    <div class="col-md-8">
+                        <h3>同委员会代表信息</h3>
+                        <table th:each="seatInSame:${seatInSameCommitteeList}"
+                               class="table table-hover text-center mt-2">
+                            <thead>
+                            <tr>
+                                <td>席位名称</td>
+                                <td>所属委员会</td>
+                                <td>代表</td>
+                                <td>代表邮箱</td>
+                                <td>代表手机号码</td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td th:text="${seatInSame.seatName}"></td>
+                                <td th:text="${seatInSame.committeeName}"></td>
+                                <td th:text="${seatInSame.delegateName}"></td>
+                                <td th:text="${seatInSame.delegateEmail}"></td>
+                                <td th:text="${seatInSame.delegatePhone}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-md-4">
+                        <h3>同委员会代表</h3>
+                        <p>您可以于本页面查看和您同属一个委员会的代表的联系方式。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        $('#main').append($('#res').html());
+        $('#res').remove();
+    });
+
+    function selectSeat(id) {
+        var delegateID = [[${session.USER_INFO.id}]];
+        var originID=[[${userSeat.id}]];
+        if(originID!==0||originID==null){
+            if(confirm("您已选择一个座位，确认重新选座吗？")){
+                $.ajax({
+                    type: 'POST',
+                    url: '/user/selectSeat',
+                    dataType: 'json',
+                    data: {
+                        'delegateID': delegateID,
+                        'seatID': id,
+                        'originID':originID
+                    },
+                    success: function (data) {
+                        if (data['status'] === 'SUCCESS') {
+                            alert('选座成功');
+                            window.location.reload()
+                        } else {
+                            alert('选座失败');
+                            window.location.reload()
+                        }
+                    }
+                })
+            }
+        }else {
+            if (confirm("确定选择此座位吗？")) {
+                $.ajax({
+                    type: 'POST',
+                    url: '/user/selectSeat',
+                    dataType: 'json',
+                    data: {
+                        'delegateID': delegateID,
+                        'seatID': id,
+                        'originID':0
+                    },
+                    success: function (data) {
+                        if (data['status'] === 'SUCCESS') {
+                            alert('选座成功');
+                            window.location.reload()
+                        } else {
+                            alert('选座失败');
+                            window.location.reload()
+                        }
+                    }
+                })
+            }
+        }
+    }
+</script>
+</body>
+</html>

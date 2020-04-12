@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script src="../js/jquery-3.4.1.min.js"></script>
+    <script src="../js/sb-admin-2.js"></script>
+    <script src="../js/popper.min.js"></script>
+    <script src="../js/cropper.js"></script>
+    <script src="../js/bootstrap.js"></script>
+    <script src="../js/jquery.easing.js"></script>
+    <script src="../js/jquery-cropper.js"></script>
+    <script src="../js/bootstrap.bundle.min.js"></script>
+    <link href="../css/bootstrap.css" rel="stylesheet">
+    <link href="../css/sb-admin-2.css" rel="stylesheet">
+    <link href="../css/font-awesome.css" rel="stylesheet">
+    <link href="../css/cropper.css" rel="stylesheet">
+    <title>面试信息-Гулаш&nbsp;система&nbsp;会议管理系统</title>
+</head>
+<body>
+<div th:replace="allUser/userHeader::userHeader"></div>
+<div id="res">
+    <h2>面试信息</h2>
+    <hr>
+    <div th:unless="${#strings.isEmpty(noInterview)}" class="text-center">
+        <span th:text="${noInterview}"></span>
+    </div>
+    <div th:if="${#strings.isEmpty(noInterview)}" class="row">
+        <div class="col-md-6">
+            <div class="card shadow h-100">
+                <div class="card-header">
+                    面试信息
+                </div>
+                <div class="card-body">
+                    <table class="table table-hover text-center">
+                        <tr>
+                            <td>面试官：</td>
+                            <td><span th:text="${admin.name}"></span></td>
+                        </tr>
+                        <tr>
+                            <td>面试时间：</td>
+                            <td><span th:text="${interview.date}"></span></td>
+                        </tr>
+                        <tr>
+                            <td>面试状态：</td>
+                            <td>
+                                <span th:if="${interview.interviewStatus}" th:text="已完成"></span>
+                                <span th:unless="${interview.interviewStatus}" th:text="未完成"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>面试得分：</td>
+                            <td>
+                                <span th:text="${interview.interviewScore}"></span>
+                                <a id="score" href="#" title="详细得分" onclick="loadScore()">
+                                    <i class="fa fa-info-circle"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>面试评价</td>
+                            <td>
+                                <span th:text="${interview.comment}"></span>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card shadow h-100">
+                <div class="card-header">
+                    面试官信息
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <img th:unless="${#strings.isEmpty(admin.avatarPath)}"
+                                 th:src="${admin.avatarPath}" alt="" class="img-fluid">
+                            <img th:if="${#strings.isEmpty(admin.avatarPath)}"
+                                 src="../img/head/defaultHead.png" alt="head" class="img-fluid">
+                        </div>
+                        <div class="col-md-9">
+                            管理员姓名：<span th:text="${admin.name}"></span>
+                            <hr>
+                            <span>管理员联系方式</span><br>
+                            手机号码：<span th:text="${admin.phone}"></span><br>
+                            电子邮箱：<span th:text="${admin.email}"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    $(function () {
+        $('#main').append($('#res').html());
+        $("#score").popover({
+            title: "详细得分",
+            html: true,
+            placement: "right",
+            content: "学术得分：<span id='academicScore'></span><br>热情得分：<span id='passionScore'></span>"
+        });
+        $('#res').remove();
+    });
+
+    function loadScore() {
+        setTimeout(function () {
+            var academicScore = [[${interview.academicScore}]];
+            var passionScore = [[${interview.passionScore}]];
+            $('#academicScore').text(academicScore);
+            $('#passionScore').text(passionScore);
+        }, 10)
+    }
+</script>
+</html>
