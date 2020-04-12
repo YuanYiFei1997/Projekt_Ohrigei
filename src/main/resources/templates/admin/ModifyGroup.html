@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script src="../js/jquery-3.4.1.min.js"></script>
+    <script src="../js/popper.min.js"></script>
+    <script src="../js/bootstrap.js"></script>
+    <script src="../js/sb-admin-2.js"></script>
+    <script src="../js/cropper.js"></script>
+    <script src="../js/jquery.easing.js"></script>
+    <script src="../js/jquery-cropper.js"></script>
+    <script src="../js/bootstrap.bundle.min.js"></script>
+    <script src="../js/bootstrap-select.js"></script>
+    <script src="../js/bootstrap-select-defaults-zh_CN.js"></script>
+    <link href="../css/bootstrap.css" rel="stylesheet">
+    <link href="../css/sb-admin-2.css" rel="stylesheet">
+    <link href="../css/font-awesome.css" rel="stylesheet">
+    <link href="../css/cropper.css" rel="stylesheet">
+    <link href="../css/bootstrap-select.css" rel="stylesheet">
+    <title>代表团管理-Гулаш&nbsp;система&nbsp;会议管理系统</title>
+</head>
+<body>
+<div th:replace="allUser/adminHeader::adminHeader"></div>
+<div id="res" hidden="hidden">
+    <h1>代表团管理</h1>
+    <hr>
+    <div class="card shadow h-100">
+        <div class="card-header">修改代表团</div>
+        <div class="card-body">
+            <div class="mt-2">
+                <label>代表团ID</label>
+                <span id="groupID" th:text="${groupInfo.id}"></span>
+            </div>
+            <div class="mt-2">
+                <label for="school">所属学校</label>
+                <span id="schoolName" th:value="${groupInfo.schoolID}" th:text="${groupInfo.schoolName}"></span>
+                <button id="schoolEditButton" class="btn btn-primary"
+                        onclick="clickToEdit('#schoolName','#allSchoolSelect','#schoolEditButton')"><i
+                        class="fa fa-edit"></i></button>
+                <div id="allSchoolSelect" hidden="hidden">
+                    <select id="school" class="selectpicker" title="请选择一所学校" data-width="auto">
+                        <option th:each="school:${schoolList}" th:value="${school.id}"
+                                th:text="${school.schoolName}"></option>
+                    </select>
+                    <button id="cancelEditSchoolButton" class="btn btn-secondary"
+                            onclick="cancelEdit('#schoolName','#allSchoolSelect','#schoolEditButton')">
+                        <i class="fa fa-remove"></i>
+                    </button>
+                </div>
+            </div>
+            <br>
+            <div class="mt-2">
+                <label for="headDelegateName">负责代表</label>
+                <span id="DelegateName" th:if="${#strings.isEmpty(groupInfo.headDelegateName)}" th:value="null"
+                      th:text="暂无代表"></span>
+                <span id="DelegateName" th:unless="${#strings.isEmpty(groupInfo.headDelegateName)}"
+                      th:text="${groupInfo.headDelegateName}"></span>
+                <button id="delegateEditButton" class="btn btn-primary"
+                        onclick="clickToEdit('#DelegateName','#headDelegateNameSelect','#delegateEditButton')"><i
+                        class="fa fa-edit"></i></button>
+                <div id="headDelegateNameSelect" hidden="hidden">
+                    <select id="headDelegateName" class="selectpicker" title="请选择一名代表" data-width="auto">
+                        <option th:each="delegate:${delegateList}" th:value="${delegate.ID}"
+                                th:text="${delegate.name}"></option>
+                    </select>
+                    <button id="cancelEditDelegateButton" class="btn btn-secondary"
+                            onclick="cancelEdit('#DelegateName','#headDelegateNameSelect','#delegateEditButton')">
+                        <i class="fa fa-remove"></i>
+                    </button>
+                </div>
+            </div>
+            <br>
+            <div class="mt-2">
+                <label for="groupSize">代表团容量</label>
+                <input id="groupSize" th:value="${groupInfo.groupSize}" type="number" disabled>
+                <button id="editGroupSizeButton" class="btn btn-primary"
+                        onclick="editGroupSize('#groupSize','#editGroupSizeButton','#cancelEditGroupSizeButton')"><i
+                        class="fa fa-edit"></i></button>
+                <button id="cancelEditGroupSizeButton" class="btn btn-secondary"
+                        onclick="cancelEditGroupSize('#groupSize','#editGroupSizeButton','#cancelEditGroupSizeButton')"
+                        hidden>
+                    <i class="fa fa-remove"></i>
+                </button>
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="btn-group">
+                <button class="btn btn-primary" onclick="submitEdit()">保存更改</button>
+                <button class="btn btn-secondary" data-target="#cancelModel" data-toggle="modal">放弃更改</button>
+                <button class="btn btn-danger" data-toggle="modal" data-target="#deleteModel">删除代表团</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="deleteModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">确定删除？</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">此操作不可撤销，确定要删除吗？</div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">取消</button>
+                <button class="btn btn-danger" onclick="deleteGroup()">删除</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="cancelModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">放弃更改</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">您所做的一切更改均将不会保存，确定放弃吗</div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">取消</button>
+                <button class="btn btn-primary" onclick="history.back(-1);">放弃更改</button>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    var originGroupSize;
+    $("#sidebarToggle, #sidebarToggleTop").onclick(function (e) {
+        $("body").attr("class", "sidebar-toggled");
+        $(".sidebar").toggleClass("toggled");
+        if ($(".sidebar").hasClass("toggled")) {
+            $('.sidebar .collapse').collapse('hide');
+        }
+    });
+
+    function clickToEdit(itemID, editItemID, buttonID) {
+        $(itemID).attr('hidden', 'hidden');
+        $(editItemID).removeAttr('hidden');
+        $(buttonID).attr('hidden', 'hidden');
+    }
+
+    function editGroupSize(itemID, editButton, cancelEditButton) {
+        $(itemID).removeAttr('disabled');
+        $(editButton).attr('hidden', 'hidden');
+        $(cancelEditButton).removeAttr('hidden');
+        originGroupSize = $(itemID).val();
+    }
+
+    function cancelEditGroupSize(itemID, editButton, cancelEditButton) {
+        $(itemID).attr('disabled', 'disabled');
+        $(editButton).removeAttr('hidden');
+        $(cancelEditButton).attr('hidden', 'hidden');
+        $(itemID).val(originGroupSize);
+    }
+
+    function cancelEdit(itemID, editItemID, buttonID) {
+        $(itemID).removeAttr('hidden');
+        $(editItemID).attr('hidden', 'hidden');
+        $(buttonID).removeAttr('hidden');
+    }
+
+    function submitEdit() {
+        var pattern = /^[1-9][0-9]*$/;
+        var schoolID;
+        var headDelegateID;
+        var groupSize;
+        var groupID;
+        if ($("#allSchoolSelect").is(":hidden")) {
+            schoolID = $('#schoolName').attr('value');
+            console.log(schoolID);
+        } else {
+            schoolID = $('#school').val();
+        }
+        if ($("#headDelegateNameSelect").is(":hidden")) {
+            headDelegateID = $('#DelegateName').attr('values');
+        } else {
+            headDelegateID = $('#headDelegateName').val();
+        }
+        groupSize = $('#groupSize').val();
+        if (!pattern.test(groupSize) || groupSize === '') {
+            alert('代表团容量必须为正整数！');
+            $('#groupSize').val(originGroupSize)
+        }
+        if (groupSize > 100) {
+            alert('代表团容量不能超过100人！');
+            $('#groupSize').val(originGroupSize)
+        }
+        groupID = $('#groupID').text();
+        if (schoolID !== '') {
+            $.ajax({
+                type: 'POST',
+                url: '/admin/modifyGroup',
+                dataType: 'json',
+                data: {
+                    'groupID': groupID,
+                    'schoolID': schoolID,
+                    'headDelegateID': headDelegateID,
+                    'groupSize': groupSize
+                },
+                success: function (data) {
+                    if (data['status'] === 'SUCCESS') {
+                        alert('修改成功！');
+                        window.location.reload()
+                    } else {
+                        alert('修改失败，请稍后重试！');
+                        window.location.reload()
+                    }
+                }
+            })
+        } else {
+            alert('所属学校不能为空！');
+        }
+    }
+    
+    function deleteGroup() {
+        var groupID = $('#groupID').text();
+        $.ajax(
+            {
+                type: 'POST',
+                url: '/admin/deleteGroup',
+                dataType: 'json',
+                data: {
+                    'groupID': groupID
+                },
+                success: function (data) {
+                    if (data['status'] === 'SUCCESS') {
+                        alert('删除成功！');
+                        window.location.replace('/admin/groupDetailPage')
+                    } else {
+                        alert('删除失败，请稍后重试！');
+                        window.location.reload()
+                    }
+                }
+            }
+        )
+    }
+    
+</script>
+<script>
+    //将id=res的div内部的html标签传递给id为main的div
+    $(function () {
+        $('#main').append($('#res').html());
+        //select插件配置信息
+        $('.selectpicker').selectpicker(
+            {
+                liveSearch: true
+            }
+        );
+        $('#res').remove();
+    });
+</script>
+</html>

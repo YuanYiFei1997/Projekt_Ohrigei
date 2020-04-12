@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script src="../js/jquery-3.4.1.min.js"></script>
+    <script src="../js/bootstrap.js"></script>
+    <script src="../js/popper.min.js"></script>
+    <script src="../js/sb-admin-2.js"></script>
+    <script src="../js/cropper.js"></script>
+    <script src="../js/jquery.easing.js"></script>
+    <script src="../js/jquery-cropper.js"></script>
+    <script src="../js/bootstrap.bundle.min.js"></script>
+    <script src="../js/bootstrap-select.js"></script>
+    <script src="../js/bootstrap-select-defaults-zh_CN.js"></script>
+    <link href="../css/bootstrap.css" rel="stylesheet">
+    <link href="../css/sb-admin-2.css" rel="stylesheet">
+    <link href="../css/font-awesome.css" rel="stylesheet">
+    <link href="../css/cropper.css" rel="stylesheet">
+    <link href="../css/bootstrap-select.css" rel="stylesheet">
+    <title>面试详细信息-Гулаш&nbsp;система&nbsp;会议管理系统</title>
+</head>
+<body>
+<div th:replace="allUser/adminHeader::adminHeader"></div>
+<div id="res">
+    <h2>面试详细信息</h2>
+    <hr>
+    <div class="row">
+        <div class="col-6">
+            <div class="card shadow h-100">
+                <div class="card-header">
+                    面试详细信息
+                </div>
+                <div class="card-body">
+                    <table class="table table-hover text-center">
+                        <tr>
+                            <td>代表姓名</td>
+                            <td><a th:text="${interview.delegateName}"
+                                   th:href="@{/admin/memberDetailPage(id=${interview.id})}"></a></td>
+                        </tr>
+                        <tr>
+                            <td>负责管理员名称</td>
+                            <td><a th:text="${interview.adminName}"
+                                   th:href="@{/admin/adminDetail(id=${interview.adminID})}"></a></td>
+                        </tr>
+                        <tr>
+                            <td>面试日期</td>
+                            <td><span id="interviewDate" th:text="${interview.date}"></span></td>
+                        </tr>
+                        <tr>
+                            <td>面试状态</td>
+                            <td>
+                                <span id="interviewStatus" th:if="${interview.interviewStatus}" th:text="已完成"></span>
+                                <span id="interviewStatus" th:unless="${interview.interviewStatus}"
+                                      th:text="未完成"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>面试得分</td>
+                            <td>
+                                <span id="interviewScore" th:text="${interview.interviewScore}"></span>
+                                <a id="score" href="#" title="详细得分" onclick="loadScore()">
+                                    <i class="fa fa-info-circle"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>面试评价</td>
+                            <td><span id="comment" th:text="${interview.comment}"></span></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="card-footer">
+                    <div class="btn-group" th:unless="${interview.interviewStatus}">
+                        <button class="btn btn-success" onclick="submitInterviewStatus('pass')">面试通过</button>
+                        <button class="btn btn-danger" onclick="submitInterviewStatus('failed')">面试未通过</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6">
+            <div th:if="${session.USER_INFO.id==interview.adminID}">
+                <h3>修改</h3>
+                <hr>
+                <h4>修改面试时间</h4>
+                <button id="InterviewDateEditBtn" class="btn btn-primary"
+                        onclick="$('#newDateGroup').removeAttr('hidden');$('#InterviewDateEditBtn').attr('hidden','hidden')">
+                    修改时间
+                </button>
+                <div id="newDateGroup" hidden="hidden">
+                    <label for="newInterviewDate"></label>
+                    <input type="datetime-local" id="newInterviewDate"><br>
+                    <div class="btn-group">
+                        <button class="btn btn-primary" onclick="submitNewDate()">提交新日期</button>
+                        <button class="btn btn-secondary"
+                                onclick="$('#InterviewDateEditBtn').removeAttr('hidden');$('#newDateGroup').attr('hidden','hidden')">
+                            取消提交
+                        </button>
+                    </div>
+                </div>
+                <hr>
+                <h4>进行面试评分</h4>
+                <button id="editScoreBtn" class="btn btn-primary" onclick="editScore()">评分</button>
+                <div id="scoreGroup" hidden="hidden">
+                    <div class="btn-group">
+                        <button class="btn btn-primary">学术得分</button>
+                        <button id="academicBtn0" class="btn btn-dark" value="0" onclick="setScore('academic',0)">0
+                        </button>
+                        <button id="academicBtn1" class="btn btn-dark" value="1" onclick="setScore('academic',1)">1
+                        </button>
+                        <button id="academicBtn2" class="btn btn-dark" value="2" onclick="setScore('academic',2)">2
+                        </button>
+                        <button id="academicBtn3" class="btn btn-dark" value="3" onclick="setScore('academic',3)">3
+                        </button>
+                        <button id="academicBtn4" class="btn btn-dark" value="4" onclick="setScore('academic',4)">4
+                        </button>
+                        <button id="academicBtn5" class="btn btn-dark" value="5" onclick="setScore('academic',5)">5
+                        </button>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-primary">热情得分</button>
+                        <button id="passionBtn0" class="btn btn-dark" value="0" onclick="setScore('passion',0)">0
+                        </button>
+                        <button id="passionBtn1" class="btn btn-dark" value="1" onclick="setScore('passion',1)">1
+                        </button>
+                        <button id="passionBtn2" class="btn btn-dark" value="2" onclick="setScore('passion',2)">2
+                        </button>
+                        <button id="passionBtn3" class="btn btn-dark" value="3" onclick="setScore('passion',3)">3
+                        </button>
+                        <button id="passionBtn4" class="btn btn-dark" value="4" onclick="setScore('passion',4)">4
+                        </button>
+                        <button id="passionBtn5" class="btn btn-dark" value="5" onclick="setScore('passion',5)">5
+                        </button>
+                    </div>
+                    <p>当前总评分为&nbsp;<strong><span id="totalScore"></span>&nbsp;分</strong>，满分为&nbsp;5&nbsp;分。</p>
+                    <div class="btn-group">
+                        <button class="btn btn-primary" onclick="submitScore()">提交评分</button>
+                        <button class="btn btn-secondary" onclick="cancelEditScore()">取消评分</button>
+                    </div>
+                </div>
+                <hr>
+                <h4><label for="interviewComment">进行面试评价</label></h4>
+                <button id="commentEditBtn" class="btn btn-primary"
+                        onclick="$('#commentGroup').removeAttr('hidden');$('#commentEditBtn').attr('hidden','hidden')">
+                    评价
+                </button>
+                <div id="commentGroup" hidden="hidden">
+                    <textarea id="interviewComment"></textarea><br>
+                    <div class="btn-group">
+                        <button class="btn btn-success" onclick="submitInterviewComment()">
+                            <i class="fa fa-check"></i>保存评价
+                        </button>
+                        <button class="btn btn-secondary"
+                                onclick="$('#commentEditBtn').removeAttr('hidden');$('#commentGroup').attr('hidden','hidden')">
+                            放弃评价
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div th:unless="${session.USER_INFO.id==interview.adminID}">
+                <h3>您不是此代表的面试官，不能对其进行修改</h3>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var academicScoreOrigin = [[${interview.academicScore}]];
+    var passionScoreOrigin = [[${interview.passionScore}]];
+    var delegateID = [[${interview.id}]];
+    var academicScore = 0;
+    var passionScore = 0;
+    var totalScore = 0;
+    $(function () {
+        $('#main').append($('#res').html());
+        $("#score").popover({
+            title: "详细得分",
+            html: true,
+            placement: "right",
+            content: "学术得分：<span id='academicScore'></span><br>热情得分：<span id='passionScore'></span>"
+        });
+        $('#totalScore').text(totalScore);
+        $('#res').remove();
+    });
+
+    function editScore() {
+        $('#scoreGroup').removeAttr('hidden');
+        $('#editScoreBtn').attr('hidden', 'hidden')
+    }
+
+
+    function setScore(part, score) {
+        if (part === 'academic') {
+            academicScore = score;
+            for (var i = 0; i <= 5; i++) {
+                $("#academicBtn" + i).removeClass('btn-primary').addClass('btn-dark');
+            }
+            $("#academicBtn" + score).removeClass('btn-dark').addClass('btn-primary');
+        } else {
+            passionScore = score;
+            for (i = 0; i <= 5; i++) {
+                $("#passionBtn" + i).removeClass('btn-primary').addClass('btn-dark');
+            }
+            $("#passionBtn" + score).removeClass('btn-dark').addClass('btn-primary');
+        }
+        totalScore = (academicScore * 0.6 + passionScore * 0.4).toFixed(2);
+        $('#totalScore').text(totalScore)
+    }
+
+    function cancelEditScore() {
+        $('#scoreGroup').attr('hidden', 'hidden');
+        $('#editScoreBtn').removeAttr('hidden', 'hidden');
+        academicScore = passionScore = totalScore = 0;
+    }
+
+    function submitScore() {
+        console.log(academicScore, passionScore, totalScore);
+        if (totalScore === 0) {
+            if (confirm('请确认面试总分是否真的为0分')) {
+                $.ajax({
+                    type: 'POST',
+                    url: '/admin/modifyInterviewScore',
+                    dataType: 'json',
+                    data: {
+                        'academicScore': academicScore,
+                        'passionScore': passionScore,
+                        'totalScore': totalScore,
+                        'id': delegateID
+                    },
+                    success: function (data) {
+                        if (data['status'] === 'SUCCESS') {
+                            alert('评分成功');
+                            academicScoreOrigin = data['academicScore'];
+                            passionScoreOrigin = data['passionScore'];
+                            $('#interviewScore').text(data['totalScore']);
+                        } else {
+                            alert('评分失败')
+                        }
+                    }
+                })
+            }
+        } else {
+            $.ajax({
+                type: 'POST',
+                url: '/admin/modifyInterviewScore',
+                dataType: 'json',
+                data: {
+                    'academicScore': academicScore,
+                    'passionScore': passionScore,
+                    'totalScore': totalScore,
+                    'id': delegateID
+                },
+                success: function (data) {
+                    if (data['status'] === 'SUCCESS') {
+                        alert('评分成功');
+                        academicScoreOrigin = data['academicScore'];
+                        passionScoreOrigin = data['passionScore'];
+                        $('#interviewScore').text(data['totalScore']);
+                    } else {
+                        alert('评分失败')
+                    }
+                }
+            })
+        }
+    }
+
+    function loadScore() {
+        setTimeout(function () {
+            $('#academicScore').text(academicScoreOrigin);
+            $('#passionScore').text(passionScoreOrigin);
+        }, 10);
+    }
+
+    function submitNewDate() {
+        var newInterviewDate = $('#newInterviewDate').val();
+        if (newInterviewDate === '') {
+            alert('新的面试时间不能为空')
+        } else {
+            $.ajax({
+                type: 'POST',
+                url: '/admin/modifyInterviewDate',
+                dataType: 'json',
+                data: {
+                    'newInterviewDate': newInterviewDate,
+                    'id': delegateID
+                },
+                success: function (data) {
+                    if (data['status'] === 'SUCCESS') {
+                        alert('修改成功');
+                        $('#interviewDate').text(data['date'])
+                    } else {
+                        alert('修改失败')
+                    }
+                }
+            })
+        }
+    }
+
+    function submitInterviewStatus(status) {
+        if (confirm('确认修改面试状态？')) {
+            $.ajax({
+                type: 'POST',
+                url: '/admin/modifyInterviewStatus',
+                dataType: 'json',
+                data: {
+                    'interviewStatus': status,
+                    'id': delegateID
+                },
+                success: function (data) {
+                    if (data['status'] === 'SUCCESS') {
+                        alert('修改状态成功');
+                        $('#interviewStatus').text(data['interviewStatus'])
+                    } else {
+                        alert('修改状态失败')
+                    }
+                }
+            })
+        }
+    }
+
+    function submitInterviewComment() {
+        var comment = $('#interviewComment').val();
+        if (confirm("确认提交面试评价吗")) {
+
+            $.ajax({
+                type: 'POST',
+                url: '/admin/modifyInterviewComment',
+                dataType: 'json',
+                data: {
+                    'comment': comment,
+                    'id': delegateID
+                },
+                success: function (data) {
+                    if (data['status'] === 'SUCCESS') {
+                        alert('提交评价成功');
+                        $('#comment').text(data['comment']);
+                        $('#commentEditBtn').removeAttr('hidden');
+                        $('#commentGroup').attr('hidden', 'hidden')
+                    } else {
+                        alert('提交评价失败，请重试');
+                    }
+                }
+            })
+        }
+    }
+</script>
+</body>
+</html>

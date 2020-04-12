@@ -1,42 +1,80 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>
-    <script src="https://cdn.bootcss.com/popper.js/1.15.0/esm/popper.min.js"></script>
-    <script src="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/js/bootstrap.js"></script>
-    <link href="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/css/bootstrap.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script src="../js/jquery-3.4.1.min.js"></script>
+    <script src="../js/popper.min.js"></script>
+    <script src="../js/bootstrap.js"></script>
+    <script src="../js/sb-admin-2.js"></script>
+    <script src="../js/cropper.js"></script>
+    <script src="../js/jquery.easing.js"></script>
+    <script src="../js/jquery-cropper.js"></script>
+    <script src="../js/bootstrap.bundle.min.js"></script>
+    <script src="../js/dataTables.bootstrap4.min.js"></script>
+    <link href="../css/bootstrap.css" rel="stylesheet">
+    <link href="../css/sb-admin-2.css" rel="stylesheet">
+    <link href="../css/font-awesome.css" rel="stylesheet">
+    <link href="../css/cropper.css" rel="stylesheet">
+    <link href="../css/dataTables.bootstrap4.min.css" rel="stylesheet">
     <title th:text="${queryType}"></title>
 </head>
 <body>
-<div>
+<div th:replace="allUser/adminHeader::adminHeader"></div>
+<div class="container" id="res">
     <h2 th:text="${queryType}">
     </h2>
-    <ul class="nav nav-list">
-        <li class="divider"></li>
-    </ul>
-    <table>
+    <hr>
+    <table class="table table-hover text-center">
         <thead>
-            <tr>
-                <th>姓名</th>
-                <th>申请类型</th>
-                <th>申请状态</th>
-                <th>所属代表团</th>
-                <th>手机号码</th>
-                <th>邮箱</th>
-                <th>操作</th>
-            </tr>
+        <tr>
+            <td>姓名</td>
+            <td>申请类型</td>
+            <td>申请状态</td>
+            <td>所属代表团</td>
+            <td>手机号码</td>
+            <td>邮箱</td>
+            <td>允许登录</td>
+        </tr>
         </thead>
         <tr th:each="member:${memberList}">
-            <td th:text="${member.name}"></td>
+            <td>
+                <i th:text="${member.name}"></i>
+                <a th:href="@{/admin/memberDetailPage(id=${member.ID})}">
+                <span class="fa fa-info-circle"
+                      aria-hidden="true"></span>
+                </a>
+            </td>
             <td th:text="${member.applicationType}"></td>
             <td th:text="${member.applicationStatus}"></td>
-            <td th:text="${member.schoolName}"></td>
+            <td>
+                <span th:if="${#strings.isEmpty(member.groupID)}" th:text="未分配代表团"></span>
+                <a th:unless="${#strings.isEmpty(member.groupID)}" th:text="${member.schoolName}"
+                   th:href="@{/admin/modifyGroupPage(groupID=${member.groupID})}"></a>
+            </td>
             <td th:text="${member.phone}"></td>
             <td th:text="${member.email}"></td>
-            <td><button>test</button></td>
+            <td>
+                <span th:if="${member.enable_Login}" class="fa fa-check"></span>
+                <span th:unless="${member.enable_Login}" class="fa fa-times" aria-hidden="true"></span>
+            </td>
         </tr>
     </table>
 </div>
 </body>
+<script>
+    $("#sidebarToggle, #sidebarToggleTop").onclick(function (e) {
+        $("body").attr("class", "sidebar-toggled");
+        $(".sidebar").toggleClass("toggled");
+        if ($(".sidebar").hasClass("toggled")) {
+            $('.sidebar .collapse').collapse('hide');
+        }
+    });
+</script>
+<script>
+    $(function () {
+        $('#main').append($('#res').html());
+        $('#res').remove();
+    });
+</script>
 </html>

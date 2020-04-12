@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script src="../js/jquery-3.4.1.min.js"></script>
+    <script src="../js/popper.min.js"></script>
+    <script src="../js/bootstrap.js"></script>
+    <script src="../js/sb-admin-2.js"></script>
+    <script src="../js/cropper.js"></script>
+    <script src="../js/jquery.easing.js"></script>
+    <script src="../js/jquery-cropper.js"></script>
+    <script src="../js/bootstrap.bundle.min.js"></script>
+    <script src="../js/bootstrap-select.js"></script>
+    <script src="../js/bootstrap-select-defaults-zh_CN.js"></script>
+    <link href="../css/bootstrap.css" rel="stylesheet">
+    <link href="../css/sb-admin-2.css" rel="stylesheet">
+    <link href="../css/font-awesome.css" rel="stylesheet">
+    <link href="../css/cropper.css" rel="stylesheet">
+    <link href="../css/bootstrap-select.css" rel="stylesheet">
+    <title>报名参会-Гулаш&nbsp;система&nbsp;会议管理系统</title>
+</head>
+
+<body class="bg-gradient-primary">
+<div class="container">
+    <div class="card o-hidden border-0 shadow-lg my-5">
+        <div class="card-body p-0">
+            <!-- Nested Row within Card Body -->
+            <div class="row">
+                <div class="col-lg-5 d-none d-lg-block bg-register-image"></div>
+                <div class="col-lg-7">
+                    <div class="p-5">
+                        <div class="text-center">
+                            <h1 class="h4 text-gray-900 mb-4">报名参会</h1>
+                        </div>
+                        <form class="user" th:action="@{/signUp}" method="post" th:object="${User}">
+                            <div class="form-group">
+                                <label for="username"></label>
+                                <input class="form-control form-control-user" id="username" name="username"
+                                       th:field="${User.name}" required
+                                       placeholder="请输入姓名">
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-6 mb-3 mb-sm-0">
+                                    <label for="firstName"></label>
+                                    <input type="text" class="form-control form-control-user" id="firstName"
+                                           th:field="${User.first_name}"
+                                           placeholder="请输入姓名拼音" required>
+                                </div>
+                                <div class="col-sm-6">
+                                    <label for="lastName"></label>
+                                    <input type="text" class="form-control form-control-user" id="lastName"
+                                           th:field="${User.last_name}"
+                                           placeholder="请输入姓氏拼音" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="email"></label>
+                                <input type="email" class="form-control form-control-user" th:field="${User.email}"
+                                       name="email" id="email"
+                                       placeholder="请输入电子邮箱" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone"></label>
+                                <input class="form-control form-control-user" onkeyup="phoneCheck()" th:field="${User.phone}"
+                                       name="phone" id="phone"
+                                       placeholder="请输入手机号码" required>
+                                <span id="phoneInfo"></span>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-6 mb-3 mb-sm-0">
+                                    <label for="password"></label>
+                                    <input type="password" class="form-control form-control-user"
+                                           name="password" id="password" placeholder="请输入密码"
+                                           th:field="${User.password}" onkeyup="passwordPatternCheck()">
+                                    <span id="passwordInfo"></span>
+                                </div>
+                                <div class="col-sm-6">
+                                    <label for="repeatPassword"></label>
+                                    <input type="password" class="form-control form-control-user"
+                                           id="repeatPassword" placeholder="请确认密码" onkeyup="passwordCheck()">
+                                    <span id="info"></span>
+                                </div>
+                            </div>
+                            <span th:if="${param.error}" th:text="${session.SPRING_SECURITY_LAST_EXCEPTION.message}"
+                                  style="color: red"></span>
+                            <button type="submit" id="submitButton" class="btn btn-primary btn-user btn-block" disabled>
+                                注册
+                            </button>
+                        </form>
+                        <hr>
+                        <div class="text-center">
+                            <a class="small" href="forgot-password.html">忘记密码?</a>
+                        </div>
+                        <div class="text-center">
+                            <a class="small" href="login">已有账号？</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function passwordPatternCheck() {
+        pattern = /[a-zA-Z0-9]{6,16}/;
+        var password = $("#password").val();
+        if (pattern.test(password)) {
+            $("#passwordInfo").html("<i class='fa fa-check'></i>").css("color", "green");
+        } else {
+            $("#submitButton").attr("disabled", "disabled");
+            $("#passwordInfo").text("密码必须包含大写字母小写字母和数字").css("color", "red")
+        }
+    }
+
+    function phoneCheck() {
+        var phone = $('#phone').val();
+        var phonePattern = /^1(3|4|5|6|7|8|9)\d{9}$/;
+        if (!phonePattern.test(phone)) {
+            $("#submitButton").attr("disabled", "disabled");
+            $("#phoneInfo").text("手机号码格式错误").css("color", "red");
+        } else {
+            $("#phoneInfo").html("<i class='fa fa-check'></i>").css("color", "green");
+        }
+    }
+
+    function passwordCheck() {
+        var password = $("#password").val();
+        var repeatPassword = $("#repeatPassword").val();
+        if (password === repeatPassword) {
+            $("#info").html("<i class='fa fa-check'></i>").css("color", "green");
+            $("#submitButton").removeAttr("disabled")
+        } else {
+            $("#info").text("两次密码不一致").css("color", "red")
+        }
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script src="../js/jquery-3.4.1.min.js"></script>
+    <script src="../js/popper.min.js"></script>
+    <script src="../js/bootstrap.js"></script>
+    <script src="../js/sb-admin-2.js"></script>
+    <script src="../js/cropper.js"></script>
+    <script src="../js/jquery.easing.js"></script>
+    <script src="../js/jquery-cropper.js"></script>
+    <script src="../js/bootstrap.bundle.min.js"></script>
+    <script src="../js/dataTables.bootstrap4.min.js"></script>
+    <link href="../css/bootstrap.css" rel="stylesheet">
+    <link href="../css/sb-admin-2.css" rel="stylesheet">
+    <link href="../css/font-awesome.css" rel="stylesheet">
+    <link href="../css/cropper.css" rel="stylesheet">
+    <link href="../css/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <title>添加管理员</title>
+</head>
+<body>
+<div th:replace="allUser/adminHeader::adminHeader"></div>
+<div id="res">
+    <h1>添加管理员</h1>
+    <hr>
+    <div class="card shadow h-100">
+        <div class="card-header"></div>
+        <div class="card-body">
+            <div class="mt-2">
+                <label for="adminName" autofocus>管理员姓名<span style="color: red">*</span></label>
+                <input id="adminName" placeholder="请输入姓名" required>
+            </div>
+            <div class="mt-2">
+                <label for="adminPhone">管理员手机号码<span style="color: red">*</span></label>
+                <input id="adminPhone" placeholder="请输入手机号码" required>
+            </div>
+            <div class="mt-2">
+                <label for="adminEmail">管理员电子邮箱<span style="color: red">*</span></label>
+                <input id="adminEmail" placeholder="请输入电子邮箱" type="email" required>
+            </div>
+            <div class="mt-2">
+                <label for="adminPassword">管理员密码<span style="color: red">*</span></label>
+                <input id="adminPassword" placeholder="请输入密码" type="password">
+            </div>
+            <div class="mt-2">
+                <label for="adminRePassword">确认密码<span style="color: red">*</span></label>
+                <input id="adminRePassword" placeholder="请确认密码" type="password">
+            </div>
+            <div class="mt-2">
+                <label for="adminTitle">管理员Title</label>
+                <input id="adminTitle" placeholder="请输入Title">
+            </div>
+            <div class="mt-2">
+                <label for="role_AG"></label>
+                <input name="role_AG" id="role_AG" type="checkbox">全局学术管理员
+            </div>
+            <div class="mt-2">
+                <label for="role_AD"></label>
+                <input name="role_AD" id="role_AD" type="checkbox">单一会场学术管理员
+            </div>
+            <div class="mt-2">
+                <label for="role_D"></label>
+                <input name="role_D" id="role_D" type="checkbox">管制行政管理员
+            </div>
+            <div class="mt-2">
+                <label for="role_L"></label>
+                <input name="role_L" id="role_L" type="checkbox">总务行政管理员
+            </div>
+            <div class="mt-2">
+                <label for="role_F"></label>
+                <input name="role_F" id="role_F" type="checkbox">财务行政管理员
+            </div>
+            <div class="mt-2">
+                <label for="role_SG"></label>
+                <input name="role_SG" id="role_SG" type="checkbox">总务行政管理员
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="btn-group">
+                <button class="btn btn-primary" id="submit" onclick="addAdmin()">添加管理员</button>
+                <button class="btn btn-secondary" id="cancel">取消编辑</button>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    $("#sidebarToggle, #sidebarToggleTop").onclick(function (e) {
+        $("body").attr("class", "sidebar-toggled");
+        $(".sidebar").toggleClass("toggled");
+        if ($(".sidebar").hasClass("toggled")) {
+            $('.sidebar .collapse').collapse('hide');
+        }
+    });
+</script>
+<script>
+    $(function () {
+        $('#main').append($('#res').html());
+        $('#res').remove();
+    });
+
+    function passwordCheck(password, repassword) {
+        if (password === '') {
+            alert('密码不能为空');
+            return false
+        } else if (!(repassword === password)) {
+            alert('两次输入的密码不一致！');
+            $('#adminPassword').val('');
+            $('#adminRePassword').val('');
+            return false
+        }
+        return true
+    }
+
+    function emailCheck(email) {
+        var emailPattern = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
+        if (email === '') {
+            alert('电子邮箱不能为空');
+            return false
+        } else if (!emailPattern.test(email)) {
+            alert('电子邮箱格式不正确');
+            $('#adminEmail').val('');
+            return false
+        }
+        return true
+    }
+
+    function phoneCheck(phone) {
+        var phonePattern = /^1(3|4|5|6|7|8|9)\d{9}$/;
+        if (phone === '') {
+            alert('手机号码不能为空');
+            return false
+        } else if (!phonePattern.test(phone)) {
+            alert('手机号码格式错误，请重新输入');
+            $('#adminPhone').val('');
+            return false
+        }
+        return true
+    }
+
+    function nameCheck(name) {
+        var namePattern = /^[\u4e00-\u9fa5]*$/;
+        if (name === '') {
+            alert('管理员姓名不能为空');
+            return false;
+        } else if (!namePattern.test(name)) {
+            alert('管理员姓名必须为中文！');
+            $('#adminName').val('');
+            return false;
+        }
+        return true;
+    }
+
+    function addAdmin() {
+        var adminName = $('#adminName').val();
+        var adminPhone = $('#adminPhone').val();
+        var adminEmail = $('#adminEmail').val();
+        var adminPassword = $('#adminPassword').val();
+        var adminRePassword = $('#adminRePassword').val();
+        var adminTitle = $('#adminTitle').val();
+        var role_AG = $('#role_AG').prop('checked');
+        var role_AD = $('#role_AD').prop('checked');
+        var role_D = $('#role_D').prop('checked');
+        var role_F = $('#role_F').prop('checked');
+        var role_L = $('#role_L').prop('checked');
+        var role_SG = $('#role_SG').prop('checked');
+        if (nameCheck(adminName) && phoneCheck(adminPhone) && emailCheck(adminEmail) && passwordCheck(adminPassword, adminRePassword)) {
+            $.ajax({
+                type: 'POST',
+                url: '/admin/addAdmin',
+                dataType: 'json',
+                data: {
+                    'adminName': adminName,
+                    'adminPhone': adminPhone,
+                    'adminEmail': adminEmail,
+                    'adminPassword': adminPassword,
+                    'adminTitle': adminTitle,
+                    'role_AG': role_AG,
+                    'role_AD': role_AD,
+                    'role_D': role_D,
+                    'role_SG': role_SG,
+                    'role_F': role_F,
+                    'role_L': role_L
+                },
+                success: function (data) {
+                    if (data['status'] === 'SUCCESS') {
+                        alert('添加成功');
+                        window.location.reload()
+                    } else if (data['status'] === 'ERROR') {
+                        alert(data['errorText']);
+                        window.location.reload()
+                    }
+                }
+            })
+        }
+    }
+
+</script>
+</html>

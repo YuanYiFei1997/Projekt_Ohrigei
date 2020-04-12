@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh-cn" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script src="../js/jquery-3.4.1.min.js"></script>
+    <script src="../js/popper.min.js"></script>
+    <script src="../js/bootstrap.js"></script>
+    <script src="../js/sb-admin-2.js"></script>
+    <script src="../js/cropper.js"></script>
+    <script src="../js/jquery.easing.js"></script>
+    <script src="../js/jquery-cropper.js"></script>
+    <script src="../js/bootstrap.bundle.min.js"></script>
+    <link href="../css/bootstrap.css" rel="stylesheet">
+    <link href="../css/sb-admin-2.css" rel="stylesheet">
+    <link href="../css/font-awesome.css" rel="stylesheet">
+    <link href="../css/cropper.css" rel="stylesheet">
+    <title>账单列表-Гулаш&nbsp;система&nbsp;会议管理系统</title>
+</head>
+<body>
+<div th:replace="allUser/adminHeader::adminHeader"></div>
+<div id="res">
+    <h2>账单列表</h2>
+    <hr>
+    <table class="table table-hover text-center">
+        <thead>
+        <tr>
+            <td>#</td>
+            <td>代表姓名</td>
+            <td>金额</td>
+            <td>账单生成时间</td>
+            <td>账单状态</td>
+            <td>操作</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="bill:${billList}">
+            <td><span th:text="${bill.id}"></span></td>
+            <td><a th:text="${bill.delegateName}" th:href="@{/admin/memberDetailPage(id=${bill.id})}"></a></td>
+            <td><i class="fa fa-cny"></i><span th:text="${bill.billAmount}"></span></td>
+            <td><span th:text="${bill.billGenerateDate}"></span></td>
+            <td>
+                <span th:if="${bill.billStatus}" th:text="已支付"></span>
+                <span th:unless="${bill.billStatus}" th:text="未支付"></span>
+            </td>
+            <td><a th:href="@{/admin/billDetail(id=${bill.id})}">账单信息</a></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<script>
+    $(function () {
+        $('#main').append($('#res').html());
+        $('#res').remove();
+    });
+</script>
+</body>
+</html>

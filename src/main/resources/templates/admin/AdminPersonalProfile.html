@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script src="../js/jquery-3.4.1.min.js"></script>
+    <script src="../js/sb-admin-2.js"></script>
+    <script src="../js/popper.min.js"></script>
+    <script src="../js/cropper.js"></script>
+    <script src="../js/bootstrap.js"></script>
+    <script src="../js/jquery.easing.js"></script>
+    <script src="../js/jquery-cropper.js"></script>
+    <script src="../js/bootstrap.bundle.min.js"></script>
+    <link href="../css/bootstrap.css" rel="stylesheet">
+    <link href="../css/sb-admin-2.css" rel="stylesheet">
+    <link href="../css/font-awesome.css" rel="stylesheet">
+    <link href="../css/cropper.css" rel="stylesheet">
+    <title>个人信息-Гулаш&nbsp;система&nbsp;会议管理系统</title>
+</head>
+<style>
+    .preview {
+        float: left;
+        margin-bottom: .5rem;
+        margin-right: .5rem;
+        box-shadow: 0 0 5px #adadad;
+        overflow: hidden;
+    }
+
+    .preview > img {
+        max-width: 100%;
+    }
+
+    .preview-lg {
+        height: 144px;
+        width: 144px;
+    }
+
+    .preview-md {
+        height: 72px;
+        width: 72px;
+    }
+
+    .preview-sm {
+        height: 32px;
+        width: 32px;
+    }
+
+    .preview-r {
+        border-radius: 50%;
+        height: 32px;
+        width: 32px;
+    }
+
+    .docs-preview {
+        margin-right: -1rem;
+    }
+</style>
+<body id="page-top">
+<!-- 将侧边栏及导航栏抽出为单独的文件，减少冗余度-->
+<div th:replace="allUser/adminHeader::adminHeader"></div>
+<div id="res" hidden="hidden">
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">个人资料</h1>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="row mt-2">
+                <div class="col">
+                    <div class="card shadow h-100">
+                        <div class="card-header">个人信息</div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <p>姓名</p>
+                                </div>
+                                <div class="col-md-10">
+                                    <p th:text="${session.USER_INFO.name}">testUser</p>
+                                </div>
+                            </div>
+                            <div class="row mt-1">
+                                <div class="col-md-2">
+                                    <p>账户类型</p>
+                                </div>
+                                <div class="col-md-10">
+                                    <span th:if="${session.USER_INFO.role} eq 'ROLE_ADMIN'"><i class="fa fa-user"></i>管理员</span>
+                                    <span th:if="${session.USER_INFO.role} eq 'ROLE_USER'"><i class="fa fa-user"></i>代表</span>
+                                </div>
+                            </div>
+                            <div class="row mt-1">
+                                <div class="col-md-2">
+                                    <label for="email">电子邮箱</label>
+                                </div>
+                                <div class="col-md-10">
+                                    <div class="input-group">
+                                        <input type="text" id="email" disabled th:value="${session.USER_INFO.email}">
+                                        <button class="btn btn-primary" id="emailEditButton"
+                                                onclick="editItem('#email','#emailEditButton','#emailCancelButton')"><i
+                                                class="fa fa-pencil"></i></button>
+                                        <button class="btn btn-secondary" id="emailCancelButton"
+                                                onclick="cancelEdit('#email','#emailEditButton','#emailCancelButton')"
+                                                hidden><i
+                                                class="fa fa-remove"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt-1">
+                                <div class="col-md-2">
+                                    <label for="phone">手机</label>
+                                </div>
+                                <div class="col-md-10">
+                                    <div class="input-group">
+                                        <input type="text" id="phone" disabled th:value="${session.USER_INFO.phone}">
+                                        <button class="btn btn-primary" id="phoneEditButton"
+                                                onclick="editItem('#phone','#phoneEditButton','#phoneCancelButton')"><i
+                                                class="fa fa-pencil"></i></button>
+                                        <button class="btn btn-secondary" id="phoneCancelButton"
+                                                onclick="cancelEdit('#phone','#phoneEditButton','#phoneCancelButton')"
+                                                hidden><i class="fa fa-remove"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <button class="btn btn-primary">保存更改</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="row mt-2">
+                <div class="col">
+                    <div class="card shadow h-100">
+                        <div class="card-header">个人头像</div>
+                        <div class="card-body">
+                            <div id="personHeaderGroup">
+                                <div>
+                                    <img th:if="${#strings.isEmpty(session.USER_INFO.avatarPath)}"
+                                         src="../img/head/defaultHead.png" style="width: 144px;height: 144px"
+                                         alt="当前头像">
+                                    <img th:unless="${#strings.isEmpty(session.USER_INFO.avatarPath)}"
+                                         th:src="${session.USER_INFO.avatarPath}" style="width: 144px;height: 144px"
+                                         alt="当前头像">
+                                </div>
+                            </div>
+                            <div class="row mt-1 ml-0" hidden="hidden" id="cropperBox">
+                                <div class="imgBox col-md-7"
+                                     style="max-height: 400px;max-width: 100%;box-shadow: 0 0 5px #adadad;">
+                                    <img src="" alt="" id="img" style="max-width: 100%;height: auto;">
+                                    <input name="file" type="file" style="display: none" id="uploadFile"
+                                           accept="image/jpg, image/png, image/jpeg">
+                                </div>
+                                <div class="col-md-3 mr-auto align-items-center clearfix docs-preview">
+                                    <p>预览图</p>
+                                    <div class="preview preview-lg"></div>
+                                    <div class="preview preview-md"></div>
+                                    <div class="preview preview-sm"></div>
+                                    <div class="preview preview-r"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <button class="btn btn-primary mt-2" id="uploadButton"
+                                    onclick="$('#uploadFile').click();">
+                                <i class="fa fa-image"></i>更改头像
+                            </button>
+                            <div class="row mt-1 ml-0" id="cropperButtonGroup" hidden="hidden">
+                                <div class="btn-group">
+                                    <button class="btn btn-primary" onclick="getData()">
+                                        <i class="fa fa-check"></i>
+                                    </button>
+                                    <button class="btn btn-primary" onclick="resetCropper()">
+                                        <i class="fa fa-refresh"></i>
+                                    </button>
+                                    <button class="btn btn-secondary" onclick="clearImg()">
+                                        <i class="fa fa-remove"></i>
+                                    </button>
+                                </div>
+                                <div class="btn-group ml-1">
+                                    <button class="btn btn-primary" onclick="rotate('-45')"><i
+                                            class="fa fa-rotate-left"></i></button>
+                                    <button class="btn btn-primary" onclick="rotate('45')"><i
+                                            class="fa fa-rotate-right"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col">
+                    <div class="card shadow">
+                        <div class="card-header">修改密码</div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <label for="password-before">原始密码</label>
+                                </div>
+                                <div class="col-md-10">
+                                    <input type="password" id="password-before" disabled class="form-control">
+                                </div>
+                            </div>
+                            <div class="row mt-4">
+                                <div class="col-md-2">
+                                    <label for="password-after">新密码</label>
+                                </div>
+                                <div class="col-md-10">
+                                    <input type="password" id="password-after" disabled
+                                           onkeyup="passwordPatternCheck()" class="form-control">
+                                    <span id="passwordInfo"></span>
+                                </div>
+                            </div>
+                            <div class="row mt-4">
+                                <div class="col-md-2">
+                                    <label for="password-confirm">确认密码</label>
+                                </div>
+                                <div class="col-md-10">
+                                    <input type="password" id="password-confirm" disabled class="form-control"
+                                           onkeyup="passwordCheck()">
+                                    <span id="confirmInfo"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <button class="btn btn-primary mt-1" id="changePasswordButton"
+                                    onclick="changePassword()">
+                                修改密码
+                            </button>
+                            <div class="btn-group mt-1" id="changePassBtnGroup" hidden>
+                                <button class="btn btn-primary" id="submitPasswordButton"
+                                        onclick="submitPassword()">
+                                    <i class="fa fa-check"></i>确认修改
+                                </button>
+                                <button class="btn btn-secondary"
+                                        onclick="cancelChangePassword()">
+                                    <i class="fa fa-close"></i>取消修改
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    //将id=res的div内部的html标签传递给id为main的div
+    $(function () {
+        $('#main').append($('#res').html());
+        $('#res').remove();
+        $("#uploadFile").change(function () {
+            $("#cropper-container").removeAttr("hidden");
+            $("#cropperBox").removeAttr("hidden");
+            $("#cropperButtonGroup").removeAttr("hidden");
+            $("#personHeaderGroup").attr("hidden", "hidden");
+            $("#uploadFile").click();
+            uploadImg(this);
+        })
+    });
+
+    function passwordPatternCheck() {
+        pattern = /[a-zA-Z0-9]{6,16}/;
+        var password = $("#password-after").val();
+        if (pattern.test(password)) {
+            $("#passwordInfo").html("<i class='fa fa-check'></i>").css("color", "green");
+        } else {
+            $("#submitPasswordButton").attr("disabled", "disabled");
+            $("#passwordInfo").text("密码必须包含大写字母小写字母和数字").css("color", "red")
+        }
+    }
+
+    function passwordCheck() {
+        var passwordAfter = $("#password-after").val();
+        var passwordConfirm = $("#password-confirm").val();
+        console.log(passwordAfter,passwordConfirm);
+        if (passwordAfter === passwordConfirm) {
+            $("#confirmInfo").html("<i class='fa fa-check'></i>").css("color", "green");
+            $("#submitPasswordButton").removeAttr("disabled")
+        } else {
+            $("#confirmInfo").text("两次密码不一致").css("color", "red")
+        }
+    }
+
+    function submitPassword() {
+        var delegateID = [[${session.USER_INFO.id}]];
+        var passwordOld = $('#password-before').val();
+        var passwordNew = $('#password-after').val();
+        if (confirm('确认更改密码')) {
+            $.ajax({
+                type: 'POST',
+                url: '/admin/passwordChange',
+                dataType: 'json',
+                data: {
+                    'id': delegateID,
+                    'passwordOld': passwordOld,
+                    'passwordNew': passwordNew
+                },
+                success: function (data) {
+                    if (data['status'] === 'SUCCESS') {
+                        alert('修改密码成功，请重新登录');
+                        window.location.href = "/logout";
+                    } else if (data['status'] === 'ERROR') {
+                        alert(data['info']);
+                        window.location.reload()
+                    }
+                }
+            })
+        }
+    }
+</script>
+<script>
+    function getData() {
+        var cropCanvas = Cropper.cropper('getCroppedCanvas');
+        var cropUrl = cropCanvas.toDataURL('image/jpeg', 0.5);
+        $.ajax({
+            type: "POST",
+            url: '/admin/uploadImg',
+            dataType: "json",
+            data: {
+                "id": [[${session.USER_INFO.id}]],
+                "imgData": cropUrl
+            },
+            success: function (data) {
+                if (data['status'] === "SUCCESS") {
+                    alert("上传成功,请重新登录以查看");
+                } else {
+                    alert("上传失败");
+                    window.location.reload()
+                }
+            },
+        });
+        console.log(cropUrl)
+    }
+
+    function changePassword() {
+        $('#password-before').removeAttr('disabled');
+        $('#password-after').removeAttr('disabled');
+        $('#password-confirm').removeAttr('disabled');
+        $('#changePassBtnGroup').removeAttr('hidden');
+        $('#changePasswordButton').attr('hidden', 'hidden');
+    }
+
+    function cancelChangePassword() {
+        $('#password-before').attr('disabled', 'disabled').val("");
+        $('#password-after').attr('disabled', 'disabled').val("");
+        $('#password-confirm').attr('disabled', 'disabled').val("");
+        $('#changePassBtnGroup').attr('hidden', 'hidden');
+        $('#changePasswordButton').removeAttr('hidden');
+    }
+
+    function clearImg() {
+        //选取cropperBox下的全部img标签
+        $('#cropperBox img').attr('src', '');
+        $('#personHeaderGroup').removeAttr("hidden");
+        $(".cropper-container").attr("hidden", "hidden");
+        $("#cropperBox").attr("hidden", "hidden");
+        $("#cropperButtonGroup").attr("hidden", "hidden")
+    }
+
+    function rotate(angle) {
+        Cropper.cropper("rotate", angle)
+    }
+
+    function resetCropper() {
+        Cropper.cropper('reset');
+    }
+
+    function uploadImg(tag) {
+        var file = tag.files[0];
+        var reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = function () {
+            console.log(this.result);
+            var imgSrc = this.result;
+            Cropper = $('#img').cropper({
+                aspectRatio: 1 / 1,
+                viewMode: 1,
+                dragMode: "move",
+                preview: $(".preview"),
+                crop: function (e) {
+                    console.log(e);
+                }
+            });
+            Cropper.cropper('replace', imgSrc);
+        }
+    }
+
+
+    $("#sidebarToggle, #sidebarToggleTop").onclick(function (e) {
+        $("body").attr("class", "sidebar-toggled");
+        $(".sidebar").toggleClass("toggled");
+        if ($(".sidebar").hasClass("toggled")) {
+            $('.sidebar .collapse').collapse('hide');
+        }
+    });
+
+    function editItem(item, editButton, cancelButton) {
+        $(item).removeAttr("disabled");
+        $(editButton).attr("hidden", "hidden");
+        $(cancelButton).removeAttr("hidden");
+    }
+
+
+</script>
+<script th:inline="javascript">
+    function cancelEdit(item, editButton, cancelButton) {
+        if (item === '#phone') {
+            $(item).val([[${session.USER_INFO.phone}]])
+        } else {
+            $(item).val([[${session.USER_INFO.email}]])
+        }
+        $(item).attr("disabled", "disabled");
+        $(cancelButton).attr("hidden", "hidden");
+        $(editButton).removeAttr("hidden")
+    }
+
+</script>
+</html>

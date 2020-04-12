@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script src="../js/jquery-3.4.1.min.js"></script>
+    <script src="../js/sb-admin-2.js"></script>
+    <script src="../js/popper.min.js"></script>
+    <script src="../js/bootstrap.js"></script>
+    <script src="../js/jquery.easing.js"></script>
+    <script src="../js/bootstrap.bundle.min.js"></script>
+    <script src="../js/cropper.js"></script>
+    <script src="../js/jquery-cropper.js"></script>
+    <link href="../css/bootstrap.css" rel="stylesheet">
+    <link href="../css/sb-admin-2.css" rel="stylesheet">
+    <link href="../css/font-awesome.css" rel="stylesheet">
+    <link href="../css/cropper.css" rel="stylesheet">
+    <title>Title</title>
+</head>
+<style>
+    .preview {
+        float: left;
+        margin-bottom: .5rem;
+        margin-right: .5rem;
+        box-shadow: 0 0 5px #adadad;
+        overflow: hidden;
+    }
+
+    .preview > img {
+        max-width: 100%;
+    }
+
+    .preview-lg {
+        height: 144px;
+        width: 144px;
+    }
+
+    .preview-md {
+        height: 72px;
+        width: 72px;
+    }
+
+    .preview-sm {
+        height: 32px;
+        width: 32px;
+    }
+
+    .preview-r {
+        border-radius: 50%;
+        height: 32px;
+        width: 32px;
+    }
+
+    .docs-preview {
+        margin-right: -1rem;
+    }
+</style>
+<body>
+<button class="btn btn-primary" onclick="$('#uploadFile').click();">上传头像</button>
+<div class="container">
+    <div class="row" hidden="hidden" id="cropperBox">
+        <div class="imgBox col-md-7" style="max-height: 400px;max-width: 100%;box-shadow: 0 0 5px #adadad;">
+            <img src="" alt="" id="img" style="max-width: 100%;height: auto;">
+            <input name="file" type="file" style="display: none" id="uploadFile"
+                   accept="image/jpg, image/png, image/jpeg">
+        </div>
+        <div class="col-md-3 mr-auto align-items-center clearfix docs-preview">
+            <p>预览图</p>
+            <div class="preview preview-lg"></div>
+            <div class="preview preview-md"></div>
+            <div class="preview preview-sm"></div>
+            <div class="preview preview-r"></div>
+        </div>
+    </div>
+    <div class="row mt-1" hidden="hidden">
+        <div class="btn-group">
+            <button class="btn btn-primary" onclick="getData()">
+                <i class="fa fa-check"></i>
+            </button>
+            <button class="btn btn-primary" onclick="resetCropper()">
+                <i class="fa fa-refresh"></i>
+            </button>
+            <button class="btn btn-secondary" onclick="clearImg()">
+                <i class="fa fa-remove"></i>
+            </button>
+        </div>
+        <div class="btn-group ml-1">
+            <button class="btn btn-primary" onclick="rotate('-45')"><i class="fa fa-rotate-left"></i></button>
+            <button class="btn btn-primary" onclick="rotate('45')"><i class="fa fa-rotate-right"></i></button>
+        </div>
+    </div>
+</div>
+<script>
+    function getData() {
+        var cropCanvas = Cropper.cropper('getCroppedCanvas');
+        var cropUrl = cropCanvas.toDataURL('image/jpeg', 0.5);
+        $.ajax({
+            type: "POST",
+            url: '/testUpload/upload',
+            dataType: "json",
+            data: {
+                "imgData": cropUrl
+            },
+            success: function (data) {
+                if (data['status'] == "SUCCESS") {
+                    alert("上传成功");
+                } else alert("上传失败")
+            },
+        });
+        console.log(cropUrl)
+    }
+
+    function clearImg() {
+        //选取cropperBox下的全部img标签
+        $('#cropperBox img').attr('src','');
+        $("#uploadButton").removeAttr("hidden");
+        $(".cropper-container").attr("hidden", "hidden");
+        $(".row").attr("hidden", "hidden")
+    }
+
+    function rotate(angle) {
+        Cropper.cropper("rotate", angle)
+    }
+
+    $(function () {
+        $("#uploadFile").change(function () {
+            $(".row").removeAttr("hidden");
+            $("#uploadFile").click();
+            uploadImg(this);
+        })
+    });
+
+    function resetCropper() {
+        Cropper.cropper('reset');
+    }
+
+    function uploadImg(tag) {
+        var file = tag.files[0];
+        var reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = function () {
+            console.log(this.result);
+            var imgSrc = this.result;
+            Cropper = $("#img").cropper('replace', imgSrc, false);
+        }
+    }
+
+    $('#img').cropper({
+        aspectRatio: 1 / 1,
+        viewMode: 1,
+        dragMode: "move",
+        preview: $('.preview'),
+        crop: function (e) {
+            console.log(e);
+        }
+    });
+</script>
+</body>
+</html>

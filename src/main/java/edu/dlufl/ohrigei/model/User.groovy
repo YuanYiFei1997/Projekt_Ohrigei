@@ -1,25 +1,23 @@
 package edu.dlufl.ohrigei.model
 
-import com.alibaba.fastjson.JSONObject
 
-import javax.validation.constraints.NotBlank
+import org.springframework.security.core.GrantedAuthority
+import org.springframework.security.core.authority.AuthorityUtils
+import org.springframework.security.core.userdetails.UserDetails
 
-class User {
+class User implements UserDetails{
     private int id
-    @NotBlank(message = "姓名不能为空")
     private String name
     private String last_name
-    @NotBlank(message = "姓名拼音不能为空")
     private String first_name
-    @NotBlank(message = "电子邮箱不能为空")
     private String email
-    @NotBlank(message = "密码不能为空")
     private String password
-    @NotBlank(message = "手机号码不能为空")
     private String phone
-    private int type
-    private int enable_Login
+    private String role
+    private boolean enable_Login
+    private String avatarPath
 
+    private List<GrantedAuthority>authorities
     int getId() {
         return id
     }
@@ -34,38 +32,6 @@ class User {
 
     void setName(String name) {
         this.name = name
-    }
-
-    String getEmail() {
-        return email
-    }
-
-    void setEmail(String email) {
-        this.email = email
-    }
-
-    String getPassword() {
-        return password
-    }
-
-    void setPassword(String password) {
-        this.password = password
-    }
-
-    String getPhone() {
-        return phone
-    }
-
-    void setPhone(String phone) {
-        this.phone = phone
-    }
-
-    int getType() {
-        return type
-    }
-
-    void setType(byte type) {
-        this.type = type
     }
 
     String getLast_name() {
@@ -84,22 +50,104 @@ class User {
         this.first_name = first_name
     }
 
-    void setEnable_Login(byte enable_Login) {
+    String getEmail() {
+        return email
+    }
+
+    void setEmail(String email) {
+        this.email = email
+    }
+
+    void setEnable_Login(boolean enable_Login) {
+        this.enable_Login = enable_Login
+    }
+
+    String getAvatarPath() {
+        return avatarPath
+    }
+
+    void setAvatarPath(String avatarPath) {
+        this.avatarPath = avatarPath
+    }
+
+    @Override
+    Collection<? extends GrantedAuthority> getAuthorities() {
+        return AuthorityUtils.commaSeparatedStringToAuthorityList(role)
+    }
+    void setAuthorities(List<GrantedAuthority> authorities){
+        this.authorities=authorities
+    }
+    String getPassword() {
+        return password
+    }
+
+    @Override
+    String getUsername() {
+        return email
+    }
+
+    @Override
+    boolean isAccountNonExpired() {
+        return true
+    }
+
+    @Override
+    boolean isAccountNonLocked() {
+        return true
+    }
+
+    @Override
+    boolean isCredentialsNonExpired() {
+        return true
+    }
+
+    @Override
+    boolean isEnabled() {
+        return enable_Login
+    }
+
+    void setPassword(String password) {
+        this.password = password
+    }
+
+    String getPhone() {
+        return phone
+    }
+
+    void setPhone(String phone) {
+        this.phone = phone
+    }
+
+    String getRole() {
+        return role
+    }
+
+    void setRole(String role) {
+        this.role = role
+    }
+
+    boolean getEnable_Login() {
+        return enable_Login
+    }
+
+    void setEnable_Login(int enable_Login) {
         this.enable_Login = enable_Login
     }
 
     @Override
-    String toString() {
-        JSONObject jsonObject = new JSONObject()
-        jsonObject.put("id", id)
-        jsonObject.put("name", name)
-        jsonObject.put("email", email)
-        jsonObject.put("password", password)
-        jsonObject.put("phone", phone)
-        jsonObject.put("type", type)
-        jsonObject.put("last_name", last_name)
-        jsonObject.put("first_name", first_name)
-        jsonObject.put("enable_Login", enable_Login)
-        return jsonObject.toJSONString()
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", last_name='" + last_name + '\'' +
+                ", first_name='" + first_name + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", phone='" + phone + '\'' +
+                ", role='" + role + '\'' +
+                ", enable_Login=" + enable_Login +
+                ", avatarPath='" + avatarPath + '\'' +
+                ", authorities=" + authorities +
+                '}';
     }
 }

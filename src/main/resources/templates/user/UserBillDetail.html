@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="zh-cn" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script src="../js/jquery-3.4.1.min.js"></script>
+    <script src="../js/popper.min.js"></script>
+    <script src="../js/bootstrap.js"></script>
+    <script src="../js/sb-admin-2.js"></script>
+    <script src="../js/cropper.js"></script>
+    <script src="../js/jquery.easing.js"></script>
+    <script src="../js/jquery-cropper.js"></script>
+    <script src="../js/bootstrap.bundle.min.js"></script>
+    <link href="../css/bootstrap.css" rel="stylesheet">
+    <link href="../css/sb-admin-2.css" rel="stylesheet">
+    <link href="../css/font-awesome.css" rel="stylesheet">
+    <link href="../css/cropper.css" rel="stylesheet">
+    <title>账单详情-Гулаш&nbsp;система&nbsp;会议管理系统</title>
+</head>
+<body>
+<div th:replace="allUser/userHeader::userHeader"></div>
+<div id="res">
+    <h2>账单详情</h2>
+    <hr>
+    <div th:unless="${#strings.isEmpty(info)}">
+        <p th:text="${info}"></p>
+    </div>
+    <div th:if="${#strings.isEmpty(info)}">
+        <div>
+            <div class="row">
+                <div class="col-md-8 col-md-offset-2">
+                    <table class="table table-bordered">
+                        <tbody>
+                        <tr>
+                            <td width="50%">
+                                <h4>付款方</h4>
+                                <address>
+                                    <strong th:text="${delegate.name}"></strong><br>
+                                    <i class="fa fa-envelope-o"></i><span th:text="${delegate.email}"></span><br>
+                                    <i class="fa fa-phone"></i><span th:text="${delegate.phone}"></span><br>
+                                </address>
+                            </td>
+                            <td width="50%">
+                                <h4>收款方</h4>
+                                <address>
+                                    <strong>全共斗指挥部</strong><br>
+                                    <i class="fa fa-credit-card"></i><span>123456@qq.com</span><br>
+                                </address>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <h4>账单信息</h4>
+                    <table class="table table-hover">
+                        <tr>
+                            <td>账单生成日期</td>
+                            <td th:text="${bill.billGenerateDate}"></td>
+                        </tr>
+                        <tr>
+                            <td>支付状态</td>
+                            <td>
+                                <span id="billStatus" th:if="${bill.billStatus}" th:text="已支付"></span>
+                                <span id="billStatus" th:unless="${bill.billStatus}" th:text="未支付"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>账单金额</td>
+                            <td><i class="fa fa-cny"></i><span th:text="${bill.billAmount}"></span></td>
+                        </tr>
+                        <tr th:unless="${#strings.isEmpty(bill.billSerialNumber)}">
+                            <td>转账时间</td>
+                            <td th:text="${bill.billPayDate}"></td>
+                        </tr>
+                        <tr th:unless="${#strings.isEmpty(bill.billSerialNumber)}">
+                            <td>流水号</td>
+                            <td th:text="${bill.billSerialNumber}"></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div th:if="${#strings.isEmpty(bill.billSerialNumber)}">
+                <div>
+                    <label for="billSerialNumber">转账流水号<span style="color: red">*</span></label><input
+                        id="billSerialNumber" placeholder="请输入转账流水号"><br>
+                    <label for="billPayDate">转账时间</label><input id="billPayDate" type="datetime-local">
+                    <button class="btn btn-success" onclick="submitPayDetail()">提交转账信息</button>
+                    <p><small>*&nbsp;转账时间非必须，如不填写则默认为当前时刻</small></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script>
+    $(function () {
+        $('#main').append($('#res').html());
+        $('#res').remove();
+    });
+    var delegateID = [[${delegate.ID}]];
+
+    function submitPayDetail() {
+        var billSerialNumber = $("#billSerialNumber").val();
+        var billPayDate = $("#billPayDate").val();
+        if (billSerialNumber !== '') {
+            $.ajax({
+                type: 'POST',
+                url: '/user/modifyPayDetail',
+                dataType: 'json',
+                data: {
+                    'id': delegateID,
+                    'billSerialNumber': billSerialNumber,
+                    'billPayDate': billPayDate
+                },
+                success: function (data) {
+                    if (data['status'] === 'SUCCESS') {
+                        alert('修改成功');
+                        window.location.reload()
+                    } else {
+                        alert('修改失败');
+                        window.location.reload()
+                    }
+                }
+            })
+        } else {
+            alert("转账流水号不能为空")
+        }
+    }
+</script>
+</body>
+</html>

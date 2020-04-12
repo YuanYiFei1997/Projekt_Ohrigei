@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script src="../js/jquery-3.4.1.min.js"></script>
+    <script src="../js/popper.min.js"></script>
+    <script src="../js/bootstrap.js"></script>
+    <script src="../js/sb-admin-2.js"></script>
+    <script src="../js/jquery.easing.js"></script>
+    <script src="../js/bootstrap.bundle.min.js"></script>
+    <link href="../css/bootstrap.css" rel="stylesheet">
+    <link href="../css/sb-admin-2.css" rel="stylesheet">
+    <link href="../css/font-awesome.css" rel="stylesheet">
+    <title>代表团成员-Гулаш&nbsp;система&nbsp;会议管理系统</title>
+</head>
+<body>
+<div th:replace="allUser/adminHeader::adminHeader"></div>
+<div id="res" hidden="hidden">
+    <h2>代表团成员列表</h2>
+    <hr>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <td>#</td>
+            <td>姓名</td>
+            <td>申请类型</td>
+            <td>申请状态</td>
+            <td>操作</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="delegate:${delegateList}">
+            <td th:text="${delegate.ID}"></td>
+            <td>
+                <a th:text="${delegate.name}" th:href="@{/admin/memberDetailPage(id=${delegate.ID})}"></a>
+            </td>
+            <td th:text="${delegate.applicationType}"></td>
+            <td th:text="${delegate.applicationStatus}"></td>
+            <td>
+                <button class="btn btn-danger"
+                        th:onclick="removeDelegateFromGroup([[${delegate.ID}]])"><i
+                        class="fa fa-times"></i></button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+<script>
+    $("#sidebarToggle, #sidebarToggleTop").onclick(function (e) {
+        $("body").attr("class", "sidebar-toggled");
+        $(".sidebar").toggleClass("toggled");
+        if ($(".sidebar").hasClass("toggled")) {
+            $('.sidebar .collapse').collapse('hide');
+        }
+    });
+</script>
+<script>
+    //将id=res的div内部的html标签传递给id为main的div
+    $(function () {
+        $('#main').append($('#res').html());
+        $('#res').remove();
+    });
+
+    function removeDelegateFromGroup(id) {
+        if(confirm("确认从本代表团移除此代表吗？")){
+            $.ajax({
+                type:'POST',
+                url:'/admin/removeDelegateFromGroup',
+                dataType:'json',
+                data:{
+                    'delegateID':id
+                },
+                success:function (data) {
+                    if(data['status']==='SUCCESS'){
+                        alert('移除代表成功');
+                        window.location.reload()
+                    }else {
+                        alert('移除代表失败');
+                        window.location.reload()
+                    }
+                }
+            })
+        }
+    }
+</script>
+</html>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script src="../js/jquery-3.4.1.min.js"></script>
+    <script src="../js/popper.min.js"></script>
+    <script src="../js/bootstrap.js"></script>
+    <script src="../js/sb-admin-2.js"></script>
+    <script src="../js/cropper.js"></script>
+    <script src="../js/jquery.easing.js"></script>
+    <script src="../js/jquery-cropper.js"></script>
+    <script src="../js/bootstrap.bundle.min.js"></script>
+    <script src="../js/bootstrap-select.js"></script>
+    <script src="../js/bootstrap-select-defaults-zh_CN.js"></script>
+    <link href="../css/bootstrap.css" rel="stylesheet">
+    <link href="../css/sb-admin-2.css" rel="stylesheet">
+    <link href="../css/font-awesome.css" rel="stylesheet">
+    <link href="../css/cropper.css" rel="stylesheet">
+    <link href="../css/bootstrap-select.css" rel="stylesheet">
+    <title>席位列表-Гулаш&nbsp;система&nbsp;会议管理系统</title>
+</head>
+<body>
+<div th:replace="allUser/adminHeader::adminHeader"></div>
+<div id="res">
+    <h2>待确认席位列表</h2>
+    <hr>
+    <table class="table table-hover text-center">
+        <thead>
+        <tr>
+            <td>#</td>
+            <td>席位名称</td>
+            <td>席位难度</td>
+            <td>所属委员会</td>
+            <td>代表</td>
+            <td>手机号码</td>
+            <td>电子邮箱</td>
+            <td>选择席位时间</td>
+            <td>操作</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="seat:${seatList}">
+            <td th:text="${seat.id}"></td>
+            <td th:text="${seat.seatName}"></td>
+            <td th:text="${seat.seatDifficulty}"></td>
+            <td th:text="${seat.committeeName}"></td>
+            <td th:text="${seat.delegateName}"></td>
+            <td th:text="${seat.delegatePhone}"></td>
+            <td th:text="${seat.delegateEmail}"></td>
+            <td th:text="${seat.seatSelectDate}"></td>
+            <td>
+                <button class="btn btn-success" th:onclick="confirmSeatSelect([[${seat.delegateID}]],[[${seat.id}]]);">
+                    <i class="fa fa-check"></i>确认席位
+                </button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<script>
+    $(function () {
+        $('#main').append($('#res').html());
+        $('#res').remove();
+    });
+
+    function confirmSeatSelect(id,seatID) {
+        if(confirm("确认该席位选定吗")){
+            console.log(id,seatID);
+            $.ajax({
+                type:'POST',
+                url:'/admin/seatSelectConfirm',
+                dataType:'json',
+                data:{
+                    'delegateID':id,
+                    'seatID':seatID
+                },
+                success:function (data) {
+                    if (data['status']==='SUCCESS'){
+                        alert("确认成功");
+                        window.location.reload()
+                    }else {
+                        alert("确认失败");
+                        window.location.reload()
+                    }
+                }
+            })
+        }
+    }
+</script>
+</body>
+</html>

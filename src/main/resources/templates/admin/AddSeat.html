@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script src="../js/jquery-3.4.1.min.js"></script>
+    <script src="../js/popper.min.js"></script>
+    <script src="../js/bootstrap.js"></script>
+    <script src="../js/sb-admin-2.js"></script>
+    <script src="../js/cropper.js"></script>
+    <script src="../js/jquery.easing.js"></script>
+    <script src="../js/jquery-cropper.js"></script>
+    <script src="../js/bootstrap.bundle.min.js"></script>
+    <script src="../js/bootstrap-select.js"></script>
+    <script src="../js/bootstrap-select-defaults-zh_CN.js"></script>
+    <link href="../css/bootstrap.css" rel="stylesheet">
+    <link href="../css/sb-admin-2.css" rel="stylesheet">
+    <link href="../css/font-awesome.css" rel="stylesheet">
+    <link href="../css/cropper.css" rel="stylesheet">
+    <link href="../css/bootstrap-select.css" rel="stylesheet">
+    <title>添加席位-Гулаш&nbsp;система&nbsp;会议管理系统</title>
+</head>
+<body>
+<div th:replace="allUser/adminHeader::adminHeader"></div>
+<div id="res">
+    <h3>添加席位</h3>
+    <hr>
+    <div class="card shadow h-100">
+        <div class="card-header">
+            添加席位
+        </div>
+        <div class="card-body">
+            <div class="mt-2">
+                <label for="seatName">席位名称<span style="color: red">*</span></label>
+                <input id="seatName" type="text">
+            </div>
+            <div class="mt-2">
+                <label for="committeeSelect">选择所属委员会<span style="color: red">*</span></label>
+                <select id="committeeSelect" class="selectpicker">
+                    <option th:each="committee:${committeeList}" th:text="${committee.committeeName}" th:value="${committee.id}"></option>
+                </select>
+            </div>
+            <div class="mt-2">
+                <label for="seatDifficulty">席位难度</label>
+                <input id="seatDifficulty" type="number">
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="btn-group">
+                <button class="btn btn-primary" onclick="addSeat()">添加席位</button>
+                <button class="btn btn-secondary" onclick="history.back(-1)">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    $(function () {
+        $('#main').append($('#res').html());
+        $('#res').remove();
+        $('.selectpicker').selectpicker(
+            {
+                liveSearch: true
+            }
+        );
+    });
+    function addSeat() {
+        var seatName=$('#seatName').val();
+        var committeeID=$('#committeeSelect').val();
+        var seatDifficulty=$('#seatDifficulty').val();
+        if(seatDifficulty<=0){
+            alert('难度不能小于1！')
+        }else if(seatName===''&&committeeID===''){
+            alert('必填项不能为空！')
+        }else {
+            $.ajax({
+                type:'POST',
+                url:'/admin/addSeat',
+                datatype:'json',
+                data:{
+                    'seatName':seatName,
+                    'committeeID':committeeID,
+                    'seatDifficulty':seatDifficulty
+                },
+                success:function (data) {
+                    if(data['status']==='SUCCESS'){
+                        alert('添加成功');
+                        window.location.reload()
+                    }else if(data['status']==='error'){
+                        alert(data['errorText']);
+                        window.location.reload();
+                    }
+                }
+            })
+        }
+
+    }
+</script>
+</html>

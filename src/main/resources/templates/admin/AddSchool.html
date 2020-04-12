@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script src="../js/jquery-3.4.1.min.js"></script>
+    <script src="../js/popper.min.js"></script>
+    <script src="../js/bootstrap.js"></script>
+    <script src="../js/sb-admin-2.js"></script>
+    <script src="../js/cropper.js"></script>
+    <script src="../js/jquery.easing.js"></script>
+    <script src="../js/jquery-cropper.js"></script>
+    <script src="../js/bootstrap.bundle.min.js"></script>
+    <script src="../js/bootstrap-select.js"></script>
+    <script src="../js/bootstrap-select-defaults-zh_CN.js"></script>
+    <link href="../css/bootstrap.css" rel="stylesheet">
+    <link href="../css/sb-admin-2.css" rel="stylesheet">
+    <link href="../css/font-awesome.css" rel="stylesheet">
+    <link href="../css/cropper.css" rel="stylesheet">
+    <link href="../css/bootstrap-select.css" rel="stylesheet">
+    <title>学校管理-Гулаш&nbsp;система&nbsp;会议管理系统</title>
+</head>
+<body>
+<div th:replace="allUser/adminHeader::adminHeader"></div>
+<div id="res">
+    <h3>学校管理</h3>
+    <hr>
+    <div class="card shadow h-100">
+        <div class="card-header">
+            <span>添加学校信息</span>
+        </div>
+        <div class="card-body">
+            <div class="mt-2">
+                <label for="schoolName">学校名称<span style="color: red">*</span></label>
+                <input id="schoolName" class="form-control">
+            </div>
+            <div class="mt-2">
+                <label for="schoolNameEN">学校英文名称</label>
+                <input id="schoolNameEN" class="form-control">
+            </div>
+            <div class="mt-2">
+                <label for="schoolTypeSelect">学校类型<span style="color: red">*</span></label>
+                <select class="selectpicker" id="schoolTypeSelect" title="请选择一种学校类型">
+                    <option th:each="schoolType:${schoolTypeList}" th:value="${schoolType.id}"
+                            th:text="${schoolType.schoolType}"></option>
+                </select>
+            </div>
+            <div class="mt-2">
+                <label for="schoolAddress">学校地址<span style="color: red">*</span></label>
+                <input id="schoolAddress" class="form-control">
+            </div>
+            <div class="mt-2">
+                <label for="schoolSize">预计参会人数<span style="color: red">*</span></label>
+                <input id="schoolSize" type="number" class="form-control">
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="btn-group">
+                <button class="btn btn-primary" id="addSchool" onclick="addSchool()">添加学校</button>
+                <button class="btn btn-secondary" onclick="history.back(-1)">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        $('#main').append($('#res').html());
+        $('.selectpicker').selectpicker(
+            {
+                liveSearch: true
+            }
+        );
+        $('#res').remove();
+    });
+
+    function addSchool() {
+        var pattern = /^[1-9][0-9]*$/;
+        var schoolName = $('#schoolName').val();
+        var schoolType = $('#schoolTypeSelect').val();
+        var schoolNameEN = $('#schoolNameEN').val();
+        var schoolAddress = $('#schoolAddress').val();
+        var schoolSize = $('#schoolSize').val();
+        if (schoolName === '' || schoolType === '' || schoolAddress === '' || schoolSize === '') {
+            alert('必填项不能为空');
+        }else if(!pattern.test(schoolSize)){
+            alert('学校预计参会人数不能为空')
+        }else {
+            $.ajax({
+                type:'POST',
+                url:'/admin/addSchool',
+                dataType:'json',
+                data:{
+                    'schoolName':schoolName,
+                    'schoolNameEN':schoolNameEN,
+                    'schoolType':schoolType,
+                    'schoolAddress':schoolAddress,
+                    'schoolSize':schoolSize
+                },
+                success:function (data) {
+                    if(data['status']==='SUCCESS'){
+                        alert('添加成功');
+                        window.location.reload();
+                    }else {
+                        alert('添加失败请稍后再试');
+                        window.location.reload();
+                    }
+                }
+            })
+        }
+    }
+</script>
+</body>
+</html>

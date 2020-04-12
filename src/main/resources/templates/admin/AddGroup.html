@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script src="../js/jquery-3.4.1.min.js"></script>
+    <script src="../js/popper.min.js"></script>
+    <script src="../js/bootstrap.js"></script>
+    <script src="../js/sb-admin-2.js"></script>
+    <script src="../js/cropper.js"></script>
+    <script src="../js/jquery.easing.js"></script>
+    <script src="../js/jquery-cropper.js"></script>
+    <script src="../js/bootstrap.bundle.min.js"></script>
+    <script src="../js/bootstrap-select.js"></script>
+    <script src="../js/bootstrap-select-defaults-zh_CN.js"></script>
+    <link href="../css/bootstrap.css" rel="stylesheet">
+    <link href="../css/sb-admin-2.css" rel="stylesheet">
+    <link href="../css/font-awesome.css" rel="stylesheet">
+    <link href="../css/cropper.css" rel="stylesheet">
+    <link href="../css/bootstrap-select.css" rel="stylesheet">
+    <title>代表团管理-Гулаш&nbsp;система&nbsp;会议管理系统</title>
+</head>
+<body>
+<!-- 将侧边栏及导航栏抽出为单独的文件，减少冗余度-->
+<div th:replace="allUser/adminHeader::adminHeader"></div>
+<div id="res" hidden>
+    <h1>代表团管理</h1>
+    <hr>
+    <div class="card shadow h-100">
+        <div class="card-header">添加代表团</div>
+        <div class="card-body">
+            <div class="mt-2">
+                <label for="school">所属学校</label>
+                <select id="school" class="selectpicker" title="请选择一所学校">
+                    <option th:each="school:${schoolList}" th:value="${school.id}"
+                            th:text="${school.schoolName}"></option>
+                </select>
+            </div>
+            <br>
+            <div class="mt-2">
+                <label for="headDelegateName">负责代表</label>
+                <select id="headDelegateName" class="selectpicker" title="请选择一位代表">
+                    <option th:each="delegate:${delegateList}" th:value="${delegate.ID}"
+                            th:text="${delegate.name}"></option>
+                </select>
+            </div>
+            <br>
+            <div class="mt-2">
+                <label for="groupSize">代表团容量</label>
+                <input id="groupSize" placeholder="请输入代表团容量" type="number">
+            </div>
+        </div>
+        <div class="card-footer">
+            <button class="btn btn-primary" onclick="addGroup()">保存更改</button>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    $(function () {
+        $('#main').append($('#res').html());
+        $('.selectpicker').selectpicker(
+            {
+                liveSearch: true
+            }
+        );
+        $('#res').remove();
+    });
+
+    function addGroup() {
+        var pattern = /^[1-9][0-9]*$/;
+        var size = $('#groupSize').val();
+        var school = $('#school').val();
+        var delegate = $('#headDelegateName').val();
+        if (!pattern.test(size) || size === '') {
+            alert('代表团容量必须为正整数！');
+            $('#groupSize').val('')
+        }
+        if (size > 100) {
+            alert('代表团容量不能超过100人！');
+            $('#groupSize').val('')
+        }
+        if (school !== '') {
+            $.ajax({
+                type: 'POST',
+                url: '/admin/addGroup',
+                dataType: 'json',
+                data: {
+                    'schoolID': school,
+                    'headDelegateID': delegate,
+                    'groupSize': size
+                },
+                success: function (data) {
+                    if (data['status'] === 'SUCCESS') {
+                        alert('添加成功！');
+                        window.location.reload()
+                    } else {
+                        alert('添加失败，请稍后重试！');
+                        window.location.reload()
+                    }
+                }
+            })
+        } else {
+            alert('所属学校不能为空！');
+        }
+    }
+</script>
+</html>

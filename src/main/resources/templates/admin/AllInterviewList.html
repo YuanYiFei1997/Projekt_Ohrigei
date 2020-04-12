@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script src="../js/jquery-3.4.1.min.js"></script>
+    <script src="../js/popper.min.js"></script>
+    <script src="../js/bootstrap.js"></script>
+    <script src="../js/sb-admin-2.js"></script>
+    <script src="../js/cropper.js"></script>
+    <script src="../js/jquery.easing.js"></script>
+    <script src="../js/jquery-cropper.js"></script>
+    <script src="../js/bootstrap.bundle.min.js"></script>
+    <script src="../js/dataTables.bootstrap4.min.js"></script>
+    <script src="../js/bootstrap-select.js"></script>
+    <script src="../js/bootstrap-select-defaults-zh_CN.js"></script>
+    <link href="../css/bootstrap.css" rel="stylesheet">
+    <link href="../css/sb-admin-2.css" rel="stylesheet">
+    <link href="../css/font-awesome.css" rel="stylesheet">
+    <link href="../css/cropper.css" rel="stylesheet">
+    <link href="../css/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <link href="../css/bootstrap-select.css" rel="stylesheet">
+    <title>面试列表-Гулаш&nbsp;система&nbsp;会议管理系统</title>
+</head>
+<body>
+<div th:replace="allUser/adminHeader::adminHeader"></div>
+<div id="res">
+    <h2>面试列表</h2>
+    <hr>
+    <table class="table table-hover text-center">
+        <thead>
+        <tr>
+            <td>代表姓名</td>
+            <td>负责管理员</td>
+            <td>面试时间</td>
+            <td>面试状态</td>
+            <td>操作</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="interview:${interviewList}">
+            <td><a th:text="${interview.delegateName}" th:href="@{/admin/memberDetailPage(id=${interview.id})}"></a></td>
+            <td><a th:text="${interview.adminName}" th:href="@{/admin/adminDetail(id=${interview.adminID})}"></a></td>
+            <td th:text="${interview.date}"></td>
+            <td th:if="${interview.interviewStatus}" th:text="已完成"></td>
+            <td th:unless="${interview.interviewStatus}" th:text="未完成"></td>
+            <td><a th:href="@{/admin/interviewDetail(delegateID=${interview.id})}" th:text="详细信息"></a></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+<script>
+    $(function () {
+        $('#main').append($('#res').html());
+        $('#res').remove();
+    });
+</script>
+</html>
